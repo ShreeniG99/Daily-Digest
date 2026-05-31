@@ -1,0 +1,68 @@
+# config/sources.yaml — Daily Digest source configuration
+# Edit freely. This file is the single source of truth; code never hardcodes sources.
+#
+# Substack feed pattern:  https://<name>.substack.com/feed
+#   (custom-domain publications use  https://<domain>/feed )
+# YouTube channels are resolved by handle at fetch time (channels.list?forHandle=...);
+#   if one returns nothing, the handle is wrong — fix it here.
+# Lines marked "# verify" are best guesses; confirm before relying on them.
+
+keyword_tiers:
+  tier1: [RAG, LLM, transformers, GenAI, SLM, VLM, SaaS, FastAPI, React, Kafka,
+          Docker, Kubernetes, Terraform, LangChain, LangGraph, full-stack]
+  tier2: [AI, machine learning, deep learning, neural network, NLP,
+          software engineering, MLOps]
+  tier3: [crypto, web3, NFT, no-code, AI marketing]
+
+news:
+  # Hacker News via the Algolia API (reliable, no URL needed — adapter builds the query)
+  hackernews_queries: [AI, LLM, Anthropic, Claude, machine learning, transformers]
+  # Blog RSS feeds: a wrong URL fails silently, so these start commented out.
+  # Uncomment only after you confirm each one loads in a feed reader.
+  rss:
+    # - https://www.anthropic.com/rss.xml          # verify
+    # - https://deepmind.google/blog/rss.xml        # verify
+    # - https://blog.google/technology/ai/rss/      # verify
+
+substacks:                                          # confirmed live feeds
+  - https://magazine.sebastianraschka.com/feed      # Ahead of AI — LLMs/NN, technical, code-driven
+  - https://www.interconnects.ai/feed               # Interconnects — LLMs, RLHF, evals
+  - https://nathanbenaich.substack.com/feed         # State of AI — research/industry/startups
+  - https://cognitiverevolution.substack.com/feed   # The Cognitive Revolution
+  # - https://<fill-in>.substack.com/feed           # Emerging AI — paste the exact URL you follow
+  # add your own below:
+
+youtube:
+  channels:                                         # resolved by handle at fetch time
+    - "@3blue1brown"            # 3Blue1Brown — neural networks, the math behind them
+    - "@statquest"             # StatQuest — ML/stats, clear CNN/RNN explainers
+    - "@TwoMinutePapers"       # Two Minute Papers — AI research, digestible
+    - "@AndrejKarpathy"        # Andrej Karpathy — NN/LLMs from scratch        # verify
+    - "@YannicKilcher"         # Yannic Kilcher — paper reviews, transformers
+    - "@Deeplearningai"        # DeepLearning.AI — Andrew Ng's org
+    - "@sentdex"               # sentdex — Python ML/NN tutorials
+    - "@Computerphile"         # Computerphile — CS incl. ML/NLP
+    - "@AICoffeeBreak"         # AI Coffee Break — NLP/transformers            # verify
+    - "@SerranoAcademy"        # Serrano Academy — ML/NN, intuition-first      # verify
+    - "@mitocw"                # MIT OpenCourseWare — full course lectures
+    - "@stanfordonline"        # Stanford Online — CS229 (ML), CS231n (CNN), CS224n (NLP)
+    - "@AAmini"                # MIT 6.S191 Intro to Deep Learning             # verify
+    - "@TheBottomlinePodcastt" # The Bottomline Podcast (your pick)
+  search_terms: [transformers explained, RAG tutorial, LLM fine-tuning,
+                 neural network, NLP deep learning]
+
+papers:
+  # arXiv = open preprints (full abstract + link). OpenAlex/Semantic Scholar/Europe PMC
+  # cover paywalled venues by metadata + abstract. Teach from abstracts; link out.
+  domains:
+    ai:         { arxiv: [cs.AI, cs.LG, cs.CL, cs.CV, cs.NE], openalex: [artificial intelligence, deep learning] }
+    nlp:        { arxiv: [cs.CL],                             openalex: [natural language processing] }
+    fintech:    { arxiv: [q-fin.GN],                          openalex: [financial technology] }
+    healthtech: { arxiv: [q-bio.QM],                          openalex: [health informatics, medical artificial intelligence] }
+    agrotech:   { arxiv: [],                                  openalex: [precision agriculture, agricultural technology] }
+    tech:       { arxiv: [cs.SE, cs.DC],                      openalex: [software engineering] }
+
+github:
+  topics: [machine-learning, llm, rag, langchain, fastapi]
+  min_stars: 300
+  pushed_within_days: 30
