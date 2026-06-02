@@ -19,6 +19,7 @@ from . import rank, store
 from .adapters.news_rss import NewsRSSAdapter
 from .adapters.youtube import YouTubeAdapter
 from .adapters.papers import PapersAdapter
+from .adapters.github_repos import GitHubReposAdapter
 
 ROOT = Path(__file__).resolve().parent.parent
 CONFIG_PATH = ROOT / "config" / "sources.yaml"
@@ -28,6 +29,7 @@ ADAPTERS = {
     "news": NewsRSSAdapter(),
     "youtube": YouTubeAdapter(),
     "papers": PapersAdapter(),
+    "github": GitHubReposAdapter(),
 }
 KINDS = ["news", "youtube", "papers", "github"]
 
