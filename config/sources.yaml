@@ -66,3 +66,22 @@ github:
   topics: [machine-learning, llm, rag, langchain, fastapi]
   min_stars: 300
   pushed_within_days: 30
+
+opportunities:
+  eligibility:
+    locations: [India, Remote]
+    roles: [SDE, SWE, AIML, R&D, full-stack, intern]
+    exclude: [visa sponsorship, US onsite, senior, "5+ years"]
+  api_sources:          # Stage 2a — no scraping, no LLM
+    codeforces: true                 # https://codeforces.com/api/contest.list
+    devpost: true                    # https://devpost.com/api/hackathons (unofficial JSON)
+    kaggle: true                     # auth from KAGGLE_USERNAME / KAGGLE_KEY in .env
+  scrape_sources:       # Stage 2b — ScrapeGraphAI SearchGraph + Gemini (not built yet)
+    internshala: true
+    unstop: true
+    devfolio: true
+    codesscafe: true
+    mlh: true
+    gsoc_orgs: true
+    ycombinator: true                # Work at a Startup (login-gated; SearchGraph, not API)
+    company_pages: ["Google India careers intern", "Microsoft India careers intern", "Amazon India SDE intern"]

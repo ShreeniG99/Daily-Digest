@@ -20,6 +20,7 @@ from .adapters.news_rss import NewsRSSAdapter
 from .adapters.youtube import YouTubeAdapter
 from .adapters.papers import PapersAdapter
 from .adapters.github_repos import GitHubReposAdapter
+from .adapters.opportunities import OpportunitiesAdapter
 
 ROOT = Path(__file__).resolve().parent.parent
 CONFIG_PATH = ROOT / "config" / "sources.yaml"
@@ -30,8 +31,9 @@ ADAPTERS = {
     "youtube": YouTubeAdapter(),
     "papers": PapersAdapter(),
     "github": GitHubReposAdapter(),
+    "opportunities": OpportunitiesAdapter(),
 }
-KINDS = ["news", "youtube", "papers", "github"]
+KINDS = ["news", "youtube", "papers", "github", "opportunities"]
 
 
 def load_config() -> dict:
