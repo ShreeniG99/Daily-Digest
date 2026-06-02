@@ -415,6 +415,43 @@ def _devfolio(elig: dict) -> list[Item]:
     return out
 
 
+GSOC_YEAR = 2026  # edit each year, or move to config
+GSOC_API = f"https://summerofcode.withgoogle.com/api/program/{GSOC_YEAR}/organizations/"
+
+
+def _gsoc(elig: dict) -> list[Item]:
+    """Google Summer of Code participating orgs via the public JSON API
+    (deterministic, real). GSoC is fully remote and open to India. All orgs
+    are returned; the ranker surfaces the AI/ML/dev ones by keyword."""
+    try:
+        resp = requests.get(GSOC_API, headers={"User-Agent": BROWSER_UA, "Accept": "application/json"},
+                            timeout=30)
+        resp.raise_for_status()
+        orgs = resp.json()
+        if isinstance(orgs, dict):
+            orgs = orgs.get("organizations") or []
+    except Exception as exc:
+        print(f"  ! gsoc failed: {exc}")
+        return []
+
+    now = time.time()
+    out = []
+    for o in orgs:
+        name = (o.get("name") or "").strip()
+        slug = o.get("slug") or ""
+        if not name or not slug:
+            continue
+        tags = (o.get("tech_tags") or []) + (o.get("topic_tags") or [])
+        raw = f"{name}. {o.get('tagline', '')}. {o.get('description', '')} " \
+              f"Tech: {', '.join(tags)}."
+        url = f"https://summerofcode.withgoogle.com/programs/{GSOC_YEAR}/organizations/{slug}"
+        if not _eligible(name, raw, "open-source", "Remote", elig):
+            continue
+        out.append(_item("GSoC", name, url, raw, "tech", "open-source", name, url,
+                         "", now, tags=tags))
+    return out
+
+
 class OpportunitiesAdapter(SourceAdapter):
     name = "opportunities"
     kind = "opportunity"
@@ -437,4 +474,6 @@ class OpportunitiesAdapter(SourceAdapter):
             items += _unstop(elig)
         if scrape.get("devfolio"):
             items += _devfolio(elig)
+        if scrape.get("gsoc_orgs"):
+            items += _gsoc(elig)
         return items

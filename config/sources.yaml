@@ -90,7 +90,7 @@ opportunities:
     internshala: true
     unstop: true
     devfolio: true
-    codesscafe: true
+    codesscafe: false                # login-gated hiring platform, no public listings to ingest
     mlh: true
     gsoc_orgs: true
     ycombinator: true                # Work at a Startup (login-gated; SearchGraph, not API)
