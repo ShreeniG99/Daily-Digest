@@ -18,6 +18,7 @@ from dotenv import load_dotenv
 from . import rank, store
 from .adapters.news_rss import NewsRSSAdapter
 from .adapters.youtube import YouTubeAdapter
+from .adapters.papers import PapersAdapter
 
 ROOT = Path(__file__).resolve().parent.parent
 CONFIG_PATH = ROOT / "config" / "sources.yaml"
@@ -26,6 +27,7 @@ CONFIG_PATH = ROOT / "config" / "sources.yaml"
 ADAPTERS = {
     "news": NewsRSSAdapter(),
     "youtube": YouTubeAdapter(),
+    "papers": PapersAdapter(),
 }
 KINDS = ["news", "youtube", "papers", "github"]
 
@@ -50,18 +52,23 @@ def run_kind(kind: str, cfg: dict, since_days: float | None) -> None:
     print(f"[{kind}] fetching since {_fmt_ts(since_ts) if since_ts else 'beginning'} ...")
     items = adapter.fetch(cfg, {"since_ts": since_ts})
 
+    now = time.time()
     new_count, max_ts = 0, cursor
     for item in items:
         rank.score_item(item, cfg)
         if store.upsert_item(item):
             new_count += 1
-        max_ts = max(max_ts, item.published_ts)
+        # Never advance the cursor past now: some sources carry future
+        # (embargo/placeholder) publication dates that would otherwise stall
+        # every later run.
+        if item.published_ts <= now:
+            max_ts = max(max_ts, item.published_ts)
 
     if max_ts > cursor:
         store.set_cursor(adapter.name, max_ts)
 
     print(f"[{kind}] fetched {len(items)}, new {new_count}, duplicates {len(items) - new_count}")
-    _print_table(store.get_ranked(kind, limit=30))
+    _print_table(store.get_ranked(adapter.kind, limit=30))
 
 
 def _fmt_ts(ts: float) -> str:
