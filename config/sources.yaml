@@ -103,6 +103,11 @@ opportunities:
     # Add companies here as their API is wired in _COMPANY_FETCHERS.
     company_pages:
       enabled: true
-      companies: [amazon]            # microsoft, google: wired as their APIs are confirmed
+      # microsoft + google deferred (probed 2026-06): Microsoft's gcsservices API
+      # is unreachable (SSL cert mismatch) and only offers an HTML SPA; Google's
+      # public jobs API is gone (404) and its careers SPA can't be filtered to
+      # India deterministically. Re-add when a reliable India-filterable endpoint
+      # exists; do NOT add them via soft location filters or SearchGraph.
+      companies: [amazon]
       queries: [software development engineer, machine learning, data engineer,
                 applied scientist, software intern, SDE]
