@@ -8,6 +8,7 @@ then prints a ranked summary table from the store.
 from __future__ import annotations
 
 import argparse
+import sys
 import time
 from pathlib import Path
 
@@ -16,6 +17,7 @@ from dotenv import load_dotenv
 
 from . import rank, store
 from .adapters.news_rss import NewsRSSAdapter
+from .adapters.youtube import YouTubeAdapter
 
 ROOT = Path(__file__).resolve().parent.parent
 CONFIG_PATH = ROOT / "config" / "sources.yaml"
@@ -23,6 +25,7 @@ CONFIG_PATH = ROOT / "config" / "sources.yaml"
 # Adapters are registered here as they are built (Phase 1 order: news first).
 ADAPTERS = {
     "news": NewsRSSAdapter(),
+    "youtube": YouTubeAdapter(),
 }
 KINDS = ["news", "youtube", "papers", "github"]
 
@@ -84,6 +87,12 @@ def main() -> None:
     parser.add_argument("--since", type=float, default=None,
                         help="only fetch items from the last N days (overrides stored cursor floor)")
     args = parser.parse_args()
+
+    # Titles/transcripts can contain emoji and non-Latin text; the Windows
+    # console defaults to cp1252 and would crash on them. Force UTF-8 output.
+    for stream in (sys.stdout, sys.stderr):
+        if hasattr(stream, "reconfigure"):
+            stream.reconfigure(encoding="utf-8", errors="replace")
 
     load_dotenv(ROOT / ".env")
     cfg = load_config()
