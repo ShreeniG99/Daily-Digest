@@ -527,6 +527,79 @@ def _gsoc(elig: dict) -> list[Item]:
     return out
 
 
+# --- company_pages: FAANG-India roles via official jobs APIs ----------------
+
+AMAZON_JOBS = "https://www.amazon.jobs/en/search.json"
+
+
+def _target_role(title: str) -> str:
+    """Map a job title to one of the owner's target roles, or "" to skip.
+    Keyword queries return jobs that merely mention a term in their description
+    (e.g. an Account Manager role), so gate on the actual title."""
+    t = title.lower()
+    if "intern" in t:
+        return "intern"
+    if any(k in t for k in ("software", "developer", "engineer", "sde", "swe",
+                            "full stack", "full-stack")):
+        return "SWE"
+    if any(k in t for k in ("scientist", "machine learning", "data engineer", "research")):
+        return "AIML"
+    return ""
+
+
+def _amazon_jobs(queries: list[str], elig: dict) -> list[Item]:
+    """Amazon India roles via the official amazon.jobs search JSON. Real apply
+    URLs (job_path); India is enforced on the authoritative country_code, so
+    location eligibility is guaranteed."""
+    out, seen = [], set()
+    now = time.time()
+    for q in queries:
+        try:
+            resp = requests.get(AMAZON_JOBS, headers={"User-Agent": BROWSER_UA, "Accept": "application/json"},
+                                params={"base_query": q, "result_limit": 100, "sort": "recent"}, timeout=30)
+            resp.raise_for_status()
+            jobs = resp.json().get("jobs", [])
+        except Exception as exc:
+            print(f"  ! amazon.jobs '{q}' failed: {exc}")
+            continue
+        for j in jobs:
+            if j.get("country_code") != "IND":
+                continue
+            path = j.get("job_path") or ""
+            url = f"https://www.amazon.jobs{path}" if path.startswith("/") else ""
+            if not url or url in seen:
+                continue
+            seen.add(url)
+            title = (j.get("title") or "").strip()
+            role = "intern" if j.get("is_intern") else _target_role(title)
+            if not title or not role:        # skip non-target roles (sales, ops, etc.)
+                continue
+            location = j.get("normalized_location") or "India"
+            raw = f"{title} at Amazon. {location}. {j.get('description_short') or ''} " \
+                  f"{j.get('basic_qualifications') or ''}"[:1000]
+            if not _eligible(title, raw, role, location, elig, assume_location_ok=True):
+                continue
+            out.append(_item("Amazon Jobs", title, url, raw, "tech", role,
+                             "Amazon", url, "", now))
+    return out
+
+
+_COMPANY_FETCHERS = {"amazon": _amazon_jobs}
+
+
+def _company_pages(cp: dict, elig: dict) -> list[Item]:
+    """Dispatch to each enabled company's official jobs API."""
+    queries = cp.get("queries") or []
+    out = []
+    for company in cp.get("companies") or []:
+        fetcher = _COMPANY_FETCHERS.get(company)
+        if fetcher is None:
+            print(f"  ! company_pages: no fetcher wired for '{company}'")
+            continue
+        out += fetcher(queries, elig)
+    return out
+
+
 class OpportunitiesAdapter(SourceAdapter):
     name = "opportunities"
     kind = "opportunity"
@@ -553,4 +626,7 @@ class OpportunitiesAdapter(SourceAdapter):
             items += _gsoc(elig)
         if scrape.get("mlh"):
             items += _mlh(elig)
+        cp = scrape.get("company_pages")
+        if isinstance(cp, dict) and cp.get("enabled"):
+            items += _company_pages(cp, elig)
         return items

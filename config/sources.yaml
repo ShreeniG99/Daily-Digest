@@ -98,8 +98,11 @@ opportunities:
     # directory lists US-centric companies (not roles) that fail India/remote
     # eligibility. Disabled. Revisit if a public, India-filterable jobs API appears.
     ycombinator: false
-    # company_pages: DEFERRED, not skipped. Highest-value source (FAANG-India intern
-    # postings) — to be built later the right way: SmartScraper + link-check on each
-    # company's known careers URL, or an official jobs API (e.g. amazon.jobs search
-    # JSON). Never fragile SearchGraph. Re-enable when that adapter exists.
-    company_pages: false             # ["Google India careers intern", "Microsoft India careers intern", "Amazon India SDE intern"]
+    # company_pages: FAANG-India roles via each company's OFFICIAL jobs API
+    # (deterministic, real apply links; India enforced on the API's country code).
+    # Add companies here as their API is wired in _COMPANY_FETCHERS.
+    company_pages:
+      enabled: true
+      companies: [amazon]            # microsoft, google: wired as their APIs are confirmed
+      queries: [software development engineer, machine learning, data engineer,
+                applied scientist, software intern, SDE]
