@@ -84,11 +84,7 @@ def _row_to_item(row: sqlite3.Row) -> Item:
 
 def upsert_item(item: Item) -> bool:
     """Insert an item, ignoring it if its id already exists (exact dedup).
-    Returns True if a new row was written, False if it was a duplicate.
-
-    On a duplicate, the freshly computed score is written back so ranking
-    changes (recency decay, brand boost) take effect on re-fetch — without
-    creating a new row or disturbing user-managed fields (status, summary)."""
+    Returns True if a new row was written, False if it was a duplicate."""
     with _connect() as conn:
         cur = conn.execute(
             f"INSERT OR IGNORE INTO items ({','.join(_COLUMNS)}) "
@@ -100,10 +96,26 @@ def upsert_item(item: Item) -> bool:
                 json.dumps(item.extra),
             ),
         )
-        if cur.rowcount > 0:
-            return True
-        conn.execute("UPDATE items SET score = ? WHERE id = ?", (item.score, item.id))
-        return False
+        return cur.rowcount > 0
+
+
+def all_items(kind: str | None = None) -> list[Item]:
+    """Every stored item (optionally of one kind), unranked."""
+    with _connect() as conn:
+        if kind:
+            rows = conn.execute("SELECT * FROM items WHERE kind = ?", (kind,)).fetchall()
+        else:
+            rows = conn.execute("SELECT * FROM items").fetchall()
+    return [_row_to_item(r) for r in rows]
+
+
+def set_scores(pairs: list[tuple[str, float]]) -> None:
+    """Bulk-update item scores: pairs of (id, score)."""
+    if not pairs:
+        return
+    with _connect() as conn:
+        conn.executemany("UPDATE items SET score = ? WHERE id = ?",
+                         [(s, i) for i, s in pairs])
 
 
 def get_ranked(kind: str | None = None, limit: int = 30) -> list[Item]:

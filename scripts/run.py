@@ -71,6 +71,14 @@ def run_kind(kind: str, cfg: dict, since_days: float | None) -> None:
     if max_ts > cursor:
         store.set_cursor(adapter.name, max_ts)
 
+    # Re-score EVERY stored item of this kind (not just the ones fetched now) so
+    # ranking changes and recency decay apply uniformly — otherwise items that
+    # rotated out of a source keep stale scores forever.
+    stored = store.all_items(adapter.kind)
+    for it in stored:
+        rank.score_item(it, cfg)
+    store.set_scores([(it.id, it.score) for it in stored])
+
     print(f"[{kind}] fetched {len(items)}, new {new_count}, duplicates {len(items) - new_count}")
     _print_table(store.get_ranked(adapter.kind, limit=30))
 
