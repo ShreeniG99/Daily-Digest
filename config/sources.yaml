@@ -14,6 +14,16 @@ keyword_tiers:
           software engineering, MLOps]
   tier3: [crypto, web3, NFT, no-code, AI marketing]
 
+# Big brands surfaced to the top of the ranking, across all kinds (a flat bonus
+# added when a company name appears in an item's title/text/company field).
+# Edit freely. Short ambiguous names (Meta, Apple, Uber) can match unrelated
+# words — remove any that cause false boosts.
+brand_boost:
+  weight: 8
+  companies: [Google, Microsoft, Amazon, Nvidia, OpenAI, Anthropic, Meta, Apple,
+              Netflix, Adobe, Salesforce, Atlassian, Databricks, Uber,
+              Flipkart, Razorpay, Swiggy, Zomato]
+
 news:
   # Hacker News via the Algolia API (reliable, no URL needed — adapter builds the query)
   hackernews_queries: [AI, LLM, Anthropic, Claude, machine learning, transformers]

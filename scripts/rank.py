@@ -49,6 +49,24 @@ def score_item(item: Item, cfg: dict, now: float | None = None) -> float:
     t3 = _hits(text, tiers.get("tier3", []))
 
     priority = cfg.get("source_priority", {}).get(item.source, 0)
+    brand = _brand_bonus(item, cfg)
 
-    item.score = 3 * t1 + 1 * t2 - 2 * t3 + _recency(item.published_ts, now) + priority
+    item.score = 3 * t1 + 1 * t2 - 2 * t3 + _recency(item.published_ts, now) + priority + brand
     return item.score
+
+
+def _brand_bonus(item: Item, cfg: dict) -> float:
+    """Flat bonus that surfaces big-brand items to the top, across all kinds.
+    Matches configured company names (whole-word) in the item's title, text,
+    author, and extra.company."""
+    bb = cfg.get("brand_boost") or {}
+    companies = bb.get("companies") or []
+    if not companies:
+        return 0.0
+    blob = " ".join([
+        item.title, item.raw_text, item.author or "",
+        str((item.extra or {}).get("company", "")),
+    ]).lower()
+    if any(_kw_pattern(c).search(blob) for c in companies):
+        return float(bb.get("weight", 0))
+    return 0.0

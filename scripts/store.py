@@ -84,7 +84,11 @@ def _row_to_item(row: sqlite3.Row) -> Item:
 
 def upsert_item(item: Item) -> bool:
     """Insert an item, ignoring it if its id already exists (exact dedup).
-    Returns True if a new row was written, False if it was a duplicate."""
+    Returns True if a new row was written, False if it was a duplicate.
+
+    On a duplicate, the freshly computed score is written back so ranking
+    changes (recency decay, brand boost) take effect on re-fetch — without
+    creating a new row or disturbing user-managed fields (status, summary)."""
     with _connect() as conn:
         cur = conn.execute(
             f"INSERT OR IGNORE INTO items ({','.join(_COLUMNS)}) "
@@ -96,7 +100,10 @@ def upsert_item(item: Item) -> bool:
                 json.dumps(item.extra),
             ),
         )
-        return cur.rowcount > 0
+        if cur.rowcount > 0:
+            return True
+        conn.execute("UPDATE items SET score = ? WHERE id = ?", (item.score, item.id))
+        return False
 
 
 def get_ranked(kind: str | None = None, limit: int = 30) -> list[Item]:
