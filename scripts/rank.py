@@ -57,15 +57,18 @@ def score_item(item: Item, cfg: dict, now: float | None = None) -> float:
 
 def _brand_bonus(item: Item, cfg: dict) -> float:
     """Flat bonus that surfaces big-brand items to the top, across all kinds.
-    Matches configured company names (whole-word) in the item's title, text,
-    author, and extra.company."""
+
+    Matches configured company names (whole-word) only in entity fields — the
+    title, author, and extra.company — NOT raw_text. This boosts items whose
+    brand IS the subject/employer/owner, while ignoring incidental brand
+    mentions in descriptions (e.g. an internship that merely lists "Adobe
+    Photoshop" or "AWS" as a required skill)."""
     bb = cfg.get("brand_boost") or {}
     companies = bb.get("companies") or []
     if not companies:
         return 0.0
     blob = " ".join([
-        item.title, item.raw_text, item.author or "",
-        str((item.extra or {}).get("company", "")),
+        item.title, item.author or "", str((item.extra or {}).get("company", "")),
     ]).lower()
     if any(_kw_pattern(c).search(blob) for c in companies):
         return float(bb.get("weight", 0))

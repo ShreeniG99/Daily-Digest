@@ -301,6 +301,53 @@ def _internshala(elig: dict) -> list[Item]:
     return items
 
 
+UNSTOP_API = "https://unstop.com/api/public/opportunity/search-result"
+
+
+def _iso_dt_to_ts(value: str) -> float:
+    try:
+        return datetime.fromisoformat(value).timestamp()
+    except (ValueError, TypeError):
+        return 0.0
+
+
+def _unstop(elig: dict) -> list[Item]:
+    """Unstop via its public JSON API (no scraping, no LLM — fully real data).
+    Listed under scrape_sources in config, but the site exposes a clean API."""
+    out: list[Item] = []
+    now = time.time()
+    for opp_type, role in (("internships", "intern"), ("hackathons", "hackathon")):
+        try:
+            resp = requests.get(UNSTOP_API, params={"opportunity": opp_type, "per_page": 40, "page": 1},
+                                headers={"User-Agent": BROWSER_UA, "Accept": "application/json"}, timeout=30)
+            resp.raise_for_status()
+            rows = (((resp.json() or {}).get("data") or {}).get("data")) or []
+        except Exception as exc:
+            print(f"  ! unstop {opp_type} failed: {exc}")
+            continue
+        for it in rows:
+            if it.get("regn_open") != 1:          # registration closed
+                continue
+            url = (it.get("seo_url") or "").strip()
+            title = (it.get("title") or "").strip()
+            if not url or not title:
+                continue
+            org = it.get("organisation") or {}
+            company = (org.get("name") if isinstance(org, dict) else "") or ""
+            locs = it.get("locations") or []
+            location = ", ".join(
+                f"{l.get('city', '')} {l.get('country', '')}".strip() for l in locs
+            ) if locs else "Work from home"
+            skills = [s.get("skill_name", "") for s in (it.get("required_skills") or [])]
+            ts = _iso_dt_to_ts(it.get("end_date", ""))
+            raw = f"{title} at {company}. {location}. Skills: {', '.join(skills)}."
+            if not _eligible(title, raw, role, location, elig):
+                continue
+            out.append(_item("Unstop", title, url, raw, "tech", role, company, url,
+                             _iso(ts), ts or now, tags=skills))
+    return out
+
+
 class OpportunitiesAdapter(SourceAdapter):
     name = "opportunities"
     kind = "opportunity"
@@ -319,4 +366,6 @@ class OpportunitiesAdapter(SourceAdapter):
             items += _kaggle(elig)
         if scrape.get("internshala"):
             items += _internshala(elig)
+        if scrape.get("unstop"):
+            items += _unstop(elig)
         return items
