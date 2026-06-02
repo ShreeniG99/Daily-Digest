@@ -36,8 +36,8 @@ the "Phase 2" section.
 
 ## Stack & conventions
 - Python 3.11+, one venv. Deps: feedparser, requests, pyyaml, python-dotenv.
-- SQLite (stdlib sqlite3), DB at root: signal.db.
-- Secrets in .env (python-dotenv). Never commit signal.db or .env (.gitignore them).
+- SQLite (stdlib sqlite3), DB at root: daily-digest.db.
+- Secrets in .env (python-dotenv). Never commit daily-digest.db or .env (.gitignore them).
 - ALL sources live in config/sources.yaml — user-editable. Code reads config; never
   hardcode feeds, channels, or domains.
 
@@ -45,7 +45,7 @@ the "Phase 2" section.
 ```
 daily-digest/
   CLAUDE.md
-  .claude/skills/signal/SKILL.md
+  .claude/skills/daily-digest/SKILL.md
   .env  .gitignore
   config/sources.yaml
   scripts/
@@ -117,7 +117,7 @@ Runs adapter(s), upserts, prints a ranked summary table.
 4. sources.yaml fully drives sources (nothing hardcoded).
 5. SKILL.md exists and consumption works in Claude Code.
 
-## Owner profile (ranking signal)
+## Owner profile (ranking daily-digest)
 - Rising 3rd-year B.Tech AI & Data Science, India. Intern eligibility: India only,
   no visa. Target roles: SDE / SWE / AIML / R&D.
 - Tier-1: RAG, LLM, transformers, GenAI, SLM, VLM, SaaS, FastAPI, React, Kafka,

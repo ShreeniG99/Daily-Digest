@@ -1,12 +1,12 @@
 ---
 name: Daily Digest
-description: The owner's personal AI/tech intelligence digest. Use when they ask for their news, papers, videos, repos, or "today's digest." Reads Daily Digest.db (populated by scripts/) and presents ranked items as teaching-style summaries with links, optional tables, and a personalized next-action.
+description: The owner's personal AI/tech intelligence digest. Use when they ask for their news, papers, videos, repos, or "today's digest." Reads daily-digest.db (populated by scripts/) and presents ranked items as teaching-style summaries with links, optional tables, and a personalized next-action.
 ---
 
 # Daily Digest — consumption
 
 Present items from the Daily Digest store to the owner. If the store may be stale, run
-`python -m scripts.run <kind>` from the project root first, then read `Daily Digest.db`
+`python -m scripts.run <kind>` from the project root first, then read `daily-digest.db`
 via scripts/store.py (`get_ranked`).
 
 ## What a good digest item delivers (success criteria)
