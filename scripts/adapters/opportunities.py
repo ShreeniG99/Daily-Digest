@@ -415,6 +415,81 @@ def _devfolio(elig: dict) -> list[Item]:
     return out
 
 
+MLH_URL = "https://mlh.io/seasons/2026/events"
+
+
+def _extract_json_objects(text: str, anchor: str) -> list[dict]:
+    """Pull out brace-balanced JSON objects that contain `anchor`, from a page
+    that embeds data as (html-unescaped) JSON. Robust to surrounding markup."""
+    out, pos = [], 0
+    while True:
+        i = text.find(anchor, pos)
+        if i < 0:
+            break
+        start = text.rfind("{", 0, i)
+        depth, end = 0, -1
+        for j in range(start, min(start + 4000, len(text))):
+            if text[j] == "{":
+                depth += 1
+            elif text[j] == "}":
+                depth -= 1
+                if depth == 0:
+                    end = j
+                    break
+        if start >= 0 and end > 0:
+            try:
+                out.append(json.loads(text[start:end + 1]))
+            except ValueError:
+                pass
+            pos = end + 1
+        else:
+            pos = i + len(anchor)
+    return out
+
+
+def _mlh(elig: dict) -> list[Item]:
+    """MLH member hackathons. The events page embeds them as JSON (entity-
+    encoded). MLH is global, so in-person events outside India are dropped by
+    the eligibility check; digital ones are kept."""
+    try:
+        resp = requests.get(MLH_URL, headers={"User-Agent": BROWSER_UA}, timeout=30)
+        resp.raise_for_status()
+        text = html.unescape(resp.text)
+    except Exception as exc:
+        print(f"  ! mlh failed: {exc}")
+        return []
+
+    now = time.time()
+    out, seen = [], set()
+    for ev in _extract_json_objects(text, '"startsAt"'):
+        slug = ev.get("slug")
+        name = (ev.get("name") or "").strip()
+        if not slug or not name or slug in seen:
+            continue
+        seen.add(slug)
+        if (ev.get("status") or "").lower() == "ended":
+            continue
+        va = ev.get("venueAddress") or {}
+        country = (va.get("country") or "").upper()
+        blob = f"{ev.get('formatType', '')} {ev.get('location', '')}".lower()
+        if "digital" in blob or "online" in blob or not va:
+            location = "Online"
+        elif country == "IN":
+            location = f"{va.get('city', '')}, India"
+        else:
+            location = f"{va.get('city', '')}, {country}"
+        website = ev.get("websiteUrl") or ""
+        url = website if website.startswith("http") else \
+            "https://events.mlh.io" + (ev.get("url") or f"/events/{slug}")
+        ts = _iso_dt_to_ts(ev.get("startsAt", ""))
+        raw = f"{name}. MLH hackathon, {ev.get('dateRange', '')}. {location}."
+        if not _eligible(name, raw, "hackathon", location, elig):
+            continue
+        out.append(_item("MLH", name, url, raw, "tech", "hackathon",
+                         "Major League Hacking", url, _iso(ts), ts or now))
+    return out
+
+
 GSOC_YEAR = 2026  # edit each year, or move to config
 GSOC_API = f"https://summerofcode.withgoogle.com/api/program/{GSOC_YEAR}/organizations/"
 
@@ -476,4 +551,6 @@ class OpportunitiesAdapter(SourceAdapter):
             items += _devfolio(elig)
         if scrape.get("gsoc_orgs"):
             items += _gsoc(elig)
+        if scrape.get("mlh"):
+            items += _mlh(elig)
         return items
