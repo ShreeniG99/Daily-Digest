@@ -93,5 +93,13 @@ opportunities:
     codesscafe: false                # login-gated hiring platform, no public listings to ingest
     mlh: true
     gsoc_orgs: true
-    ycombinator: true                # Work at a Startup (login-gated; SearchGraph, not API)
-    company_pages: ["Google India careers intern", "Microsoft India careers intern", "Amazon India SDE intern"]
+    # ycombinator: probed 2026-06 and not viable deterministically — Work at a
+    # Startup returns HTTP 406 (anti-bot/login-gated) and the public company
+    # directory lists US-centric companies (not roles) that fail India/remote
+    # eligibility. Disabled. Revisit if a public, India-filterable jobs API appears.
+    ycombinator: false
+    # company_pages: DEFERRED, not skipped. Highest-value source (FAANG-India intern
+    # postings) — to be built later the right way: SmartScraper + link-check on each
+    # company's known careers URL, or an official jobs API (e.g. amazon.jobs search
+    # JSON). Never fragile SearchGraph. Re-enable when that adapter exists.
+    company_pages: false             # ["Google India careers intern", "Microsoft India careers intern", "Amazon India SDE intern"]
