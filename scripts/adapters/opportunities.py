@@ -13,6 +13,7 @@ Sources (config/sources.yaml -> opportunities.api_sources):
 from __future__ import annotations
 
 import html
+import json
 import os
 import re
 import time
@@ -348,6 +349,72 @@ def _unstop(elig: dict) -> list[Item]:
     return out
 
 
+DEVFOLIO_URL = "https://devfolio.co/hackathons"
+_NEXT_DATA_RE = re.compile(r'<script id="__NEXT_DATA__"[^>]*>(.*?)</script>', re.S)
+
+
+def _walk_hackathons(obj) -> list[dict]:
+    """Collect hackathon dicts (name + slug + starts_at) anywhere in the
+    embedded __NEXT_DATA__ JSON, robust to layout changes."""
+    found = []
+    if isinstance(obj, dict):
+        if obj.get("name") and obj.get("slug") and obj.get("starts_at"):
+            found.append(obj)
+        for v in obj.values():
+            found += _walk_hackathons(v)
+    elif isinstance(obj, list):
+        for v in obj:
+            found += _walk_hackathons(v)
+    return found
+
+
+def _theme_names(themes) -> list[str]:
+    out = []
+    for t in themes or []:
+        if isinstance(t, dict):
+            out.append(t.get("name", ""))
+        elif isinstance(t, str):
+            out.append(t)
+    return [t for t in out if t]
+
+
+def _devfolio(elig: dict) -> list[Item]:
+    """Devfolio via the structured data embedded in its page (__NEXT_DATA__) —
+    deterministic, real, no LLM. Devfolio is India-focused, so onsite events
+    are treated as India-eligible (location assumed)."""
+    try:
+        resp = requests.get(DEVFOLIO_URL, headers={"User-Agent": BROWSER_UA}, timeout=30)
+        resp.raise_for_status()
+        m = _NEXT_DATA_RE.search(resp.text)
+        if not m:
+            print("  ! devfolio: __NEXT_DATA__ not found (layout changed); skipping")
+            return []
+        data = json.loads(m.group(1))
+    except Exception as exc:
+        print(f"  ! devfolio failed: {exc}")
+        return []
+
+    now = time.time()
+    out, seen = [], set()
+    for h in _walk_hackathons(data):
+        slug = h.get("slug")
+        if not slug or slug in seen:
+            continue
+        seen.add(slug)
+        name = (h.get("name") or "").strip()
+        themes = _theme_names(h.get("themes"))
+        location = "Online" if h.get("is_online") else "India (onsite)"
+        raw = f"{name}. {', '.join(themes)} hackathon on Devfolio. {location}."
+        ts = _iso_dt_to_ts(h.get("starts_at", ""))
+        if not name or not _eligible(name, raw, "hackathon", location, elig,
+                                     assume_location_ok=True):
+            continue
+        url = f"https://{slug}.devfolio.co"
+        out.append(_item("Devfolio", name, url, raw, "tech", "hackathon", "", url,
+                         _iso(ts), ts or now, tags=themes))
+    return out
+
+
 class OpportunitiesAdapter(SourceAdapter):
     name = "opportunities"
     kind = "opportunity"
@@ -368,4 +435,6 @@ class OpportunitiesAdapter(SourceAdapter):
             items += _internshala(elig)
         if scrape.get("unstop"):
             items += _unstop(elig)
+        if scrape.get("devfolio"):
+            items += _devfolio(elig)
         return items
