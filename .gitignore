@@ -2,3 +2,7 @@
 .env
 .venv/
 __pycache__/
+# owner's resume + profile.yaml — local-only (PII); read from disk by deep-rep
+profile/
+# deep-rep output — tailored resumes with PII, local-only
+reports/

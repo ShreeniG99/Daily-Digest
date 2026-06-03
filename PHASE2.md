@@ -69,8 +69,11 @@ without crashing the run; failures are logged, not fatal.
 
 ## Stage 2c — checklist -> deep-rep (skill, NOT Python)
 1. CLI to mark picks: `python -m scripts.run check <id> [<id> ...]` sets status="checked".
-2. Add to the repo: `profile/resume.md` (the owner's resume) and `profile/profile.yaml`
+2. Add `profile/resume.md` (the owner's resume) and `profile/profile.yaml`
    (eligibility + target roles + Tier-1 keywords).
+   NOTE: `profile/` is gitignored (local-only) — resume.md holds PII (phone/email)
+   and the repo is public. deep-rep reads these from disk, so committing isn't needed.
+   `reports/` is gitignored too (tailored resumes contain PII).
 3. Create `.claude/skills/deep-rep/SKILL.md` instructing Claude: for each checked
    opportunity, produce one report at `reports/<company>-<role>.md` containing:
    (a) company research — latest news, what they are building, gaps the owner could
