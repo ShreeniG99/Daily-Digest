@@ -92,9 +92,16 @@ def _fmt_ts(ts: float) -> str:
     return time.strftime("%Y-%m-%d", time.localtime(ts)) if ts else "-"
 
 
-def _print_table(items: list) -> None:
+def _print_table(items: list, show_id: bool = False) -> None:
     if not items:
         print("  (no items)")
+        return
+    if show_id:
+        print(f"\n  {'#':>2}  {'ID':<16}  {'SCORE':>6}  {'SOURCE':<14}  TITLE")
+        print("  " + "-" * 96)
+        for i, it in enumerate(items, 1):
+            print(f"  {i:>2}  {it.id:<16}  {it.score:>6.2f}  {(it.source[:13]):<14}  {it.title[:50]}")
+        print()
         return
     print(f"\n  {'#':>2}  {'SCORE':>6}  {'DATE':<10}  {'SOURCE':<22}  TITLE")
     print("  " + "-" * 96)
@@ -105,9 +112,30 @@ def _print_table(items: list) -> None:
     print()
 
 
+def cmd_list() -> None:
+    """Show ranked opportunities with their ids (for `check`)."""
+    _print_table(store.get_ranked("opportunity", limit=50), show_id=True)
+
+
+def cmd_check(ids: list[str]) -> None:
+    """Mark opportunities as picked (status='checked') for deep-rep."""
+    if not ids:
+        print("usage: python -m scripts.run check <id> [<id> ...]")
+        return
+    for item_id in ids:
+        item = store.get(item_id)
+        if item is None:
+            print(f"  ? no item with id {item_id}")
+            continue
+        store.mark(item_id, "checked")
+        print(f"  checked {item_id}  {item.title[:60]}")
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(prog="scripts.run", description="Daily Digest ingestion")
-    parser.add_argument("target", choices=["all"] + KINDS, help="which adapter(s) to run")
+    parser.add_argument("target", choices=["all", "list", "check"] + KINDS,
+                        help="adapter(s) to run, or 'list' / 'check <id>...'")
+    parser.add_argument("ids", nargs="*", help="item ids (for 'check')")
     parser.add_argument("--since", type=float, default=None,
                         help="only fetch items from the last N days (overrides stored cursor floor)")
     args = parser.parse_args()
@@ -121,6 +149,13 @@ def main() -> None:
     load_dotenv(ROOT / ".env")
     cfg = load_config()
     store.init_db()
+
+    if args.target == "list":
+        cmd_list()
+        return
+    if args.target == "check":
+        cmd_check(args.ids)
+        return
 
     targets = KINDS if args.target == "all" else [args.target]
     for kind in targets:

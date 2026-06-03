@@ -136,6 +136,24 @@ def get_ranked(kind: str | None = None, limit: int = 30,
     return heapq.nlargest(limit, items, key=lambda i: i.score)
 
 
+def get(item_id: str) -> Item | None:
+    with _connect() as conn:
+        row = conn.execute("SELECT * FROM items WHERE id = ?", (item_id,)).fetchone()
+    return _row_to_item(row) if row else None
+
+
+def get_by_status(status: str, kind: str | None = None) -> list[Item]:
+    """All items with the given status (optionally of one kind)."""
+    clauses, params = ["status = ?"], [status]
+    if kind:
+        clauses.append("kind = ?")
+        params.append(kind)
+    with _connect() as conn:
+        rows = conn.execute(
+            "SELECT * FROM items WHERE " + " AND ".join(clauses), params).fetchall()
+    return [_row_to_item(r) for r in rows]
+
+
 def mark(item_id: str, status: str) -> None:
     with _connect() as conn:
         conn.execute("UPDATE items SET status = ? WHERE id = ?", (status, item_id))

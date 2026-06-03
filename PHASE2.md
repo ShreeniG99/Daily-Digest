@@ -71,8 +71,10 @@ block — log the failure and continue; never let one source crash the run.
 **DoD 2b:** each enabled scrape_source returns structured, eligibility-filtered Items
 without crashing the run; failures are logged, not fatal.
 
-## Stage 2c — checklist -> deep-rep (skill, NOT Python)
-1. CLI to mark picks: `python -m scripts.run check <id> [<id> ...]` sets status="checked".
+## Stage 2c — checklist -> deep-rep (skill, NOT Python) — BUILT
+1. CLI: `python -m scripts.run list` shows ranked opportunities with ids;
+   `python -m scripts.run check <id> [<id> ...]` sets status="checked".
+   deep-rep marks an item "done" after writing its report.
 2. Add `profile/resume.md` (the owner's resume) and `profile/profile.yaml`
    (eligibility + target roles + Tier-1 keywords).
    NOTE: `profile/` is gitignored (local-only) — resume.md holds PII (phone/email)
