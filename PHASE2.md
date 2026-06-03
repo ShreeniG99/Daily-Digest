@@ -23,6 +23,10 @@ for deep-rep.
 - no visa sponsorship required (drop US-onsite roles)
 - role in {SDE, SWE, AIML, R&D, full-stack, intern}
 - relevance score above threshold (Tier-1 keywords from CLAUDE.md)
+- experience level intern/new-grad/entry only (jobs/internships only; events exempt).
+  Config-driven keep/drop word lists under `opportunities.eligibility.experience`,
+  plus auto-detection of numeric/roman levels (SDE-II, Engineer 2 -> drop; level I -> keep)
+  and a `drop_years_gte` years-of-experience cutoff.
 
 ## Config — add an `opportunities:` block to config/sources.yaml
 ```yaml

@@ -82,6 +82,16 @@ opportunities:
     locations: [India, Remote]
     roles: [SDE, SWE, AIML, R&D, full-stack, intern]
     exclude: [visa sponsorship, US onsite, senior, "5+ years"]
+    # Experience-level gate for JOB/INTERNSHIP roles (events are exempt). A keep
+    # word forces keep; otherwise a drop word in the title or a >= drop_years_gte
+    # years requirement removes the role. Roles with no seniority signal are kept.
+    experience:
+      keep: [intern, internship, "new grad", "new-grad", graduate, entry,
+             "entry level", "entry-level", fresher, trainee, "0-1 year", "0-1 yr"]
+      # word-based seniority signals; numeric/roman levels (II, III, 2, 3 after a
+      # role word) are detected automatically, and level I/1 is treated as entry.
+      drop: [senior, "sr.", lead, staff, principal, experienced, manager, director]
+      drop_years_gte: 2
   api_sources:          # Stage 2a — no scraping, no LLM
     codeforces: true                 # https://codeforces.com/api/contest.list
     devpost: true                    # https://devpost.com/api/hackathons (unofficial JSON)

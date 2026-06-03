@@ -52,6 +52,37 @@ def _iso(ts: float) -> str:
     return datetime.fromtimestamp(ts, tz=timezone.utc).date().isoformat() if ts else ""
 
 
+def _has_word(text: str, words: list[str]) -> bool:
+    """Whole-word (boundary-anchored) match of any phrase in `words`."""
+    return any(re.search(r"(?<!\w)" + re.escape(w.lower()) + r"(?!\w)", text)
+               for w in words if w)
+
+
+# A role word followed by level II/III/IV/V or 2/3/4/5 (e.g. "SDE-II", "SDE-2",
+# "Engineer II", "Applied Scientist III"). Level I / 1 is entry, so it is excluded.
+_LEVEL_RE = re.compile(
+    r"\b(?:sde|sdm|engineer|scientist|analyst|developer|architect|swe)[\s\-]*"
+    r"(?:ii|iii|iv|v|2|3|4|5)\b")
+
+
+def _experience_ok(title: str, text: str, role: str, exp: dict) -> bool:
+    """Keep only intern/new-grad/entry levels for job/internship roles. Events
+    (contest/hackathon/competition/open-source) have no level and are exempt."""
+    if not exp or role.lower() in EVENT_ROLES:
+        return True
+    t = title.lower()
+    if _has_word(t, exp.get("keep") or []):           # explicit intern/entry IN TITLE
+        return True
+    if _has_word(t, exp.get("drop") or []) or _LEVEL_RE.search(t):
+        return False                                  # seniority signal in the title
+    gte = exp.get("drop_years_gte")
+    if gte:
+        for m in re.finditer(r"(\d+)\s*\+?\s*years?", f"{title} {text}".lower()):
+            if int(m.group(1)) >= gte:
+                return False                          # requires real experience
+    return True
+
+
 def _eligible(title: str, text: str, role: str, location: str, elig: dict,
               assume_location_ok: bool = False) -> bool:
     """Keep only items matching ALL eligibility rules (config-driven).
@@ -69,7 +100,7 @@ def _eligible(title: str, text: str, role: str, location: str, elig: dict,
     loc_ok = assume_location_ok or (not loc) or any(a in loc for a in accept)
     roles = [r.lower() for r in (elig.get("roles") or [])]
     role_ok = role.lower() in EVENT_ROLES or role.lower() in roles
-    return loc_ok and role_ok
+    return loc_ok and role_ok and _experience_ok(title, text, role, elig.get("experience") or {})
 
 
 def _item(source, title, url, raw_text, domain, role, company, apply_url, deadline, ts, tags=None):
