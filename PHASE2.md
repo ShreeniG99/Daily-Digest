@@ -88,9 +88,13 @@ without crashing the run; failures are logged, not fatal.
 **DoD 2c:** marking an opportunity then invoking deep-rep yields one report with all
 three parts, grounded in profile/resume.md.
 
-## oss_issues adapter (optional, only after 2a-2c work)
-GitHub Search API for issues labeled `good-first-issue` in the owner's stack (FastAPI,
-LangChain, RAG repos). kind="opportunity", extra.role="open-source".
+## oss_issues adapter — BUILT (`python -m scripts.run oss`)
+GitHub Search API for open `good first issue` / `help wanted` issues in the owner's
+stack (Python + LangChain / FastAPI / RAG / ML). kind="opportunity",
+extra.role="open-source", real issue URLs; reuses GITHUB_TOKEN. Config-driven under
+`opportunities.oss_issues` (labels / query_terms / language / per_page). Shares the
+opportunity kind but `run oss` shows only source="GitHub Issues" (adapter
+display_source + get_ranked source filter).
 
 ## Do NOT build yet
 Fuzzy dedup, FAISS semantic rerank, recall/flashcard layer.

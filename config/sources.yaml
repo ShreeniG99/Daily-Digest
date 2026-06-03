@@ -121,3 +121,8 @@ opportunities:
       companies: [amazon]
       queries: [software development engineer, machine learning, data engineer,
                 applied scientist, software intern, SDE]
+  oss_issues:           # `run oss` — GitHub good-first-issue / help-wanted in the owner's stack
+    labels: ["good first issue", "help wanted"]
+    query_terms: [langchain, fastapi, rag, llm, "machine learning", transformers]
+    language: python
+    per_page: 20

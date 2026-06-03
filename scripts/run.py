@@ -21,6 +21,7 @@ from .adapters.youtube import YouTubeAdapter
 from .adapters.papers import PapersAdapter
 from .adapters.github_repos import GitHubReposAdapter
 from .adapters.opportunities import OpportunitiesAdapter
+from .adapters.oss_issues import OSSIssuesAdapter
 
 ROOT = Path(__file__).resolve().parent.parent
 CONFIG_PATH = ROOT / "config" / "sources.yaml"
@@ -32,8 +33,9 @@ ADAPTERS = {
     "papers": PapersAdapter(),
     "github": GitHubReposAdapter(),
     "opportunities": OpportunitiesAdapter(),
+    "oss": OSSIssuesAdapter(),
 }
-KINDS = ["news", "youtube", "papers", "github", "opportunities"]
+KINDS = ["news", "youtube", "papers", "github", "opportunities", "oss"]
 
 
 def load_config() -> dict:
@@ -80,7 +82,10 @@ def run_kind(kind: str, cfg: dict, since_days: float | None) -> None:
     store.set_scores([(it.id, it.score) for it in stored])
 
     print(f"[{kind}] fetched {len(items)}, new {new_count}, duplicates {len(items) - new_count}")
-    _print_table(store.get_ranked(adapter.kind, limit=30))
+    # Some adapters share a kind (oss issues are kind=opportunity); show just their
+    # own source in the table when they declare a display_source.
+    display_source = getattr(adapter, "display_source", None)
+    _print_table(store.get_ranked(adapter.kind, limit=30, source=display_source))
 
 
 def _fmt_ts(ts: float) -> str:

@@ -118,14 +118,20 @@ def set_scores(pairs: list[tuple[str, float]]) -> None:
                          [(s, i) for i, s in pairs])
 
 
-def get_ranked(kind: str | None = None, limit: int = 30) -> list[Item]:
-    """Return the top-`limit` items (optionally filtered by kind), highest
-    score first. Top-K via heapq.nlargest over the stored scores."""
+def get_ranked(kind: str | None = None, limit: int = 30,
+               source: str | None = None) -> list[Item]:
+    """Return the top-`limit` items (optionally filtered by kind and/or source),
+    highest score first. Top-K via heapq.nlargest over the stored scores."""
+    clauses, params = [], []
+    if kind:
+        clauses.append("kind = ?")
+        params.append(kind)
+    if source:
+        clauses.append("source = ?")
+        params.append(source)
+    where = (" WHERE " + " AND ".join(clauses)) if clauses else ""
     with _connect() as conn:
-        if kind:
-            rows = conn.execute("SELECT * FROM items WHERE kind = ?", (kind,)).fetchall()
-        else:
-            rows = conn.execute("SELECT * FROM items").fetchall()
+        rows = conn.execute("SELECT * FROM items" + where, params).fetchall()
     items = [_row_to_item(r) for r in rows]
     return heapq.nlargest(limit, items, key=lambda i: i.score)
 
