@@ -29,6 +29,63 @@ EUROPEPMC_API = "https://www.ebi.ac.uk/europepmc/webservices/rest/search"
 ARXIV_MAX = 20   # results per domain category query
 PAGE = 10        # results per keyword query for the other three sources
 
+# Minimum seconds between successive requests to the same host. arXiv asks for
+# <=1 req / 3s; Semantic Scholar's free shared pool rate-limits bursts. OpenAlex
+# and Europe PMC tolerate bursts, so they stay at 0.
+_HOST_DELAY = {"export.arxiv.org": 5.0, "api.semanticscholar.org": 1.1}
+# Base seconds for 429/5xx backoff per host (doubled each retry). arXiv rate-limits
+# per IP over a window, so its quick follow-up queries need a much longer pause.
+_HOST_BACKOFF = {"export.arxiv.org": 10.0}
+_RETRY_STATUS = {429, 500, 502, 503, 504}
+_last_request: dict[str, float] = {}
+
+
+def _user_agent() -> str:
+    # Scholarly APIs (arXiv especially) throttle the bare python-requests UA.
+    # A descriptive UA with a contact is the polite, much-less-throttled form.
+    contact = os.environ.get("OPENALEX_MAILTO", "")
+    return f"Daily-Digest/1.0 (+https://github.com/; mailto:{contact})" if contact \
+        else "Daily-Digest/1.0 (personal research digest)"
+
+
+def _get(url: str, params: dict, *, headers: dict | None = None,
+         timeout: int = 30, attempts: int = 4) -> requests.Response:
+    """GET with per-host throttling and retry/backoff on 429, 5xx, and timeouts.
+
+    Honors a Retry-After header when present; otherwise backs off exponentially
+    from the host's base (doubling each retry). Raises the last error if every
+    attempt fails."""
+    from urllib.parse import urlsplit
+    host = urlsplit(url).netloc
+    delay = _HOST_DELAY.get(host, 0.0)
+    backoff_base = _HOST_BACKOFF.get(host, 2.0)
+    hdrs = {"User-Agent": _user_agent()}
+    if headers:
+        hdrs.update(headers)
+    last_exc: Exception = RuntimeError("no attempts made")
+    for i in range(attempts):
+        if delay:
+            wait = delay - (time.monotonic() - _last_request.get(host, 0.0))
+            if wait > 0:
+                time.sleep(wait)
+        try:
+            resp = requests.get(url, params=params, headers=hdrs, timeout=timeout)
+            _last_request[host] = time.monotonic()
+            if resp.status_code in _RETRY_STATUS and i < attempts - 1:
+                retry_after = resp.headers.get("Retry-After")
+                back = float(retry_after) if (retry_after or "").isdigit() \
+                    else backoff_base * (2 ** i)
+                time.sleep(back)
+                continue
+            resp.raise_for_status()
+            return resp
+        except requests.exceptions.RequestException as exc:
+            _last_request[host] = time.monotonic()
+            last_exc = exc
+            if i < attempts - 1:
+                time.sleep(backoff_base * (2 ** i))
+    raise last_exc
+
 
 def _norm_doi(doi: str | None) -> str:
     if not doi:
@@ -90,10 +147,9 @@ class PapersAdapter(SourceAdapter):
             return []
         query = " OR ".join(f"cat:{c}" for c in cats)
         try:
-            resp = requests.get(ARXIV_API, params={
+            resp = _get(ARXIV_API, {
                 "search_query": query, "sortBy": "submittedDate",
-                "sortOrder": "descending", "max_results": ARXIV_MAX}, timeout=30)
-            resp.raise_for_status()
+                "sortOrder": "descending", "max_results": ARXIV_MAX}, timeout=60)
             feed = feedparser.parse(resp.content)
         except Exception as exc:
             print(f"  ! arxiv query failed ({query[:40]}...): {exc}")
@@ -112,9 +168,7 @@ class PapersAdapter(SourceAdapter):
         if mailto:
             params["mailto"] = mailto
         try:
-            resp = requests.get(OPENALEX_API, params=params, timeout=30)
-            resp.raise_for_status()
-            results = resp.json().get("results", [])
+            results = _get(OPENALEX_API, params).json().get("results", [])
         except Exception as exc:
             print(f"  ! openalex query failed ('{term}'): {exc}")
             return []
@@ -131,13 +185,13 @@ class PapersAdapter(SourceAdapter):
         return out
 
     def _semantic_scholar(self, term: str) -> list[dict]:
+        key = os.environ.get("S2_API_KEY")  # optional; raises the rate limit
+        headers = {"x-api-key": key} if key else None
         try:
-            resp = requests.get(S2_API, params={
+            data = _get(S2_API, {
                 "query": term, "limit": PAGE,
                 "fields": "title,abstract,authors,venue,externalIds,publicationDate,url"},
-                timeout=30)
-            resp.raise_for_status()
-            data = resp.json().get("data", [])
+                headers=headers).json().get("data", [])
         except Exception as exc:
             print(f"  ! semantic scholar query failed ('{term}'): {exc}")
             return []
@@ -153,11 +207,10 @@ class PapersAdapter(SourceAdapter):
 
     def _europepmc(self, term: str) -> list[dict]:
         try:
-            resp = requests.get(EUROPEPMC_API, params={
+            results = _get(EUROPEPMC_API, {
                 "query": term, "format": "json", "pageSize": PAGE,
-                "resultType": "core", "sort": "P_PDATE_D desc"}, timeout=30)
-            resp.raise_for_status()
-            results = resp.json().get("resultList", {}).get("result", [])
+                "resultType": "core", "sort": "P_PDATE_D desc"}
+                ).json().get("resultList", {}).get("result", [])
         except Exception as exc:
             print(f"  ! europepmc query failed ('{term}'): {exc}")
             return []
