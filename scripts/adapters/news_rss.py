@@ -15,7 +15,9 @@ import time
 from calendar import timegm
 from urllib.parse import urlsplit
 
-import feedparser
+import email.utils
+import xml.etree.ElementTree as ET
+
 import requests
 
 from .base import SourceAdapter
@@ -24,22 +26,91 @@ from ..schema import Item
 HN_API = "http://hn.algolia.com/api/v1/search_by_date"
 _TAG_RE = re.compile(r"<[^>]+>")
 
+# XML namespaces commonly found in Atom feeds
+_NS = {
+    "atom": "http://www.w3.org/2005/Atom",
+    "dc": "http://purl.org/dc/elements/1.1/",
+    "content": "http://purl.org/rss/1.0/modules/content/",
+}
+
 
 def _strip_html(text: str) -> str:
     return html.unescape(_TAG_RE.sub("", text or "")).strip()
 
 
-def _entry_ts(entry) -> float:
-    for key in ("published_parsed", "updated_parsed"):
-        t = entry.get(key)
-        if t:
-            return float(timegm(t))  # feedparser times are UTC structs
-    return 0.0
+def _parse_date(date_str: str) -> float:
+    if not date_str:
+        return 0.0
+    date_str = date_str.strip()
+    # Try RFC-2822 (RSS)
+    try:
+        return float(timegm(email.utils.parsedate(date_str)))
+    except Exception:
+        pass
+    # Try ISO-8601 (Atom)
+    try:
+        import datetime
+        date_str = re.sub(r'Z$', '+00:00', date_str)
+        return datetime.datetime.fromisoformat(date_str).timestamp()
+    except Exception:
+        return 0.0
 
 
-def _feed_source(parsed, url: str) -> str:
-    title = parsed.feed.get("title") if parsed.feed else None
-    return title or urlsplit(url).netloc
+def _text(el, tag: str, ns: str = "") -> str:
+    full_tag = f"{{{_NS[ns]}}}{tag}" if ns else tag
+    child = el.find(full_tag)
+    return (child.text or "").strip() if child is not None else ""
+
+
+def _parse_rss(root: ET.Element, url: str) -> tuple[str, list[dict]]:
+    channel = root.find("channel")
+    if channel is None:
+        return urlsplit(url).netloc, []
+    source = _text(channel, "title") or urlsplit(url).netloc
+    entries = []
+    for item in channel.findall("item"):
+        link = _text(item, "link")
+        title = _text(item, "title")
+        pub = _text(item, "pubDate") or _text(item, "date", "dc")
+        summary = _text(item, "description") or _text(item, "encoded", "content")
+        author = _text(item, "author") or _text(item, "creator", "dc")
+        entries.append({"title": title, "link": link, "published": pub,
+                        "summary": summary, "author": author})
+    return source, entries
+
+
+def _parse_atom(root: ET.Element, url: str) -> tuple[str, list[dict]]:
+    source = _text(root, "title", "atom") or urlsplit(url).netloc
+    entries = []
+    for entry in root.findall(f"{{{_NS['atom']}}}entry"):
+        title = _text(entry, "title", "atom")
+        link_el = entry.find(f"{{{_NS['atom']}}}link[@rel='alternate']")
+        if link_el is None:
+            link_el = entry.find(f"{{{_NS['atom']}}}link")
+        link = (link_el.get("href", "") if link_el is not None else "")
+        pub = _text(entry, "published", "atom") or _text(entry, "updated", "atom")
+        summary = _text(entry, "summary", "atom") or _text(entry, "content", "atom")
+        author_el = entry.find(f"{{{_NS['atom']}}}author")
+        author = _text(author_el, "name", "atom") if author_el is not None else ""
+        entries.append({"title": title, "link": link, "published": pub,
+                        "summary": summary, "author": author})
+    return source, entries
+
+
+def _parse_feed(xml_text: str, url: str) -> tuple[str, list[dict]]:
+    try:
+        root = ET.fromstring(xml_text)
+    except ET.ParseError:
+        return urlsplit(url).netloc, []
+    tag = root.tag
+    if "rss" in tag or tag == "rss":
+        return _parse_rss(root, url)
+    if "feed" in tag.lower() or tag == f"{{{_NS['atom']}}}feed":
+        return _parse_atom(root, url)
+    # Try both
+    if root.find("channel") is not None:
+        return _parse_rss(root, url)
+    return _parse_atom(root, url)
 
 
 class NewsRSSAdapter(SourceAdapter):
@@ -64,17 +135,18 @@ class NewsRSSAdapter(SourceAdapter):
     def _fetch_feed(self, url: str, since_ts: float, now: float) -> list[Item]:
         out: list[Item] = []
         try:
-            parsed = feedparser.parse(url)
-        except Exception as exc:  # network / parse failure on one feed
+            resp = requests.get(url, timeout=20, headers={"User-Agent": "daily-digest/1.0"})
+            resp.raise_for_status()
+            source, entries = _parse_feed(resp.text, url)
+        except Exception as exc:
             print(f"  ! feed failed {url}: {exc}")
             return out
-        if parsed.bozo and not parsed.entries:
-            print(f"  ! feed unreadable {url}: {parsed.get('bozo_exception')}")
+        if not entries:
+            print(f"  ! feed unreadable or empty {url}")
             return out
 
-        source = _feed_source(parsed, url)
-        for entry in parsed.entries:
-            ts = _entry_ts(entry) or now
+        for entry in entries:
+            ts = _parse_date(entry.get("published", "")) or now
             if ts <= since_ts:
                 continue
             link = entry.get("link", "")

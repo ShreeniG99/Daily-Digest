@@ -12,11 +12,53 @@ from __future__ import annotations
 import os
 import re
 import time
-from calendar import timegm
 from datetime import datetime, timezone
 
-import feedparser
+import email.utils
+import xml.etree.ElementTree as ET
+
 import requests
+
+_ATOM_NS = "http://www.w3.org/2005/Atom"
+_ARXIV_NS = "http://arxiv.org/schemas/atom"
+
+
+def _atom_text(el, tag: str, ns: str = _ATOM_NS) -> str:
+    child = el.find(f"{{{ns}}}{tag}")
+    return (child.text or "").strip() if child is not None else ""
+
+
+def _parse_arxiv_atom(xml_bytes: bytes) -> list[dict]:
+    try:
+        root = ET.fromstring(xml_bytes)
+    except ET.ParseError:
+        return []
+    records = []
+    for entry in root.findall(f"{{{_ATOM_NS}}}entry"):
+        title = _atom_text(entry, "title")
+        summary = _atom_text(entry, "summary")
+        published = _atom_text(entry, "published")
+        link_el = entry.find(f"{{{_ATOM_NS}}}link[@rel='alternate']")
+        if link_el is None:
+            link_el = entry.find(f"{{{_ATOM_NS}}}link")
+        link = (link_el.get("href", "") if link_el is not None else "")
+        doi_el = entry.find(f"{{{_ARXIV_NS}}}doi")
+        doi = (doi_el.text or "").strip() if doi_el is not None else ""
+        authors = ", ".join(
+            _atom_text(a, "name")
+            for a in entry.findall(f"{{{_ATOM_NS}}}author")
+        )
+        ts = 0.0
+        if published:
+            try:
+                import datetime
+                published = re.sub(r'Z$', '+00:00', published)
+                ts = datetime.datetime.fromisoformat(published).timestamp()
+            except Exception:
+                pass
+        records.append({"title": title, "abstract": summary, "authors": authors,
+                        "venue": "arXiv", "doi": doi, "url": link, "ts": ts})
+    return records
 
 from .base import SourceAdapter
 from ..schema import Item
@@ -94,18 +136,11 @@ class PapersAdapter(SourceAdapter):
                 "search_query": query, "sortBy": "submittedDate",
                 "sortOrder": "descending", "max_results": ARXIV_MAX}, timeout=30)
             resp.raise_for_status()
-            feed = feedparser.parse(resp.content)
+            records = _parse_arxiv_atom(resp.content)
         except Exception as exc:
             print(f"  ! arxiv query failed ({query[:40]}...): {exc}")
             return []
-        out = []
-        for e in feed.entries:
-            ts = float(timegm(e.published_parsed)) if e.get("published_parsed") else 0.0
-            out.append(_record(
-                e.get("title", ""), e.get("summary", ""),
-                ", ".join(a.get("name", "") for a in e.get("authors", [])),
-                "arXiv", e.get("arxiv_doi"), e.get("link", ""), ts))
-        return out
+        return records
 
     def _openalex(self, term: str, mailto: str | None) -> list[dict]:
         params = {"search": term, "sort": "publication_date:desc", "per-page": PAGE}
