@@ -18,6 +18,24 @@ keyword_tiers:
 # added when a company name appears in an item's title/text/company field).
 # Edit freely. Short ambiguous names (Meta, Apple, Uber) can match unrelated
 # words — remove any that cause false boosts.
+# Per-source credibility bonus added to the score (additive, same scale as keyword tiers).
+# Source name must match exactly what the adapter sets on Item.source.
+# News feeds: the feed's own <title>; HN: "Hacker News".
+# Papers: the venue string from the API (e.g. "arXiv", "Nature").
+source_priority:
+  # News
+  "Hacker News": 1
+  "Ahead of AI": 3        # sebastianraschka.com — technical, code-driven
+  "Interconnects": 3      # interconnects.ai — RLHF, LLM internals
+  "State of AI": 2        # nathanbenaich — research + industry
+  # Papers
+  "arXiv": 2
+  "NeurIPS": 3
+  "ICML": 3
+  "ICLR": 3
+  "ACL": 2
+  "EMNLP": 2
+
 brand_boost:
   weight: 8
   companies: [Google, Microsoft, Amazon, Nvidia, OpenAI, Anthropic, Meta, Apple,

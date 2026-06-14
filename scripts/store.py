@@ -11,6 +11,7 @@ from __future__ import annotations
 
 import heapq
 import json
+import re
 import sqlite3
 import time
 from pathlib import Path
@@ -19,10 +20,17 @@ from .schema import Item
 
 DB_PATH = Path(__file__).resolve().parent.parent / "daily-digest.db"
 
+_NT_RE = re.compile(r"[^a-z0-9 ]+")
+
+
+def _norm_title(title: str) -> str:
+    return _NT_RE.sub(" ", (title or "").lower()).strip()
+
+
 _COLUMNS = [
     "id", "kind", "source", "title", "url", "author",
     "published_ts", "fetched_ts", "raw_text", "summary",
-    "tags", "domain", "score", "status", "extra",
+    "tags", "domain", "score", "status", "extra", "norm_title",
 ]
 
 
@@ -51,7 +59,8 @@ def init_db() -> None:
                 domain       TEXT,
                 score        REAL,
                 status       TEXT,
-                extra        TEXT    -- JSON object
+                extra        TEXT,   -- JSON object
+                norm_title   TEXT DEFAULT ''
             );
 
             CREATE TABLE IF NOT EXISTS fetch_state (
@@ -70,6 +79,15 @@ def init_db() -> None:
                 ON items (kind, score DESC);
             """
         )
+        # Migrate existing DBs that predate the norm_title column.
+        try:
+            conn.execute("ALTER TABLE items ADD COLUMN norm_title TEXT DEFAULT ''")
+        except sqlite3.OperationalError:
+            pass  # column already exists
+        # Index on norm_title must come AFTER the column is guaranteed to exist.
+        conn.execute(
+            "CREATE INDEX IF NOT EXISTS idx_items_norm_title ON items (kind, norm_title)"
+        )
 
 
 def _row_to_item(row: sqlite3.Row) -> Item:
@@ -83,9 +101,15 @@ def _row_to_item(row: sqlite3.Row) -> Item:
 
 
 def upsert_item(item: Item) -> bool:
-    """Insert an item, ignoring it if its id already exists (exact dedup).
+    """Insert an item; skip if a duplicate exists by URL hash or normalized title.
     Returns True if a new row was written, False if it was a duplicate."""
+    nt = _norm_title(item.title)
     with _connect() as conn:
+        # Cross-source title dedup: same story from two different feeds → keep first.
+        if nt and conn.execute(
+            "SELECT 1 FROM items WHERE kind=? AND norm_title=?", (item.kind, nt)
+        ).fetchone():
+            return False
         cur = conn.execute(
             f"INSERT OR IGNORE INTO items ({','.join(_COLUMNS)}) "
             f"VALUES ({','.join('?' for _ in _COLUMNS)})",
@@ -93,7 +117,7 @@ def upsert_item(item: Item) -> bool:
                 item.id, item.kind, item.source, item.title, item.url, item.author,
                 item.published_ts, item.fetched_ts, item.raw_text, item.summary,
                 json.dumps(item.tags), item.domain, item.score, item.status,
-                json.dumps(item.extra),
+                json.dumps(item.extra), nt,
             ),
         )
         return cur.rowcount > 0
