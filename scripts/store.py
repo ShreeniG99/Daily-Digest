@@ -14,6 +14,7 @@ import json
 import re
 import sqlite3
 import time
+from difflib import SequenceMatcher
 from pathlib import Path
 
 from .schema import Item
@@ -21,10 +22,52 @@ from .schema import Item
 DB_PATH = Path(__file__).resolve().parent.parent / "daily-digest.db"
 
 _NT_RE = re.compile(r"[^a-z0-9 ]+")
+_KEY_TOKEN_RE = re.compile(r"[A-Z][a-zA-Z]{1,}|[\d][.\d]*[\d]|[a-z]+-[a-z]+")
+_FUZZY_DAYS = 30        # only compare against items ingested in the last N days
+_FUZZY_MIN_WORDS = 5    # skip for very short titles (too many false positives)
+_JACCARD_THRESH = 0.55  # word-overlap: catches same-phrasing near-dups
+_ENTITY_THRESH = 0.65   # key-token overlap: catches "GPT-5.4 released" vs "GPT-5.4 launched"
 
 
 def _norm_title(title: str) -> str:
     return _NT_RE.sub(" ", (title or "").lower()).strip()
+
+
+def _jaccard(a: str, b: str) -> float:
+    sa, sb = set(a.split()), set(b.split())
+    if not sa or not sb:
+        return 0.0
+    return len(sa & sb) / len(sa | sb)
+
+
+def _entity_overlap(title_a: str, title_b: str) -> float:
+    """Overlap of significant tokens: proper nouns, version numbers, hyphenated terms."""
+    ta = {t.lower() for t in _KEY_TOKEN_RE.findall(title_a) if len(t) > 1}
+    tb = {t.lower() for t in _KEY_TOKEN_RE.findall(title_b) if len(t) > 1}
+    if not ta or not tb:
+        return 0.0
+    return len(ta & tb) / len(ta | tb)
+
+
+def _is_fuzzy_dup(nt: str, raw_title: str, kind: str, conn: sqlite3.Connection) -> bool:
+    """True if a near-duplicate title exists in the DB (last FUZZY_DAYS days).
+    Two-stage: high word-overlap OR high entity overlap → same story."""
+    if len(nt.split()) < _FUZZY_MIN_WORDS:
+        return False
+    cutoff = time.time() - _FUZZY_DAYS * 86400
+    rows = conn.execute(
+        "SELECT norm_title, title FROM items WHERE kind=? AND published_ts>=? AND norm_title!=''",
+        (kind, cutoff),
+    ).fetchall()
+    for row in rows:
+        existing_nt = row["norm_title"]
+        existing_raw = row["title"] or ""
+        if not existing_nt:
+            continue
+        if (_jaccard(nt, existing_nt) >= _JACCARD_THRESH or
+                _entity_overlap(raw_title, existing_raw) >= _ENTITY_THRESH):
+            return True
+    return False
 
 
 _COLUMNS = [
@@ -101,14 +144,18 @@ def _row_to_item(row: sqlite3.Row) -> Item:
 
 
 def upsert_item(item: Item) -> bool:
-    """Insert an item; skip if a duplicate exists by URL hash or normalized title.
+    """Insert an item; skip if a duplicate exists by URL hash, normalized title,
+    or fuzzy title similarity (same story phrased differently).
     Returns True if a new row was written, False if it was a duplicate."""
     nt = _norm_title(item.title)
     with _connect() as conn:
-        # Cross-source title dedup: same story from two different feeds → keep first.
+        # 1. Exact normalized-title dedup (cross-source, same phrasing).
         if nt and conn.execute(
             "SELECT 1 FROM items WHERE kind=? AND norm_title=?", (item.kind, nt)
         ).fetchone():
+            return False
+        # 2. Fuzzy dedup (same story, slightly different headline).
+        if _is_fuzzy_dup(nt, item.title, item.kind, conn):
             return False
         cur = conn.execute(
             f"INSERT OR IGNORE INTO items ({','.join(_COLUMNS)}) "

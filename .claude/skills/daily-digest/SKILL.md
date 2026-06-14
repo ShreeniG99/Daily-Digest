@@ -60,6 +60,28 @@ Instead of per-item summaries, synthesize:
 - **Goal-driven.** Meet the success criteria above for each item, then stop. If you
   can't (e.g., no transcript available), state what's missing rather than guessing.
 
+## Opportunities (internships, hackathons, contests, OSS issues)
+
+When the owner asks "any opportunities?", "show me internships", "what contests are open?",
+or similar — surface items with `kind="opportunity"`, status `new`, ranked by score.
+
+### Format per opportunity
+```
+### <emoji> <Title> — <Company/Platform>
+Role: <role> | Deadline: <deadline or "open"> | <location>
+<1-sentence plain-English description of what it is and why it's relevant>
+Apply: <apply_url or url>
+```
+
+Emoji guide: 🏢 internship · 🏆 hackathon/contest · 🌱 open-source issue · 🎓 research/GSoC
+
+After presenting opportunities, mark each one `read` just like content items.
+
+### When to trigger deep-rep
+If the owner says "research this one", "tailor my resume for X", or runs
+`python -m scripts.run check <id>` — hand off to the `/deep-rep` skill.
+Never run deep-rep unprompted.
+
 ## Domains in scope
 AI, technology, fintech, healthtech, agrotech.
 
