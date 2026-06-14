@@ -143,9 +143,10 @@ def set_scores(pairs: list[tuple[str, float]]) -> None:
 
 
 def get_ranked(kind: str | None = None, limit: int = 30,
-               source: str | None = None) -> list[Item]:
-    """Return the top-`limit` items (optionally filtered by kind and/or source),
-    highest score first. Top-K via heapq.nlargest over the stored scores."""
+               source: str | None = None,
+               status_filter: str | None = None) -> list[Item]:
+    """Return the top-`limit` items (optionally filtered by kind, source, and/or
+    status), highest score first. Top-K via heapq.nlargest over stored scores."""
     clauses, params = [], []
     if kind:
         clauses.append("kind = ?")
@@ -153,11 +154,29 @@ def get_ranked(kind: str | None = None, limit: int = 30,
     if source:
         clauses.append("source = ?")
         params.append(source)
+    if status_filter:
+        clauses.append("status = ?")
+        params.append(status_filter)
     where = (" WHERE " + " AND ".join(clauses)) if clauses else ""
     with _connect() as conn:
         rows = conn.execute("SELECT * FROM items" + where, params).fetchall()
     items = [_row_to_item(r) for r in rows]
     return heapq.nlargest(limit, items, key=lambda i: i.score)
+
+
+def get_recent(days: float = 7, kind: str | None = None) -> list[Item]:
+    """All items published within the last `days` days, newest first.
+    Used for the weekly trend view."""
+    cutoff = time.time() - days * 86400
+    clauses, params = ["published_ts >= ?"], [cutoff]
+    if kind:
+        clauses.append("kind = ?")
+        params.append(kind)
+    with _connect() as conn:
+        rows = conn.execute(
+            "SELECT * FROM items WHERE " + " AND ".join(clauses)
+            + " ORDER BY published_ts DESC", params).fetchall()
+    return [_row_to_item(r) for r in rows]
 
 
 def get(item_id: str) -> Item | None:

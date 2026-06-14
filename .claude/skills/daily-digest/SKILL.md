@@ -9,6 +9,29 @@ Present items from the Daily Digest store to the owner. If the store may be stal
 `python -m scripts.run <kind>` from the project root first, then read `daily-digest.db`
 via scripts/store.py (`get_ranked`).
 
+## Choosing what to show
+
+- **Default (today's digest):** call `get_ranked(status_filter='new')` — only items the
+  owner hasn't read yet. After presenting each item, call `store.mark(item.id, 'read')`
+  so it never repeats.
+- **Re-read request** ("show me that paper again", "what did we cover on Tuesday"):
+  search all statuses — do NOT mark as read again.
+- **Weekly view** (asked on Sunday, or explicitly "what were the themes this week"):
+  pull the last 7 days across all kinds, group by recurring keywords/themes, and write
+  a 3–5 bullet trend summary instead of per-item summaries.
+- **Kind-specific** ("show me papers", "any good repos?"): filter by kind, still
+  respect `status='new'` unless the owner asks to revisit.
+
+### How to mark items read (Python snippet to run via Bash tool)
+
+```python
+from scripts.store import mark
+mark("<item_id>", "read")
+```
+
+Run this for every item you present before ending your turn. If you present 5 items,
+run 5 `mark()` calls (batch them into one python -c invocation).
+
 ## What a good digest item delivers (success criteria)
 1. A bite-sized summary in casual, conversational, teaching style — explain it like a
    sharp friend would, not like a press release.
@@ -19,6 +42,13 @@ via scripts/store.py (`get_ranked`).
    CLAUDE.md.
 
 An item is done when it has 1, 2, and 4. Add 3 only if it helps. Then stop.
+
+## Weekly trend view format (Sunday / "themes this week")
+
+Instead of per-item summaries, synthesize:
+- 3–5 bullet themes (e.g. "Multi-agent RAG dominated papers this week")
+- Top 3 items that best represent the week
+- One "what to build now" recommendation based on the week's signal
 
 ## Operating rules (adapted from Karpathy's four)
 - **Think before answering.** If a paper or article is ambiguous, or you're unsure of
