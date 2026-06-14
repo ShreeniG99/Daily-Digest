@@ -21,13 +21,14 @@ import requests
 from .base import SourceAdapter
 from ..schema import Item
 
-ARXIV_API = "http://export.arxiv.org/api/query"
+ARXIV_API = "https://export.arxiv.org/api/query"
 OPENALEX_API = "https://api.openalex.org/works"
 S2_API = "https://api.semanticscholar.org/graph/v1/paper/search"
 EUROPEPMC_API = "https://www.ebi.ac.uk/europepmc/webservices/rest/search"
 
 ARXIV_MAX = 20   # results per domain category query
 PAGE = 10        # results per keyword query for the other three sources
+_HEADERS = {"User-Agent": "DailyDigest/1.0 (research aggregator; contact via GitHub)"}
 
 
 def _norm_doi(doi: str | None) -> str:
@@ -92,7 +93,8 @@ class PapersAdapter(SourceAdapter):
         try:
             resp = requests.get(ARXIV_API, params={
                 "search_query": query, "sortBy": "submittedDate",
-                "sortOrder": "descending", "max_results": ARXIV_MAX}, timeout=30)
+                "sortOrder": "descending", "max_results": ARXIV_MAX},
+                headers=_HEADERS, timeout=30)
             resp.raise_for_status()
             feed = feedparser.parse(resp.content)
         except Exception as exc:
@@ -112,7 +114,7 @@ class PapersAdapter(SourceAdapter):
         if mailto:
             params["mailto"] = mailto
         try:
-            resp = requests.get(OPENALEX_API, params=params, timeout=30)
+            resp = requests.get(OPENALEX_API, params=params, headers=_HEADERS, timeout=30)
             resp.raise_for_status()
             results = resp.json().get("results", [])
         except Exception as exc:
@@ -135,7 +137,7 @@ class PapersAdapter(SourceAdapter):
             resp = requests.get(S2_API, params={
                 "query": term, "limit": PAGE,
                 "fields": "title,abstract,authors,venue,externalIds,publicationDate,url"},
-                timeout=30)
+                headers=_HEADERS, timeout=30)
             resp.raise_for_status()
             data = resp.json().get("data", [])
         except Exception as exc:
@@ -155,7 +157,8 @@ class PapersAdapter(SourceAdapter):
         try:
             resp = requests.get(EUROPEPMC_API, params={
                 "query": term, "format": "json", "pageSize": PAGE,
-                "resultType": "core", "sort": "P_PDATE_D desc"}, timeout=30)
+                "resultType": "core", "sort": "P_PDATE_D desc"},
+                headers=_HEADERS, timeout=30)
             resp.raise_for_status()
             results = resp.json().get("resultList", {}).get("result", [])
         except Exception as exc:
