@@ -6,3 +6,6 @@ __pycache__/
 profile/
 # deep-rep output — tailored resumes with PII, local-only
 reports/
+# frontend build artifacts
+app/frontend/node_modules/
+app/frontend/dist/

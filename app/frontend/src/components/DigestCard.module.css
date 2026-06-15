@@ -1,0 +1,117 @@
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+.card:hover { border-color: #444c56; box-shadow: 0 2px 12px rgba(0,0,0,0.3); }
+.card.read   { opacity: 0.55; }
+.card.speaking { border-color: var(--accent); box-shadow: 0 0 0 2px rgba(56,139,253,0.25); }
+
+/* Left accent stripe by kind */
+.card.news        { border-left: 3px solid var(--kind-news); }
+.card.paper       { border-left: 3px solid var(--kind-paper); }
+.card.repo        { border-left: 3px solid var(--kind-repo); }
+.card.youtube     { border-left: 3px solid var(--kind-youtube); }
+.card.opportunity { border-left: 3px solid var(--kind-opportunity); }
+
+/* ── Meta row ── */
+.meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.kindBadge {
+  font-size: 0.72rem;
+  padding: 2px 8px;
+  border-radius: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-weight: 600;
+}
+.kindBadge.news        { background: rgba(56,139,253,0.15); color: var(--kind-news); }
+.kindBadge.paper       { background: rgba(188,140,255,0.15); color: var(--kind-paper); }
+.kindBadge.repo        { background: rgba(86,211,100,0.15); color: var(--kind-repo); }
+.kindBadge.youtube     { background: rgba(244,112,103,0.15); color: var(--kind-youtube); }
+.kindBadge.opportunity { background: rgba(245,166,35,0.15); color: var(--kind-opportunity); }
+
+.score, .stars {
+  font-size: 0.72rem;
+  color: var(--muted);
+  margin-left: auto;
+}
+.stars { margin-left: 0; }
+
+/* ── Title ── */
+.title {
+  font-size: 0.95rem;
+  font-weight: 600;
+  line-height: 1.4;
+}
+.title a { color: var(--text); }
+.title a:hover { color: var(--accent); text-decoration: none; }
+
+/* ── Source line ── */
+.sourceLine {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.78rem;
+  color: var(--muted);
+  flex-wrap: wrap;
+}
+.source { font-weight: 500; }
+.deadline { color: var(--kind-opportunity); }
+
+/* ── Snippet ── */
+.snippet {
+  font-size: 0.82rem;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+/* ── Tags ── */
+.tags { display: flex; gap: 6px; flex-wrap: wrap; }
+.tag {
+  font-size: 0.7rem;
+  padding: 2px 8px;
+  border-radius: 12px;
+  background: var(--surface2);
+  color: var(--muted);
+  border: 1px solid var(--border);
+}
+
+/* ── Actions ── */
+.actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 4px;
+  padding-top: 10px;
+  border-top: 1px solid var(--border);
+}
+
+.btn {
+  font-size: 0.78rem;
+  padding: 5px 12px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  color: var(--muted);
+  background: var(--surface2);
+  transition: color 0.15s, border-color 0.15s;
+  white-space: nowrap;
+}
+.btn:hover { color: var(--text); border-color: #444c56; }
+.btnActive { color: var(--accent) !important; border-color: var(--accent) !important; }
+
+.readBadge {
+  font-size: 0.75rem;
+  color: var(--kind-repo);
+  padding: 5px 6px;
+}
