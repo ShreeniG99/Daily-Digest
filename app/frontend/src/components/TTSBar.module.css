@@ -1,0 +1,71 @@
+.bar {
+  background: var(--surface2);
+  border-bottom: 1px solid var(--border);
+}
+
+.inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 8px 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 44px;
+}
+
+.readAll {
+  font-size: 0.82rem;
+  color: var(--muted);
+  padding: 5px 14px;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  transition: color 0.15s, border-color 0.15s;
+}
+.readAll:hover { color: var(--text); border-color: #444c56; }
+
+.nowReading {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+  min-width: 0;
+}
+
+.pulse {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--accent);
+  animation: pulse 1s infinite;
+  flex-shrink: 0;
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%       { opacity: 0.5; transform: scale(0.8); }
+}
+
+.nowLabel {
+  font-size: 0.78rem;
+  color: var(--muted);
+  flex-shrink: 0;
+}
+
+.title {
+  font-size: 0.82rem;
+  color: var(--text);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.stop {
+  font-size: 0.78rem;
+  color: var(--kind-youtube);
+  padding: 5px 12px;
+  border: 1px solid var(--kind-youtube);
+  border-radius: 20px;
+  flex-shrink: 0;
+  transition: background 0.15s;
+}
+.stop:hover { background: rgba(244,112,103,0.1); }

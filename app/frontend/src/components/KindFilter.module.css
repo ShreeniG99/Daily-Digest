@@ -1,0 +1,47 @@
+.nav {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.nav::-webkit-scrollbar { display: none; }
+
+.inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+  display: flex;
+  gap: 4px;
+}
+
+.tab {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 14px;
+  font-size: 0.85rem;
+  color: var(--muted);
+  border-bottom: 2px solid transparent;
+  border-radius: 0;
+  white-space: nowrap;
+  transition: color 0.15s, border-color 0.15s;
+}
+.tab:hover { color: var(--text); }
+
+.active { color: var(--text) !important; }
+.active.all        { border-color: var(--accent); }
+.active.news       { border-color: var(--kind-news); }
+.active.paper      { border-color: var(--kind-paper); }
+.active.repo       { border-color: var(--kind-repo); }
+.active.youtube    { border-color: var(--kind-youtube); }
+.active.opportunity{ border-color: var(--kind-opportunity); }
+
+.badge {
+  background: var(--surface2);
+  color: var(--muted);
+  font-size: 0.72rem;
+  padding: 1px 6px;
+  border-radius: 10px;
+  min-width: 20px;
+  text-align: center;
+}
