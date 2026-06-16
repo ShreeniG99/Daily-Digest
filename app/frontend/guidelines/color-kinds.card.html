@@ -1,0 +1,38 @@
+<!-- @dsCard group="Colors" viewport="700x190" name="Kind & domain hues" subtitle="Earthy, warm-only hues that tag each content kind and domain" -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<link rel="stylesheet" href="../styles.css" />
+<style>
+  body { margin: 0; padding: 20px; background: var(--surface-card); font-family: var(--font-sans); }
+  .grp { margin-bottom: 14px; }
+  .lbl { font-size: var(--text-xs); font-weight: 600; letter-spacing: var(--tracking-wider); text-transform: uppercase; color: var(--text-muted); margin-bottom: 8px; }
+  .row { display: flex; gap: 10px; flex-wrap: wrap; }
+  .pill { display: flex; align-items: center; gap: 7px; padding: 5px 11px 5px 8px; border-radius: var(--radius-pill); background: var(--surface-sunken); font-size: var(--text-sm); font-weight: 600; color: var(--text-secondary); }
+  .dot { width: 11px; height: 11px; border-radius: 50%; }
+</style>
+</head>
+<body>
+  <div class="grp">
+    <div class="lbl">Kind</div>
+    <div class="row">
+      <span class="pill"><span class="dot" style="background:var(--hue-news)"></span>News</span>
+      <span class="pill"><span class="dot" style="background:var(--hue-youtube)"></span>YouTube</span>
+      <span class="pill"><span class="dot" style="background:var(--hue-paper)"></span>Paper</span>
+      <span class="pill"><span class="dot" style="background:var(--hue-repo)"></span>Repo</span>
+      <span class="pill"><span class="dot" style="background:var(--hue-opportunity)"></span>Opportunity</span>
+    </div>
+  </div>
+  <div class="grp">
+    <div class="lbl">Domain</div>
+    <div class="row">
+      <span class="pill"><span class="dot" style="background:var(--domain-ai)"></span>AI</span>
+      <span class="pill"><span class="dot" style="background:var(--domain-tech)"></span>Tech</span>
+      <span class="pill"><span class="dot" style="background:var(--domain-fintech)"></span>Fintech</span>
+      <span class="pill"><span class="dot" style="background:var(--domain-healthtech)"></span>Healthtech</span>
+      <span class="pill"><span class="dot" style="background:var(--domain-agrotech)"></span>Agrotech</span>
+    </div>
+  </div>
+</body>
+</html>

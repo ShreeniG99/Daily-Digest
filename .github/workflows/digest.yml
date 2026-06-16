@@ -1,0 +1,75 @@
+name: Daily Digest
+
+# Rebuilds the digest every morning and publishes it to GitHub Pages.
+# Ingestion is deterministic (no LLM); the one Gemini call lives in scripts.publish
+# and only writes the daily to-do + per-item "why" into the static artifact.
+
+on:
+  schedule:
+    - cron: "30 1 * * *"   # 01:30 UTC ~= 07:00 IST, daily
+  workflow_dispatch: {}     # manual "Run workflow" button
+
+permissions:
+  contents: write           # commit the rolling 7-day archive
+  pages: write              # deploy to Pages
+  id-token: write           # Pages OIDC
+
+concurrency:
+  group: daily-digest
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - run: pip install -r requirements.txt
+
+      # Deterministic ingest of the four published kinds only (opportunities/OSS
+      # stay local). A single source failing never aborts the build.
+      - name: Ingest
+        env:
+          YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          python -m scripts.run news --since 2 || true
+          python -m scripts.run papers --since 3 || true
+          python -m scripts.run youtube --since 3 || true
+          python -m scripts.run github --since 5 || true
+
+      # Export items.json / week.json + Gemini teaching content into web/.
+      - name: Publish
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: python -m scripts.publish
+
+      # Persist the rolling 7-day archive so weekly highlights survive across runs.
+      - name: Commit rolling archive
+        continue-on-error: true
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add web/data/archive.json
+          git diff --staged --quiet || git commit -m "chore: daily digest archive $(date -u +%F)"
+          git push
+
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: web
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

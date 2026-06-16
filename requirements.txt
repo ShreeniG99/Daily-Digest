@@ -1,0 +1,9 @@
+# Daily Digest — runtime deps for ingestion + publish (the 4 public kinds).
+# Opportunities/OSS scraping deps (scrapegraphai etc.) are intentionally excluded;
+# they are not part of the published web app.
+feedparser
+requests
+PyYAML
+python-dotenv
+youtube-transcript-api
+google-genai

@@ -1,0 +1,21 @@
+<!-- @dsCard group="Type" viewport="700x300" name="Headline scale" subtitle="Sans display → section heads, scan-first hierarchy" -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<link rel="stylesheet" href="../styles.css" />
+<style>
+  body { margin: 0; padding: 24px; background: var(--surface-card); font-family: var(--font-sans); color: var(--text-primary); }
+  .line { display: flex; align-items: baseline; gap: 16px; padding: 6px 0; border-bottom: 1px solid var(--border-faint); }
+  .line:last-child { border-bottom: none; }
+  .spec { font-family: var(--font-mono); font-size: var(--text-xs); color: var(--text-muted); width: 96px; flex: none; }
+  .t { font-weight: 700; letter-spacing: -0.02em; line-height: 1.05; }
+</style>
+</head>
+<body>
+  <div class="line"><span class="spec">3xl · 48</span><span class="t" style="font-size:var(--text-3xl)">Daily Digest</span></div>
+  <div class="line"><span class="spec">2xl · 36</span><span class="t" style="font-size:var(--text-2xl)">Today's signal</span></div>
+  <div class="line"><span class="spec">xl · 28</span><span class="t" style="font-size:var(--text-xl)">Research papers</span></div>
+  <div class="line"><span class="spec">lg · 22</span><span class="t" style="font-size:var(--text-lg)">Attention is all you need</span></div>
+</body>
+</html>

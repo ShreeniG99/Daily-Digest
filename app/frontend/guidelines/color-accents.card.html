@@ -1,0 +1,25 @@
+<!-- @dsCard group="Colors" viewport="700x190" name="Warm accents — sienna & ochre" subtitle="Primary action (sienna), gold score signal (ochre), with tints" -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<link rel="stylesheet" href="../styles.css" />
+<style>
+  body { margin: 0; padding: 20px; background: var(--surface-card); }
+  .row { display: flex; gap: 14px; flex-wrap: wrap; }
+  .sw { flex: 1 1 0; min-width: 96px; }
+  .chip { height: 64px; border-radius: var(--radius-md); border: 1px solid color-mix(in oklab, var(--border-strong) 60%, transparent); }
+  .name { font-family: var(--font-sans); font-size: var(--text-sm); font-weight: 600; color: var(--text-primary); margin-top: 8px; }
+  .val { font-family: var(--font-mono); font-size: var(--text-xs); color: var(--text-muted); }
+</style>
+</head>
+<body>
+  <div class="row">
+    <div class="sw"><div class="chip" style="background:var(--sienna)"></div><div class="name">Sienna</div><div class="val">--accent</div></div>
+    <div class="sw"><div class="chip" style="background:var(--sienna-strong)"></div><div class="name">Sienna hov</div><div class="val">--accent-hover</div></div>
+    <div class="sw"><div class="chip" style="background:var(--sienna-tint)"></div><div class="name">Sienna tint</div><div class="val">--accent-tint</div></div>
+    <div class="sw"><div class="chip" style="background:var(--ochre)"></div><div class="name">Ochre</div><div class="val">--accent-gold</div></div>
+    <div class="sw"><div class="chip" style="background:var(--ochre-tint)"></div><div class="name">Ochre tint</div><div class="val">--ochre-tint</div></div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,14 @@
+{
+  "name": "Daily Digest",
+  "short_name": "Digest",
+  "description": "Your personalized AI/tech digest — news, papers, videos and repos, ranked for you.",
+  "start_url": ".",
+  "scope": ".",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#F0E6CE",
+  "theme_color": "#F0E6CE",
+  "icons": [
+    { "src": "assets/logo-mark.png", "sizes": "520x400", "type": "image/png", "purpose": "any" }
+  ]
+}
