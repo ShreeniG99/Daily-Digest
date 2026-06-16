@@ -1,25 +1,24 @@
 name: Daily Digest
 
-# Rebuilds the digest every morning and publishes it to GitHub Pages.
-# Ingestion is deterministic (no LLM); the one Gemini call lives in scripts.publish
-# and only writes the daily to-do + per-item "why" into the static artifact.
+# Rebuilds the digest every morning and deploys it to Vercel.
+# Ingestion is deterministic (no LLM). The Gemini calls (teaching summaries + daily
+# to-do) and the edge-tts neural narration live in scripts.publish and only write
+# into the static artifact the web app reads.
 
 on:
   schedule:
     - cron: "30 1 * * *"   # 01:30 UTC ~= 07:00 IST, daily
-  workflow_dispatch: {}     # manual "Run workflow" button
+  workflow_dispatch: {}     # manual run + fired by the /api/channels function
 
 permissions:
   contents: write           # commit the rolling 7-day archive
-  pages: write              # deploy to Pages
-  id-token: write           # Pages OIDC
 
 concurrency:
   group: daily-digest
   cancel-in-progress: false
 
 jobs:
-  build:
+  build-and-deploy:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -28,11 +27,14 @@ jobs:
         with:
           python-version: "3.11"
           cache: pip
-
       - run: pip install -r requirements.txt
 
-      # Deterministic ingest of the four published kinds only (opportunities/OSS
-      # stay local). A single source failing never aborts the build.
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      # Deterministic ingest. Each source failing never aborts the build. The four
+      # public kinds plus opportunities (API sources) and OSS good-first-issues.
       - name: Ingest
         env:
           YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
@@ -42,8 +44,10 @@ jobs:
           python -m scripts.run papers --since 3 || true
           python -m scripts.run youtube --since 3 || true
           python -m scripts.run github --since 5 || true
+          python -m scripts.run oss --since 14 || true
+          python -m scripts.run opportunities --since 14 || true
 
-      # Export items.json / week.json + Gemini teaching content into web/.
+      # Export items.json / week.json + Gemini summaries + neural narration into web/.
       - name: Publish
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
@@ -59,17 +63,11 @@ jobs:
           git diff --staged --quiet || git commit -m "chore: daily digest archive $(date -u +%F)"
           git push
 
-      - uses: actions/configure-pages@v5
-      - uses: actions/upload-pages-artifact@v3
-        with:
-          path: web
-
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    steps:
-      - id: deployment
-        uses: actions/deploy-pages@v4
+      # Deploy the freshly built web/ (items.json + audio) and api/ to Vercel.
+      - name: Deploy to Vercel
+        env:
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+        run: |
+          npm i -g vercel@latest
+          vercel deploy --prod --yes --token="${{ secrets.VERCEL_TOKEN }}"

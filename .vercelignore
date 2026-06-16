@@ -1,0 +1,17 @@
+# What NOT to upload to Vercel. When this file exists Vercel ignores .gitignore, so
+# the daily-built web/items.json + web/audio (which ARE gitignored) get deployed.
+.venv
+__pycache__
+*.pyc
+daily-digest.db
+*.db
+scripts
+config
+profile
+reports
+.gstack
+app
+docs
+.github
+.remember
+*.md

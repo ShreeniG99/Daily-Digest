@@ -33,10 +33,20 @@ WEEK_JSON = WEB / "week.json"
 ARCHIVE_JSON = DATA_DIR / "archive.json"
 
 # Published kinds and how many of each to surface in today's digest.
-PUBLISHED = {"news": 10, "paper": 6, "youtube": 6, "repo": 6}
+PUBLISHED = {"news": 10, "paper": 6, "youtube": 6, "repo": 6, "opportunity": 6}
 ARCHIVE_DAYS = 7
 WEEK_HIGHLIGHTS = 24
 GEMINI_MODEL = "gemini-2.5-flash"
+SUMMARY_BATCH = 6  # items per Gemini summarization call (small = reliable, no truncation)
+
+# GSoC priority — guarantee these surface even when keyword-heavy items outscore them.
+GSOC_ORGS = {"incf", "deepchem", "scikit-learn", "mlpack", "nilearn", "dipy"}
+# Explicitly named must-include orgs: their single top repo is pinned every day.
+MUST_ORGS = ("incf", "deepchem")
+GSOC_KEYWORDS = ("gsoc", "google summer of code")
+# Extra guaranteed slots for *other* GSoC-priority items per kind, on top of the
+# pinned MUST_ORGS; the remaining slots go to the top-scored candidates.
+PRIORITY_MIN = {"repo": 1, "news": 1}
 
 # Fields that are safe to publish (no status/summary/fetched_ts internal state).
 PUBLISH_FIELDS = (
@@ -58,24 +68,59 @@ def _to_dict(item: Item) -> dict:
     img = image_for(item)
     if img:
         d["image"] = img
+    # Opportunities carry an apply link / deadline / company the card surfaces.
+    if item.kind == "opportunity" and item.extra:
+        extra = {k: item.extra.get(k) for k in ("deadline", "company", "role", "apply_url")
+                 if item.extra.get(k)}
+        if extra:
+            d["extra"] = extra
     return d
+
+
+def _is_priority(d: dict) -> bool:
+    """GSoC-priority: owned by a configured GSoC org, or GSoC mentioned in the text."""
+    if (d.get("author") or "").lower() in GSOC_ORGS:
+        return True
+    blob = f"{d.get('title', '')} {d.get('raw_text', '')}".lower()
+    return any(k in blob for k in GSOC_KEYWORDS)
 
 
 def select_today() -> list[dict]:
     """Top-N ranked published items per kind, image-attached, score desc overall.
+
     Items dated in the future (embargo/placeholder dates some sources carry) are
-    skipped so the app never shows a story 'published' years from now."""
+    skipped. For kinds in PRIORITY_MIN, a few slots are reserved for GSoC-priority
+    items so INCF/DeepChem (and GSoC news) reliably appear even when keyword-heavy
+    items outscore them; remaining slots go to the highest-scored candidates."""
     future = time.time() + 86400
     picked: list[dict] = []
     for kind, n in PUBLISHED.items():
-        kept = 0
-        for item in store.get_ranked(kind, limit=n * 3):
-            if item.published_ts > future:
-                continue
-            picked.append(_to_dict(item))
-            kept += 1
-            if kept >= n:
-                break
+        # Wide pool so a named-org item (e.g. deepchem) that scores modestly is still
+        # a candidate to pin.
+        cands = [_to_dict(it) for it in store.get_ranked(kind, limit=max(n * 5, 100))
+                 if it.published_ts <= future]
+        chosen: list[dict] = []
+        seen: set[str] = set()
+
+        def take(d: dict) -> None:
+            if d["id"] not in seen and len(chosen) < n:
+                chosen.append(d)
+                seen.add(d["id"])
+
+        # 1. pin the top repo from each explicitly-named org (INCF, DeepChem)
+        if kind == "repo":
+            for org in MUST_ORGS:
+                top = next((d for d in cands if (d.get("author") or "").lower() == org), None)
+                if top:
+                    take(top)
+        # 2. a few more GSoC-priority items (not already pinned above)
+        extra_prio = [c for c in cands if _is_priority(c) and c["id"] not in seen]
+        for d in extra_prio[:PRIORITY_MIN.get(kind, 0)]:
+            take(d)
+        # 3. fill remaining slots by score
+        for d in cands:
+            take(d)
+        picked.extend(chosen)
     picked.sort(key=lambda d: d.get("score", 0), reverse=True)
     return picked
 
@@ -106,66 +151,88 @@ def week_highlights(archive: list[dict]) -> list[dict]:
 
 
 # ── Gemini enrichment (optional, graceful) ──────────────────────────────────
-def enrich(today: list[dict]) -> str:
-    """Return a single daily to-do string and mutate `today` in place to add a
-    `why` line per item. Returns '' (and adds no `why`) on any failure."""
-    import os
+SUMMARY_INSTR = (
+    "For each item write a teaching summary for the reader: 90-150 words, plain "
+    "English, like a calm study partner explaining it — what it is, why it matters, "
+    "and one thing they could try or take away. No hype, sentence case, address them "
+    "as 'you'. Also give a one-line 'why' (<=15 words) on why it matters to them. "
+    "Return ONLY a JSON object mapping each id to "
+    '{"summary": "...", "why": "..."}, with an entry for every id.'
+)
 
-    key = os.environ.get("GEMINI_API_KEY")
-    if not key:
-        print("  ~ GEMINI_API_KEY missing — skipping to-do / why enrichment.")
-        return ""
-    try:
-        from google import genai
-        from google.genai import types
-    except ImportError as exc:
-        print(f"  ~ google-genai not importable ({exc}) — skipping enrichment.")
-        return ""
 
-    digest = [
-        {"id": d["id"], "kind": d["kind"], "title": d["title"],
-         "abstract": (d.get("raw_text") or "")[:240]}
-        for d in today
-    ]
-    prompt = (
-        f"{OWNER}\n\n"
-        "Below is today's ranked digest as JSON. Return ONLY a JSON object:\n"
-        '{ "todo": "<one consolidated, concrete next-action for the reader today, '
-        '1-2 sentences>", "why": { "<item id>": "<one short line on why this item '
-        'matters to you, =15 words, no hype>", ... } }\n'
-        "Give a why for every id. Keep the calm teaching voice.\n\n"
-        f"DIGEST:\n{json.dumps(digest, ensure_ascii=False)}"
-    )
-    client = genai.Client(api_key=key)
+def _gemini_json(client, prompt: str):
+    """One Gemini call returning parsed JSON, retrying transient 503/429. None on fail."""
+    from google.genai import types
     cfg = types.GenerateContentConfig(
         response_mime_type="application/json", temperature=0.4)
-    data = None
-    # gemini-2.5-flash can answer 503 (high demand) / 429 transiently — retry a
-    # few times with backoff before giving up and shipping without enrichment.
     for attempt in range(4):
         try:
             resp = client.models.generate_content(
                 model=GEMINI_MODEL, contents=prompt, config=cfg)
-            data = json.loads(resp.text)
-            break
+            return json.loads(resp.text)
         except Exception as exc:  # network / quota / parse — never abort the build
             transient = any(s in str(exc) for s in ("503", "UNAVAILABLE", "429", "RESOURCE_EXHAUSTED"))
             if transient and attempt < 3:
                 wait = 3 * (attempt + 1)
-                print(f"  ~ Gemini {('503/429')} (attempt {attempt + 1}) — retrying in {wait}s")
+                print(f"  ~ Gemini transient (attempt {attempt + 1}) — retrying in {wait}s")
                 time.sleep(wait)
                 continue
-            print(f"  ~ Gemini enrichment failed ({exc}) — publishing without to-do/why.")
-            return ""
+            print(f"  ~ Gemini call failed ({exc})")
+            return None
+    return None
 
-    why = data.get("why") or {}
-    for d in today:
-        line = why.get(d["id"])
-        if line:
-            d["why"] = line.strip()
-    todo = (data.get("todo") or "").strip()
-    print(f"  + enriched: to-do {'set' if todo else 'empty'}, "
-          f"{sum('why' in d for d in today)}/{len(today)} items have a why")
+
+def _summarize(client, today: list[dict]) -> int:
+    """Set a teaching `summary` and one-line `why` on each item via small batched
+    calls (small batches avoid giant-JSON truncation). Returns count summarized."""
+    got = 0
+    for i in range(0, len(today), SUMMARY_BATCH):
+        batch = today[i:i + SUMMARY_BATCH]
+        payload = [{"id": d["id"], "kind": d["kind"], "title": d["title"],
+                    "text": (d.get("raw_text") or "")[:500]} for d in batch]
+        prompt = (f"{OWNER}\n\n{SUMMARY_INSTR}\n\n"
+                  f"ITEMS:\n{json.dumps(payload, ensure_ascii=False)}")
+        data = _gemini_json(client, prompt) or {}
+        for d in batch:
+            ent = data.get(d["id"]) or {}
+            if ent.get("summary"):
+                d["summary"] = ent["summary"].strip()
+                got += 1
+            if ent.get("why"):
+                d["why"] = ent["why"].strip()
+    return got
+
+
+def _daily_todo(client, today: list[dict]) -> str:
+    digest = [{"id": d["id"], "title": d["title"]} for d in today]
+    prompt = (f"{OWNER}\n\nFrom today's digest titles, return ONLY JSON "
+              '{ "todo": "<one consolidated, concrete next-action for the reader '
+              'today, 1-2 sentences>" }.\n\n'
+              f"DIGEST:\n{json.dumps(digest, ensure_ascii=False)}")
+    data = _gemini_json(client, prompt) or {}
+    return (data.get("todo") or "").strip()
+
+
+def enrich(today: list[dict]) -> str:
+    """Add a teaching `summary` + one-line `why` to each item (in place) and return a
+    single daily to-do. Degrades gracefully if the key is missing or the API fails."""
+    import os
+
+    key = os.environ.get("GEMINI_API_KEY")
+    if not key:
+        print("  ~ GEMINI_API_KEY missing — shipping without summaries/why/to-do.")
+        return ""
+    try:
+        from google import genai
+    except ImportError as exc:
+        print(f"  ~ google-genai not importable ({exc}) — skipping enrichment.")
+        return ""
+
+    client = genai.Client(api_key=key)
+    got = _summarize(client, today)
+    todo = _daily_todo(client, today)
+    print(f"  + enriched: {got}/{len(today)} summaries, to-do {'set' if todo else 'empty'}")
     return todo
 
 
@@ -192,6 +259,11 @@ def main() -> None:
           f"({sum('image' in d for d in today)} with images)")
 
     todo = enrich(today)
+
+    # Neural Indian-voice narration (edge-tts) baked from title + summary.
+    from .audio import synthesize
+    n_audio = synthesize(today, WEB / "audio")
+    print(f"  + narrated {n_audio}/{len(today)} items (en-IN neural voice)")
 
     archive = merge_archive(load_archive(), today)
     DATA_DIR.mkdir(parents=True, exist_ok=True)

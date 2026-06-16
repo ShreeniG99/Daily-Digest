@@ -7,3 +7,4 @@ PyYAML
 python-dotenv
 youtube-transcript-api
 google-genai
+edge-tts

@@ -12,3 +12,5 @@ reports/
 # daily Action can read prior days for weekly highlights.
 web/items.json
 web/week.json
+# Neural narration MP3s — regenerated each build, shipped in the Vercel deploy.
+web/audio/

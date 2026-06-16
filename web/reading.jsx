@@ -1,26 +1,29 @@
-/* Daily Digest — full reading view. Slides in over the feed when a card is
-   opened: hero image (or a clean text header when there's none), the abstract,
-   a "why it matters" line, listen-aloud controls, and share. */
+/* Daily Digest — full-screen reading view. Opens over the feed when a card is
+   tapped: hero (or a clean text header), the AI teaching summary as the main read,
+   a "why it matters" line, neural-voice listen controls, and share. */
 const { useEffect: useReaderEffect, useState: useReaderState } = React;
 
-/* Listen-aloud bar over the SpeechSynthesis controller. Hidden where the browser
-   has no speech support. */
+/* Listen-aloud bar. Plays the baked Indian neural-voice MP3 when present (real
+   play/pause/seek), otherwise falls back to the browser voice. */
 function ListenBar({ item }) {
   const DS = window.DailyDigestDesignSystem_c5ce8c;
   const Tts = window.DDTts;
   const Line = window.DDLineIcon;
-  const [st, setSt] = useReaderState(Tts ? Tts.getState() : { speaking: false });
+  const [st, setSt] = useReaderState(Tts ? Tts.getState() : { mode: null });
   useReaderEffect(() => (Tts ? Tts.subscribe(setSt) : undefined), []);
-  if (!Tts || !Tts.supported) return null;
+  if (!Tts) return null;
 
-  const active = st.id === item.id && st.speaking;
-  const playing = active && !st.paused;
-  const text = [item.title, item.raw_text, item.why].filter(Boolean).join('. ');
+  const active = st.id === item.id && !!st.mode;
+  const playing = active && st.playing;
+  const isAudio = active && st.mode === 'audio';
+  const frac = isAudio && st.d ? Math.min(1, st.t / st.d) : 0;
+  const text = [item.title, item.summary || item.raw_text, item.why].filter(Boolean).join('. ');
   const label = playing ? 'Reading aloud' : active ? 'Paused' : 'Listen';
-  const sub = playing ? 'Tap to pause' : active ? 'Tap to resume' : 'Hear this read to you';
+  const sub = item.audio ? 'Warm Indian voice' : (active ? 'Tap to resume' : 'Hear this read to you');
+
   return (
     <div className="dd-listen">
-      <button className="dd-listen__btn" onClick={() => Tts.toggle(item.id, text)}
+      <button className="dd-listen__btn" onClick={() => Tts.toggle(item, text)}
         aria-label={playing ? 'Pause' : 'Play'}>
         <DS.Icon name={playing ? 'pause' : 'play'} size={20} />
       </button>
@@ -28,7 +31,12 @@ function ListenBar({ item }) {
         <span className="dd-eyebrow">{label}</span>
         <span className="dd-listen__sub">{sub}</span>
       </div>
-      <span className="dd-spacer" />
+      {isAudio ? (
+        <div className="dd-listen__track" role="slider" aria-label="Seek"
+          onClick={(e) => { const r = e.currentTarget.getBoundingClientRect(); Tts.seek((e.clientX - r.left) / r.width); }}>
+          <div className="dd-listen__fill" style={{ width: `${Math.round(frac * 100)}%` }} />
+        </div>
+      ) : <span className="dd-spacer" />}
       {active && (
         <button className="dd-listen__stop" onClick={() => Tts.stop()} aria-label="Stop">
           <Line name="x" size={16} />
@@ -49,6 +57,10 @@ function ReadingView({ item, onClose, onSave, onOpenSource }) {
   const saved = item.status === 'saved';
   const [imgOk, setImgOk] = useReaderState(!!item.image);
   const showImg = !!item.image && imgOk;
+  const summary = item.summary || item.raw_text || '';
+  const paras = summary.split(/\n{2,}/).filter(Boolean);
+  const deadline = item.extra && item.extra.deadline;
+  const sourceLabel = item.kind === 'opportunity' ? 'Apply / view' : `Open original at ${item.source}`;
 
   useReaderEffect(() => {
     const onKey = (e) => { if (e.key === 'Escape') onClose(); };
@@ -60,8 +72,7 @@ function ReadingView({ item, onClose, onSave, onOpenSource }) {
   useReaderEffect(() => () => { if (window.DDTts) window.DDTts.stop(); }, []);
 
   return (
-    <div className="dd-reader" role="dialog" aria-modal="true" aria-label={item.title}>
-      <div className="dd-reader__scrim" onClick={onClose} />
+    <div className="dd-reader dd-reader--full" role="dialog" aria-modal="true" aria-label={item.title}>
       <article className="dd-reader__panel">
         <header className="dd-reader__bar">
           <button className="dd-reader__back" onClick={onClose}>
@@ -97,7 +108,8 @@ function ReadingView({ item, onClose, onSave, onOpenSource }) {
               <span className="dd-author__name">{item.author || item.source}</span>
             </span>
             <span className="dd-chip"><LineIcon name="clock" size={14} /> {relTime(item.published_ts)}</span>
-            <span className="dd-chip"><LineIcon name="eye" size={14} /> {readMins(item.raw_text)} min read</span>
+            <span className="dd-chip"><LineIcon name="eye" size={14} /> {readMins(summary)} min read</span>
+            {deadline && <span className="dd-chip"><LineIcon name="calendar" size={14} /> {deadline}</span>}
             <span className="dd-spacer" />
             <ScoreSignal score={item.score} max={12} />
           </div>
@@ -105,7 +117,10 @@ function ReadingView({ item, onClose, onSave, onOpenSource }) {
           <ListenBar item={item} />
 
           <div className="dd-reader__content">
-            <p className="dd-reader__lede">{item.raw_text}</p>
+            <span className="dd-eyebrow dd-reader__sumlabel">In simple terms</span>
+            <div className="dd-reader__summary">
+              {paras.length ? paras.map((p, i) => <p key={i}>{p}</p>) : <p>{summary}</p>}
+            </div>
 
             {item.why && (
               <div className="dd-reader__why">
@@ -115,8 +130,7 @@ function ReadingView({ item, onClose, onSave, onOpenSource }) {
             )}
 
             <p className="dd-reader__note">
-              This is the ranked abstract pulled for you. Open the original to read it in full
-              at the source.
+              This is an AI summary written for you. Open the original to read it in full at the source.
             </p>
 
             {(item.tags || []).length > 0 && (
@@ -127,7 +141,7 @@ function ReadingView({ item, onClose, onSave, onOpenSource }) {
 
             <div className="dd-reader__cta">
               <Button onClick={() => onOpenSource(item)}>
-                Open original at {item.source}
+                {sourceLabel}
                 <DS.Icon name="external-link" size={16} />
               </Button>
             </div>

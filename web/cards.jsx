@@ -107,7 +107,7 @@ function FeatureCard({ item, onOpen, onRead, onSave }) {
       <div className="dd-feature__body">
         <span className="dd-eyebrow dd-eyebrow--ondark">Top of your digest</span>
         <h2 className="dd-feature__title">{item.title}</h2>
-        <p className="dd-feature__excerpt">{item.raw_text}</p>
+        <p className="dd-feature__excerpt">{item.summary || item.raw_text}</p>
         <WhyLine text={item.why} ondark={showImg} />
         <div className="dd-feature__meta">
           <span className="dd-feature__kind">{m.label}</span>
@@ -157,9 +157,10 @@ function RowCard({ item, onOpen, onRead, onSave, onOpenSource, nowReading }) {
           <span>{item.source}</span>
           {item.author && (<><span className="dd-dot" /><span>{item.author}</span></>)}
           {item.published_ts && (<><span className="dd-dot" /><span>{relTime(item.published_ts)}</span></>)}
-          <span className="dd-dot" /><span>{readMins(item.raw_text)} min</span>
+          <span className="dd-dot" /><span>{readMins(item.summary || item.raw_text)} min</span>
+          {item.extra && item.extra.deadline && (<><span className="dd-dot" /><span>due {item.extra.deadline}</span></>)}
         </div>
-        {item.raw_text && <p className="dd-row__excerpt">{item.raw_text}</p>}
+        {(item.summary || item.raw_text) && <p className="dd-row__excerpt">{item.summary || item.raw_text}</p>}
         <WhyLine text={item.why} />
         <div className="dd-row__foot">
           <div className="dd-row__tags">

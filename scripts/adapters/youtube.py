@@ -11,9 +11,11 @@ config/sources.yaml (youtube.channels, youtube.search_terms).
 """
 from __future__ import annotations
 
+import json
 import os
 import time
 from datetime import datetime, timezone
+from pathlib import Path
 
 import requests
 
@@ -22,6 +24,17 @@ from ..schema import Item
 
 API = "https://www.googleapis.com/youtube/v3"
 MAX_PER_SOURCE = 10  # cap uploads/search hits pulled per channel or term
+# User-added subscriptions (managed in-app via the /api/channels function), merged
+# with the curated channels in sources.yaml. Kept as JSON so the API can rewrite it
+# without disturbing the commented sources.yaml.
+USER_CHANNELS = Path(__file__).resolve().parents[2] / "config" / "channels.json"
+
+
+def _user_channels() -> list[str]:
+    try:
+        return (json.loads(USER_CHANNELS.read_text(encoding="utf-8")) or {}).get("channels") or []
+    except (OSError, json.JSONDecodeError):
+        return []
 
 
 def _iso_to_ts(value: str) -> float:
@@ -57,7 +70,16 @@ class YouTubeAdapter(SourceAdapter):
         items: list[Item] = []
         seen: set[str] = set()  # video ids within this run
 
-        for handle in yt_cfg.get("channels") or []:
+        # Curated channels (sources.yaml) + user-added subscriptions (channels.json),
+        # deduped case-insensitively, curated first.
+        channels, seen_ch = [], set()
+        for handle in list(yt_cfg.get("channels") or []) + _user_channels():
+            k = str(handle).strip().lower()
+            if k and k not in seen_ch:
+                seen_ch.add(k)
+                channels.append(handle)
+
+        for handle in channels:
             for vid in self._channel_uploads(key, handle):
                 self._add(items, seen, vid, since_ts, now)
 

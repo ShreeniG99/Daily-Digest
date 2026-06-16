@@ -7,6 +7,7 @@ const KINDS = [
   { value: 'youtube', label: 'Videos', icon: 'youtube' },
   { value: 'paper', label: 'Papers', icon: 'file-text' },
   { value: 'repo', label: 'Repos', icon: 'github' },
+  { value: 'opportunity', label: 'Opportunities', icon: 'briefcase' },
 ];
 
 function useTheme() {
@@ -34,6 +35,7 @@ function App() {
   const [night, setNight] = useTheme();
   const [query, setQuery] = useState('');
   const [reading, setReading] = useState(null);
+  const [channelsOpen, setChannelsOpen] = useState(false);
 
   useEffect(() => { window.DDStore.purge(); window.DD_READY.then((d) => setData(d)); }, []);
   useEffect(() => {
@@ -128,6 +130,7 @@ function App() {
         <div className="dd-scrim" onClick={() => setNavOpen(false)} />
         <Sidebar kind={kind} setKind={(v) => navTo(() => setKind(v))}
           view={view} setView={(v) => navTo(() => setView(v))} counts={counts}
+          onOpenChannels={() => navTo(() => setChannelsOpen(true))}
           onClose={() => setNavOpen(false)} />
 
         <main className="dd-main">
@@ -152,6 +155,10 @@ function App() {
       {readingLive && (
         <ReadingView item={readingLive} onClose={() => setReading(null)}
           onSave={onSave} onOpenSource={onOpenSource} />
+      )}
+
+      {channelsOpen && window.ChannelsModal && (
+        <window.ChannelsModal onClose={() => setChannelsOpen(false)} />
       )}
     </div>
   );
@@ -226,7 +233,7 @@ function Header({ night, setNight, navOpen, onToggleNav, query, setQuery }) {
   );
 }
 
-function Sidebar({ kind, setKind, view, setView, counts, onClose }) {
+function Sidebar({ kind, setKind, view, setView, counts, onOpenChannels, onClose }) {
   const Line = window.DDLineIcon;
   return (
     <aside className="dd-sidebar">
@@ -264,6 +271,14 @@ function Sidebar({ kind, setKind, view, setView, counts, onClose }) {
                 {k.value !== 'all' && <span className="dd-nav__count">{counts[k.value] || 0}</span>}
               </button>
             ))}
+          </nav>
+        </div>
+        <div className="dd-side-group">
+          <div className="dd-side-group__h">Manage</div>
+          <nav className="dd-nav">
+            <button className="dd-nav__item" onClick={onOpenChannels}>
+              <Icon name="youtube" size={17} /> Your channels
+            </button>
           </nav>
         </div>
         <div className="dd-side-group">
@@ -316,7 +331,7 @@ let FeatureCard, RowCard, ReadingView;
 function mount() {
   if (window.__ddMounting) return;
   DS = window.DailyDigestDesignSystem_c5ce8c;
-  if (!DS || !window.FeatureCard || !window.ReadingView || !window.DDStore) { return setTimeout(mount, 30); }
+  if (!DS || !window.FeatureCard || !window.ReadingView || !window.ChannelsModal || !window.DDStore) { return setTimeout(mount, 30); }
   window.__ddMounting = true;
   ({ Icon, Badge, Tag, ItemCard, EmptyState, Button, IconButton, ScoreSignal, SegmentedControl, ThemeToggle } = DS);
   ({ FeatureCard, RowCard, ReadingView } = window);
