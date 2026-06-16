@@ -1,7 +1,11 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": null,
   "outputDirectory": "web",
   "cleanUrls": true,
+  "git": {
+    "deploymentEnabled": { "main": false }
+  },
   "functions": {
     "api/channels.js": { "maxDuration": 10 }
   },

@@ -63,11 +63,16 @@ jobs:
           git diff --staged --quiet || git commit -m "chore: daily digest archive $(date -u +%F)"
           git push
 
-      # Deploy the freshly built web/ (items.json + audio) and api/ to Vercel.
+      # Deploy the freshly built web/ (items.json + audio) and api/ to Vercel as a
+      # prebuilt static + functions deploy. framework:null + buildCommand:null in
+      # vercel.json mean no Python/FastAPI build runs.
       - name: Deploy to Vercel
         env:
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
         run: |
           npm i -g vercel@latest
-          vercel deploy --prod --yes --token="${{ secrets.VERCEL_TOKEN }}"
+          vercel pull --yes --environment=production --token="$VERCEL_TOKEN"
+          vercel build --prod --token="$VERCEL_TOKEN"
+          vercel deploy --prebuilt --prod --token="$VERCEL_TOKEN"

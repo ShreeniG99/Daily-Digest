@@ -7,6 +7,8 @@ daily-digest.db
 *.db
 scripts
 config
+requirements.txt
+*.py
 profile
 reports
 .gstack
