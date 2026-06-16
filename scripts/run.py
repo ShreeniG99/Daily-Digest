@@ -7,6 +7,7 @@ then prints a ranked summary table from the store.
 """
 from __future__ import annotations
 
+import os
 import argparse
 import sys
 import time
