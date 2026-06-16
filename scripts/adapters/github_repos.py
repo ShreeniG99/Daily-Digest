@@ -58,6 +58,20 @@ class GitHubReposAdapter(SourceAdapter):
             query = f"topic:{topic} stars:>={min_stars} pushed:>{pushed_date}"
             for repo in self._search(query, headers):
                 self._add(items, seen, repo, topic, since_ts, now)
+
+        # GSoC organizations — fetch their repos directly (by owner, not topic) with
+        # a lower star floor and wider recency window so priority orgs surface.
+        orgs = gh.get("orgs") or []
+        org_min = gh.get("org_min_stars", 20)
+        org_days = gh.get("org_pushed_within_days", 180)
+        org_pushed = datetime.fromtimestamp(
+            now - org_days * 86400, tz=timezone.utc).strftime("%Y-%m-%d")
+        for org in orgs:
+            query = f"user:{org} stars:>={org_min} pushed:>{org_pushed}"
+            for repo in self._search(query, headers):
+                # since_ts=0: priority orgs bypass the incremental recency cursor so
+                # their repos always surface (dedup by id still prevents repeats).
+                self._add(items, seen, repo, f"org:{org}", 0.0, now)
         return items
 
     def _search(self, query: str, headers: dict) -> list[dict]:

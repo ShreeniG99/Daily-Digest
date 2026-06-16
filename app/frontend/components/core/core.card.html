@@ -1,0 +1,71 @@
+<!-- @dsCard group="Components" viewport="700x560" name="Core — buttons, badges, tags, score, filters" subtitle="The reusable primitives, in their key states" -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<link rel="stylesheet" href="../../styles.css" />
+<style>
+  body { margin: 0; padding: 24px; background: var(--surface-page); }
+  .grid { display: flex; flex-direction: column; gap: 22px; }
+  .lbl { font-family: var(--font-sans); font-size: var(--text-2xs); font-weight: 700; letter-spacing: var(--tracking-wider); text-transform: uppercase; color: var(--text-muted); margin-bottom: 10px; }
+  .row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+</style>
+</head>
+<body>
+  <div id="root" class="grid"></div>
+  <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+  <script src="../../_ds_bundle.js"></script>
+  <script type="text/babel">
+    const { Button, IconButton, Badge, Tag, ScoreSignal, SegmentedControl, ThemeToggle } = window.DailyDigestDesignSystem_c5ce8c;
+    function Demo() {
+      const [kind, setKind] = React.useState('all');
+      const [night, setNight] = React.useState(false);
+      const [saved, setSaved] = React.useState(true);
+      const Section = ({ label, children }) => (
+        <div><div className="lbl">{label}</div><div className="row">{children}</div></div>
+      );
+      return (
+        <React.Fragment>
+          <Section label="Button">
+            <Button>Read all unread</Button>
+            <Button variant="secondary" icon="sliders">Filters</Button>
+            <Button variant="ghost" iconRight="chevron-right">See all</Button>
+            <Button variant="danger" size="sm">Clear</Button>
+            <Button disabled>Disabled</Button>
+          </Section>
+          <Section label="Icon button">
+            <IconButton icon="check" label="Mark read" accent active />
+            <IconButton icon="bookmark-check" label="Saved" active />
+            <IconButton icon="bookmark" label="Save" bordered />
+            <IconButton icon="external-link" label="Open" />
+            <IconButton icon="volume-2" label="Listen" bordered />
+          </Section>
+          <Section label="Kind badge">
+            <Badge kind="news" /><Badge kind="youtube" /><Badge kind="paper" />
+            <Badge kind="repo" /><Badge kind="opportunity" />
+          </Section>
+          <Section label="Tags">
+            <Tag domain="ai">ai</Tag><Tag domain="fintech">fintech</Tag>
+            <Tag domain="healthtech">healthtech</Tag>
+            <Tag keyword>transformers</Tag><Tag keyword>RAG</Tag>
+          </Section>
+          <Section label="Score signal">
+            <ScoreSignal score={11.2} /><ScoreSignal score={7.5} /><ScoreSignal score={3.1} showLabel />
+          </Section>
+          <Section label="Segmented control · Theme toggle">
+            <SegmentedControl value={kind} onChange={setKind} options={[
+              { value: 'all', label: 'All', count: 42 },
+              { value: 'paper', label: 'Papers', icon: 'file-text', count: 8 },
+              { value: 'repo', label: 'Repos', icon: 'github', count: 5 },
+            ]} />
+            <ThemeToggle checked={night} onChange={setNight} />
+          </Section>
+        </React.Fragment>
+      );
+    }
+    ReactDOM.createRoot(document.getElementById('root')).render(<Demo />);
+  </script>
+</body>
+</html>

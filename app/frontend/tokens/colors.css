@@ -1,0 +1,149 @@
+/* ============================================================
+   Daily Digest — Color tokens
+   A warm SEPIA system: dark-brown ink on soft cream/beige.
+   Accents stay inside the warm family (sienna, ochre, clay,
+   olive) — no cold blues/purples in the UI chrome.
+   ============================================================ */
+
+:root {
+  /* ---- Cream / beige surfaces (warm, low-chroma) ---- */
+  --cream-50:  #FBF6EA;   /* lightest — raised surfaces, popovers */
+  --cream-100: #F7EFDC;   /* card surface */
+  --cream-200: #F0E6CE;   /* page background */
+  --cream-300: #E9DCBE;   /* sunken wells, hover fills */
+  --cream-400: #E0D0AC;   /* pressed / active fills */
+
+  /* ---- Tan hairlines & borders ---- */
+  --tan-200: #E3D4B4;
+  --tan-300: #D9C7A1;     /* default hairline */
+  --tan-400: #CBB488;     /* stronger divider */
+
+  /* ---- Brown ink ramp (text) ---- */
+  --brown-900: #2A1F15;   /* primary text — dark brown */
+  --brown-800: #3A2C1E;
+  --brown-700: #50402D;   /* secondary text */
+  --brown-600: #6B563D;   /* muted text */
+  --brown-500: #8A7459;   /* faint text, placeholders */
+  --brown-400: #A89171;   /* disabled */
+
+  /* ---- Warm accents ---- */
+  --sienna:        #A8481C;   /* primary action, links */
+  --sienna-strong: #8B3A14;   /* hover / pressed */
+  --sienna-tint:   #E9D8C4;   /* soft fill behind sienna */
+  --ochre:         #A87C24;   /* gold — score signal, saved */
+  --ochre-strong:  #8A6418;
+  --ochre-tint:    #EDDFBB;
+
+  /* ---- Warm semantics (used sparingly) ---- */
+  --danger:      #9A3B2A;     /* destructive, errors */
+  --danger-tint: #ECD4C9;
+  --success:     #5E6A2F;     /* confirmations (muted olive) */
+  --success-tint:#DEDFC0;
+
+  /* ---- Kind / domain hues (all earthy & warm) ---- */
+  --hue-news:        #50402D;   /* ink brown */
+  --hue-youtube:     #A8481C;   /* rust */
+  --hue-paper:       #5E6A2F;   /* olive */
+  --hue-repo:        #6E5236;   /* coffee */
+  --hue-opportunity: #9A7A1E;   /* ochre/gold */
+
+  --domain-ai:         #A8481C;
+  --domain-tech:       #6E5236;
+  --domain-fintech:    #9A7A1E;
+  --domain-healthtech: #A85844;
+  --domain-agrotech:   #5E6A2F;
+
+  /* =========================================================
+     Semantic aliases — reference these in components.
+     ========================================================= */
+  --text-primary:   var(--brown-900);
+  --text-secondary: var(--brown-700);
+  --text-muted:     var(--brown-600);
+  --text-faint:     var(--brown-500);
+  --text-disabled:  var(--brown-400);
+  --text-link:      var(--sienna);
+  --text-on-accent: var(--cream-50);
+
+  --surface-page:   var(--cream-200);
+  --surface-card:   var(--cream-100);
+  --surface-raised: var(--cream-50);
+  --surface-sunken: var(--cream-300);
+  --surface-hover:  var(--cream-300);
+  --surface-active: var(--cream-400);
+
+  --border-hairline: var(--tan-300);
+  --border-strong:   var(--tan-400);
+  --border-faint:    var(--tan-200);
+
+  --accent:        var(--sienna);
+  --accent-hover:  var(--sienna-strong);
+  --accent-tint:   var(--sienna-tint);
+  --accent-gold:   var(--ochre);
+
+  --focus-ring:    color-mix(in oklab, var(--sienna) 55%, transparent);
+}
+
+/* ============================================================
+   Night — a warm "reading lamp" dark sepia. Espresso ground,
+   cream ink. Same warm family, never cold.
+   ============================================================ */
+:root[data-theme="night"] {
+  --espresso-900: #160F09;
+  --espresso-800: #1E150D;   /* page */
+  --espresso-700: #271C12;   /* card */
+  --espresso-600: #322417;   /* raised */
+  --espresso-500: #3E2E1E;   /* hover */
+  --espresso-400: #4B3925;   /* active */
+
+  --cream-ink-1: #EEDFC2;    /* primary text */
+  --cream-ink-2: #CDB994;    /* secondary */
+  --cream-ink-3: #A78E69;    /* muted */
+  --cream-ink-4: #806A4B;    /* faint */
+
+  --text-primary:   var(--cream-ink-1);
+  --text-secondary: var(--cream-ink-2);
+  --text-muted:     var(--cream-ink-3);
+  --text-faint:     var(--cream-ink-4);
+  --text-disabled:  #5E4D37;
+  --text-link:      #DD8A53;
+  --text-on-accent: #1E150D;
+
+  --surface-page:   var(--espresso-800);
+  --surface-card:   var(--espresso-700);
+  --surface-raised: var(--espresso-600);
+  --surface-sunken: var(--espresso-900);
+  --surface-hover:  var(--espresso-500);
+  --surface-active: var(--espresso-400);
+
+  --border-hairline: #3A2B1B;
+  --border-strong:   #4B3925;
+  --border-faint:    #2E2114;
+
+  --accent:        #DD8A53;
+  --accent-hover:  #E89E6C;
+  --accent-tint:   #3A2616;
+  --accent-gold:   #D6A645;
+
+  --sienna:        #DD8A53;
+  --sienna-strong: #E89E6C;
+  --ochre:         #D6A645;
+
+  --danger:      #D9755F;
+  --danger-tint: #3C211A;
+  --success:     #A6B45E;
+  --success-tint:#2A2D17;
+
+  --hue-news:        #CDB994;
+  --hue-youtube:     #DD8A53;
+  --hue-paper:       #A6B45E;
+  --hue-repo:        #C49A6C;
+  --hue-opportunity: #D6A645;
+
+  --domain-ai:         #DD8A53;
+  --domain-tech:       #C49A6C;
+  --domain-fintech:    #D6A645;
+  --domain-healthtech: #D98C72;
+  --domain-agrotech:   #A6B45E;
+
+  --focus-ring:    color-mix(in oklab, #DD8A53 60%, transparent);
+}

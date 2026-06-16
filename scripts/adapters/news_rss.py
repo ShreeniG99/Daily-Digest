@@ -44,6 +44,25 @@ def _feed_source(parsed, url: str) -> str:
     return title or urlsplit(url).netloc
 
 
+def _entry_image(entry) -> str:
+    """Best-effort image URL already present in the feed entry — media:thumbnail,
+    media:content, or an image enclosure. Returns '' when the feed carries none
+    (then the app renders the story as a clean text-only card)."""
+    for thumb in entry.get("media_thumbnail") or []:
+        if thumb.get("url"):
+            return thumb["url"]
+    for media in entry.get("media_content") or []:
+        url = media.get("url")
+        medium = (media.get("medium") or media.get("type") or "")
+        if url and ("image" in medium or not medium):
+            return url
+    for link in entry.get("links") or []:
+        if link.get("rel") == "enclosure" and "image" in (link.get("type") or ""):
+            if link.get("href"):
+                return link["href"]
+    return ""
+
+
 class NewsRSSAdapter(SourceAdapter):
     name = "news_rss"
     kind = "news"
@@ -84,12 +103,14 @@ class NewsRSSAdapter(SourceAdapter):
             link = entry.get("link", "")
             if not link:
                 continue
+            image = _entry_image(entry)
             out.append(Item(
                 kind="news", source=source, title=entry.get("title", "").strip(),
                 url=link, author=entry.get("author", ""),
                 published_ts=ts, fetched_ts=now,
                 raw_text=_strip_html(entry.get("summary", "")),
                 domain="ai",
+                extra={"image": image} if image else {},
             ))
         return out
 

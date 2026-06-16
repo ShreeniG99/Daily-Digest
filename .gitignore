@@ -1,4 +1,4 @@
-﻿daily-digest.db
+.daily-digest.db
 .env
 .venv/
 __pycache__/

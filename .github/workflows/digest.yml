@@ -1,0 +1,73 @@
+name: Daily Digest
+
+# Rebuilds the digest every morning and deploys it to Vercel.
+# Ingestion is deterministic (no LLM). The Gemini calls (teaching summaries + daily
+# to-do) and the edge-tts neural narration live in scripts.publish and only write
+# into the static artifact the web app reads.
+
+on:
+  schedule:
+    - cron: "30 1 * * *"   # 01:30 UTC ~= 07:00 IST, daily
+  workflow_dispatch: {}     # manual run + fired by the /api/channels function
+
+permissions:
+  contents: write           # commit the rolling 7-day archive
+
+concurrency:
+  group: daily-digest
+  cancel-in-progress: false
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+      - run: pip install -r requirements.txt
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      # Deterministic ingest. Each source failing never aborts the build. The four
+      # public kinds plus opportunities (API sources) and OSS good-first-issues.
+      - name: Ingest
+        env:
+          YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          python -m scripts.run news --since 2 || true
+          python -m scripts.run papers --since 3 || true
+          python -m scripts.run youtube --since 3 || true
+          python -m scripts.run github --since 5 || true
+          python -m scripts.run oss --since 14 || true
+          python -m scripts.run opportunities --since 14 || true
+
+      # Export items.json / week.json + Gemini summaries + neural narration into web/.
+      - name: Publish
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: python -m scripts.publish
+
+      # Persist the rolling 7-day archive so weekly highlights survive across runs.
+      - name: Commit rolling archive
+        continue-on-error: true
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add web/data/archive.json
+          git diff --staged --quiet || git commit -m "chore: daily digest archive $(date -u +%F)"
+          git push
+
+      # Deploy the freshly built web/ (items.json + audio) and api/ to Vercel.
+      - name: Deploy to Vercel
+        env:
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+        run: |
+          npm i -g vercel@latest
+          vercel deploy --prod --yes --token="${{ secrets.VERCEL_TOKEN }}"

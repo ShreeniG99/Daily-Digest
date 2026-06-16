@@ -1,0 +1,67 @@
+<!-- @dsCard group="Components" viewport="700x620" name="Content — item card & states" subtitle="The ranked card across new/read/saved, plus empty/loading/error" -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<link rel="stylesheet" href="../../styles.css" />
+<style>
+  body { margin: 0; padding: 24px; background: var(--surface-page); }
+  .stack { display: flex; flex-direction: column; gap: 16px; max-width: 560px; }
+  .pair { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+</style>
+</head>
+<body>
+  <div id="root" class="stack"></div>
+  <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+  <script src="../../_ds_bundle.js"></script>
+  <script type="text/babel">
+    const { ItemCard, EmptyState, Button } = window.DailyDigestDesignSystem_c5ce8c;
+    const now = Math.floor(Date.now() / 1000);
+    const paper = {
+      kind: 'paper', source: 'arXiv', domain: 'ai', score: 11.4, status: 'new',
+      title: 'Attention Is All You Need',
+      author: 'Vaswani et al.', published_ts: now - 3600 * 5,
+      raw_text: 'We propose the Transformer, a new network architecture based solely on attention mechanisms, dispensing with recurrence and convolutions entirely. It generalizes well and trains significantly faster.',
+      tags: ['transformers', 'attention', 'nlp'],
+    };
+    const repo = {
+      kind: 'repo', source: 'GitHub', domain: 'tech', score: 8.2, status: 'saved',
+      title: 'langchain-ai/langchain', author: '· 92k★', published_ts: now - 86400 * 2,
+      raw_text: 'Build context-aware reasoning applications. Composable tools and integrations for developing LLM-powered apps.',
+      tags: ['langchain', 'rag', 'python'],
+    };
+    const news = {
+      kind: 'news', source: 'Hacker News', domain: 'ai', score: 5.0, status: 'read',
+      title: 'Show HN: A static, offline-first reading digest for AI research',
+      published_ts: now - 86400, raw_text: 'A single-user pipeline that ranks AI/tech content against your interests and renders it as scannable cards.',
+      tags: ['pwa', 'tooling'],
+    };
+    function Demo() {
+      return (
+        <React.Fragment>
+          <ItemCard item={paper} />
+          <ItemCard item={repo} />
+          <ItemCard item={news} />
+          <div className="pair">
+            <div style={{ background: 'var(--surface-card)', border: '1px solid var(--border-hairline)', borderRadius: 'var(--radius-lg)' }}>
+              <EmptyState variant="loading" title="Fetching today's digest…">Reading items.json</EmptyState>
+            </div>
+            <div style={{ background: 'var(--surface-card)', border: '1px solid var(--border-hairline)', borderRadius: 'var(--radius-lg)' }}>
+              <EmptyState variant="empty" icon="bookmark" title="Nothing saved yet">Tap the bookmark on any card to keep it here.</EmptyState>
+            </div>
+          </div>
+          <div style={{ background: 'var(--surface-card)', border: '1px solid var(--border-hairline)', borderRadius: 'var(--radius-lg)' }}>
+            <EmptyState variant="error" title="Couldn't load items.json"
+              action={<Button size="sm" variant="secondary" icon="rss">Retry</Button>}>
+              Check that the digest has been generated and the file is reachable.
+            </EmptyState>
+          </div>
+        </React.Fragment>
+      );
+    }
+    ReactDOM.createRoot(document.getElementById('root')).render(<Demo />);
+  </script>
+</body>
+</html>

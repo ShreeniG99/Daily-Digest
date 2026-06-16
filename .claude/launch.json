@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "digest-web",
+      "runtimeExecutable": "C:\\Dev\\Daily-Digest\\.venv\\Scripts\\python.exe",
+      "runtimeArgs": ["-m", "http.server", "8733", "--bind", "127.0.0.1", "--directory", "web"],
+      "port": 8733
+    }
+  ]
+}

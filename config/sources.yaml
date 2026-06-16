@@ -9,7 +9,8 @@
 
 keyword_tiers:
   tier1: [RAG, LLM, transformers, GenAI, SLM, VLM, SaaS, FastAPI, React, Kafka,
-          Docker, Kubernetes, Terraform, LangChain, LangGraph, full-stack]
+          Docker, Kubernetes, Terraform, LangChain, LangGraph, full-stack,
+          GSoC, "Google Summer of Code", "open source contribution"]
   tier2: [AI, machine learning, deep learning, neural network, NLP,
           software engineering, MLOps]
   tier3: [crypto, web3, NFT, no-code, AI marketing]
@@ -40,11 +41,17 @@ brand_boost:
   weight: 8
   companies: [Google, Microsoft, Amazon, Nvidia, OpenAI, Anthropic, Meta, Apple,
               Netflix, Adobe, Salesforce, Atlassian, Databricks, Uber,
-              Flipkart, Razorpay, Swiggy, Zomato]
+              Flipkart, Razorpay, Swiggy, Zomato,
+              # GSoC focus — surface these to the top across all kinds. INCF +
+              # DeepChem are the priority; the rest are the configured GSoC orgs so
+              # their repos rank up too (matched on repo owner / title only).
+              GSoC, "Google Summer of Code", INCF, DeepChem,
+              scikit-learn, mlpack, nilearn, dipy]
 
 news:
   # Hacker News via the Algolia API (reliable, no URL needed — adapter builds the query)
-  hackernews_queries: [AI, LLM, Anthropic, Claude, machine learning, transformers]
+  hackernews_queries: [AI, LLM, Anthropic, Claude, machine learning, transformers,
+                       "Google Summer of Code", GSoC]
   # Blog RSS feeds: a wrong URL fails silently, so these start commented out.
   # Uncomment only after you confirm each one loads in a feed reader.
   rss:
@@ -94,6 +101,13 @@ github:
   topics: [machine-learning, llm, rag, langchain, fastapi]
   min_stars: 300
   pushed_within_days: 30
+  # GSoC-focused organizations — their repos are fetched directly (not by topic)
+  # and surfaced near the top via brand_boost. INCF + DeepChem are the priority;
+  # the rest are AI/DS orgs that take part in GSoC most years. Lower star floor and
+  # a wider recency window so active-but-smaller org repos still appear.
+  orgs: [INCF, deepchem, scikit-learn, mlpack, nilearn, dipy]
+  org_min_stars: 20
+  org_pushed_within_days: 180
 
 opportunities:
   eligibility:
