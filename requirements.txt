@@ -1,10 +1,8 @@
-# Daily Digest — runtime deps for ingestion + publish (the 4 public kinds).
-# Opportunities/OSS scraping deps (scrapegraphai etc.) are intentionally excluded;
-# they are not part of the published web app.
-feedparser
-requests
-PyYAML
-python-dotenv
-youtube-transcript-api
-google-genai
-edge-tts
+feedparser>=6.0.11
+requests>=2.28
+pyyaml>=6.0
+python-dotenv>=1.0
+youtube-transcript-api>=0.6
+kaggle>=1.6
+fastapi>=0.111
+uvicorn[standard]>=0.29

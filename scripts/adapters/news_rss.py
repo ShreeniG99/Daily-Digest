@@ -23,6 +23,8 @@ from ..schema import Item
 
 HN_API = "http://hn.algolia.com/api/v1/search_by_date"
 _TAG_RE = re.compile(r"<[^>]+>")
+_UA = ("Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 "
+       "(KHTML, like Gecko) Chrome/124.0 Safari/537.36")
 
 
 def _strip_html(text: str) -> str:
@@ -83,7 +85,9 @@ class NewsRSSAdapter(SourceAdapter):
     def _fetch_feed(self, url: str, since_ts: float, now: float) -> list[Item]:
         out: list[Item] = []
         try:
-            parsed = feedparser.parse(url)
+            resp = requests.get(url, headers={"User-Agent": _UA}, timeout=20)
+            resp.raise_for_status()
+            parsed = feedparser.parse(resp.content)
         except Exception as exc:  # network / parse failure on one feed
             print(f"  ! feed failed {url}: {exc}")
             return out
@@ -116,7 +120,8 @@ class NewsRSSAdapter(SourceAdapter):
         if since_ts:
             params["numericFilters"] = f"created_at_i>{int(since_ts)}"
         try:
-            resp = requests.get(HN_API, params=params, timeout=20)
+            resp = requests.get(HN_API, params=params, timeout=20,
+                                headers={"User-Agent": _UA})
             resp.raise_for_status()
             hits = resp.json().get("hits", [])
         except Exception as exc:

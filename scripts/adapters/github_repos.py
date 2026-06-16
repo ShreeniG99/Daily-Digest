@@ -46,7 +46,8 @@ class GitHubReposAdapter(SourceAdapter):
         pushed_date = datetime.fromtimestamp(
             now - within_days * 86400, tz=timezone.utc).strftime("%Y-%m-%d")
 
-        headers = {"Accept": "application/vnd.github+json"}
+        headers = {"Accept": "application/vnd.github+json",
+                   "User-Agent": "DailyDigest/1.0"}
         token = os.environ.get("GITHUB_TOKEN")
         if token:
             headers["Authorization"] = f"Bearer {token}"

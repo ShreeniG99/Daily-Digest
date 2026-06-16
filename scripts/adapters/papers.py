@@ -21,13 +21,14 @@ import requests
 from .base import SourceAdapter
 from ..schema import Item
 
-ARXIV_API = "http://export.arxiv.org/api/query"
+ARXIV_API = "https://export.arxiv.org/api/query"
 OPENALEX_API = "https://api.openalex.org/works"
 S2_API = "https://api.semanticscholar.org/graph/v1/paper/search"
 EUROPEPMC_API = "https://www.ebi.ac.uk/europepmc/webservices/rest/search"
 
 ARXIV_MAX = 20   # results per domain category query
 PAGE = 10        # results per keyword query for the other three sources
+_HEADERS = {"User-Agent": "DailyDigest/1.0 (research aggregator; contact via GitHub)"}
 
 # Minimum seconds between successive requests to the same host. arXiv asks for
 # <=1 req / 3s; Semantic Scholar's free shared pool rate-limits bursts. OpenAlex
@@ -149,7 +150,9 @@ class PapersAdapter(SourceAdapter):
         try:
             resp = _get(ARXIV_API, {
                 "search_query": query, "sortBy": "submittedDate",
-                "sortOrder": "descending", "max_results": ARXIV_MAX}, timeout=60)
+                "sortOrder": "descending", "max_results": ARXIV_MAX},
+                headers=_HEADERS, timeout=30)
+            resp.raise_for_status()
             feed = feedparser.parse(resp.content)
         except Exception as exc:
             print(f"  ! arxiv query failed ({query[:40]}...): {exc}")
@@ -168,7 +171,9 @@ class PapersAdapter(SourceAdapter):
         if mailto:
             params["mailto"] = mailto
         try:
-            results = _get(OPENALEX_API, params).json().get("results", [])
+            resp = requests.get(OPENALEX_API, params=params, headers=_HEADERS, timeout=30)
+            resp.raise_for_status()
+            results = resp.json().get("results", [])
         except Exception as exc:
             print(f"  ! openalex query failed ('{term}'): {exc}")
             return []
@@ -191,7 +196,9 @@ class PapersAdapter(SourceAdapter):
             data = _get(S2_API, {
                 "query": term, "limit": PAGE,
                 "fields": "title,abstract,authors,venue,externalIds,publicationDate,url"},
-                headers=headers).json().get("data", [])
+                headers=_HEADERS, timeout=30)
+            resp.raise_for_status()
+            data = resp.json().get("data", [])
         except Exception as exc:
             print(f"  ! semantic scholar query failed ('{term}'): {exc}")
             return []
@@ -209,8 +216,10 @@ class PapersAdapter(SourceAdapter):
         try:
             results = _get(EUROPEPMC_API, {
                 "query": term, "format": "json", "pageSize": PAGE,
-                "resultType": "core", "sort": "P_PDATE_D desc"}
-                ).json().get("resultList", {}).get("result", [])
+                "resultType": "core", "sort": "P_PDATE_D desc"},
+                headers=_HEADERS, timeout=30)
+            resp.raise_for_status()
+            results = resp.json().get("resultList", {}).get("result", [])
         except Exception as exc:
             print(f"  ! europepmc query failed ('{term}'): {exc}")
             return []

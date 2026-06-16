@@ -7,6 +7,7 @@ then prints a ranked summary table from the store.
 """
 from __future__ import annotations
 
+import os
 import argparse
 import sys
 import time
@@ -16,6 +17,7 @@ import yaml
 from dotenv import load_dotenv
 
 from . import rank, store
+from .export import export_items
 from .adapters.news_rss import NewsRSSAdapter
 from .adapters.youtube import YouTubeAdapter
 from .adapters.papers import PapersAdapter
@@ -160,6 +162,26 @@ def main() -> None:
     targets = KINDS if args.target == "all" else [args.target]
     for kind in targets:
         run_kind(kind, cfg, args.since)
+
+    # Always refresh the JSON export so the web UI stays current.
+    export_items()
+
+    # Optionally notify the local UI via webhook (only if server is running).
+    _notify_local()
+
+
+def _notify_local() -> None:
+    """Best-effort POST to the local UI server so it broadcasts a push event.
+    Silently skipped if the server isn't running."""
+    import urllib.request, urllib.error
+    secret = os.environ.get("WEBHOOK_SECRET", "localdev")
+    try:
+        req = urllib.request.Request(
+            f"http://localhost:8000/api/webhook?secret={secret}",
+            method="POST")
+        urllib.request.urlopen(req, timeout=2)
+    except Exception:
+        pass  # server not running — that's fine
 
 
 if __name__ == "__main__":

@@ -1,4 +1,4 @@
-﻿daily-digest.db
+.daily-digest.db
 .env
 .venv/
 __pycache__/
@@ -6,11 +6,6 @@ __pycache__/
 profile/
 # deep-rep output — tailored resumes with PII, local-only
 reports/
-.gstack/
-# Web build artifacts — regenerated each run by scripts.publish and shipped in the
-# Pages artifact. The rolling 7-day archive (web/data/archive.json) IS tracked so the
-# daily Action can read prior days for weekly highlights.
-web/items.json
-web/week.json
-# Neural narration MP3s — regenerated each build, shipped in the Vercel deploy.
-web/audio/
+# frontend build artifacts
+app/frontend/node_modules/
+app/frontend/dist/

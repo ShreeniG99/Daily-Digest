@@ -62,7 +62,8 @@ class YouTubeAdapter(SourceAdapter):
     def fetch(self, cfg: dict, state: dict) -> list[Item]:
         key = os.environ.get("YOUTUBE_API_KEY")
         if not key:
-            raise RuntimeError("YOUTUBE_API_KEY missing from environment (.env)")
+            print("  ! YOUTUBE_API_KEY not set — skipping youtube adapter")
+            return []
 
         since_ts = state.get("since_ts", 0.0)
         now = time.time()
