@@ -90,7 +90,7 @@ with `published_ts` within 7 days, deduped by `id`. Committed each run.
   - `repo` → `https://opengraph.githubassets.com/1/<owner>/<repo>` (GitHub social card).
   - `news` → image already present in the RSS entry (captured by the news adapter into
     `extra["image"]`); og:image fetch fallback only for the top few items.
-  - `paper` → none → frontend placeholder.
+  - `paper` → none → text-only card (no media region).
 - **`scripts/adapters/news_rss.py` (edit)** — capture `media:thumbnail` / `enclosure` /
   `media:content` from feedparser entries into `extra["image"]`. Surgical; no behavior
   change when absent.
@@ -104,8 +104,10 @@ with `published_ts` within 7 days, deduped by `id`. Committed each run.
   loader. Expose `items`, `todo`, and lazy `week.json`. Loading + error states
   (reuse the designed `EmptyState` "Couldn't load items.json").
 - **`cards.jsx` `Media` (edit)** — render real `<img src={item.image}>` across
-  thumb/feature/hero/figure variants; fall back to the current kind-colored
-  placeholder when `image` is absent or fails to load.
+  thumb/feature/hero/figure variants. When `image` is absent **or fails to load**
+  (`onError`), render **nothing** — the media region collapses and the card lays out
+  as a clean text-only card. No blank space, no placeholder block. The card layout
+  must reflow gracefully (text spans full width) when there is no media.
 - **Per-item "why it matters" (edit `cards.jsx` / `reading.jsx`)** — show `item.why`
   as a single quiet line on the card and in the reading view.
 - **Daily to-do panel (new in `App.jsx`)** — a single "Today's to-do" card shown at the
@@ -139,7 +141,7 @@ relative asset paths fixed (no `../../assets`). Assembled by the publish/deploy 
 
 ## Error handling
 - Missing/failed Gemini → omit `todo`/`why`, app renders cleanly.
-- Image URL 404 → `<img onError>` reveals the placeholder.
+- Image URL 404 / absent → media region collapses; card renders text-only (no blank space).
 - `items.json` fetch failure → `EmptyState` "Couldn't load items.json".
 - No Web Speech support → hide the TTS bar (feature-detect).
 - Empty archive on first run → app shows today's items only; weekly view empty state.
@@ -152,6 +154,19 @@ relative asset paths fixed (no `../../assets`). Assembled by the publish/deploy 
 - Open `web/index.html` locally: images render, TTS reads aloud, save persists across
   reload, a >30-day stub purges, WhatsApp link/`navigator.share` fires, weekly view loads.
 - Workflow validated via `workflow_dispatch` once before relying on the cron.
+
+## Enhancements (added at owner's invitation)
+
+1. **Installable PWA + offline reading.** The readme already frames this as a PWA, and
+   the owner reads on a phone. Add a `manifest.webmanifest` (name, icons from
+   `logo-mark.png`, theme color `#F0E6CE`) so it installs to the home screen, plus a
+   small service worker: **cache-first** for the app shell (fast repeat opens, works on
+   the train), **network-first with cache fallback** for `items.json` / `week.json` (so
+   the daily refresh always wins when online, but yesterday's digest is still readable
+   offline). Feature-detected; no effect where unsupported.
+2. **Share the daily to-do too.** The single "Today's to-do" card gets the same
+   WhatsApp / native-share action as items — one tap to send yourself (or a friend) the
+   day's action. Trivial reuse of the share helper.
 
 ## Out of scope
 - Live backend / server-side state (no FastAPI; the `app/backend/` stub is unused).
