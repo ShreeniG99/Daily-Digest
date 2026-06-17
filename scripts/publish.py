@@ -260,10 +260,17 @@ def main() -> None:
 
     todo = enrich(today)
 
-    # Neural Indian-voice narration (edge-tts) baked from title + summary.
-    from .audio import synthesize
-    n_audio = synthesize(today, WEB / "audio")
-    print(f"  + narrated {n_audio}/{len(today)} items (en-IN neural voice)")
+    # Neural Indian-voice narration (edge-tts) baked from title + summary. Optional:
+    # if edge-tts isn't installed or synthesis fails, ship without audio (the app
+    # falls back to the browser voice) rather than aborting the whole build.
+    try:
+        from .audio import synthesize
+        n_audio = synthesize(today, WEB / "audio")
+        print(f"  + narrated {n_audio}/{len(today)} items (en-IN neural voice)")
+    except ImportError as exc:
+        print(f"  ~ edge-tts not installed ({exc}) — shipping without narration.")
+    except Exception as exc:  # never let audio break the daily build
+        print(f"  ~ narration step failed ({exc}) — shipping without audio.")
 
     archive = merge_archive(load_archive(), today)
     DATA_DIR.mkdir(parents=True, exist_ok=True)

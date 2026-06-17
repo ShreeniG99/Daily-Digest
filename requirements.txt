@@ -6,3 +6,6 @@ youtube-transcript-api>=0.6
 kaggle>=1.6
 fastapi>=0.111
 uvicorn[standard]>=0.29
+# Build-time enrichment for the published digest (scripts/publish.py + audio.py):
+google-genai>=1.0      # teaching summaries + daily to-do
+edge-tts>=7.0          # neural Indian-voice narration
