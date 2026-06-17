@@ -110,8 +110,6 @@ function ReadingView({ item, onClose, onSave, onOpenSource }) {
             <span className="dd-chip"><LineIcon name="clock" size={14} /> {relTime(item.published_ts)}</span>
             <span className="dd-chip"><LineIcon name="eye" size={14} /> {readMins(summary)} min read</span>
             {deadline && <span className="dd-chip"><LineIcon name="calendar" size={14} /> {deadline}</span>}
-            <span className="dd-spacer" />
-            <ScoreSignal score={item.score} max={12} />
           </div>
 
           <ListenBar item={item} />
@@ -132,12 +130,6 @@ function ReadingView({ item, onClose, onSave, onOpenSource }) {
             <p className="dd-reader__note">
               This is an AI summary written for you. Open the original to read it in full at the source.
             </p>
-
-            {(item.tags || []).length > 0 && (
-              <div className="dd-reader__tags">
-                {item.tags.map((t) => <Tag key={t} keyword>{t}</Tag>)}
-              </div>
-            )}
 
             <div className="dd-reader__cta">
               <Button onClick={() => onOpenSource(item)}>

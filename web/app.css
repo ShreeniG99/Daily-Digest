@@ -173,8 +173,8 @@
 .dd-row[data-status="read"] .dd-row__titlebtn { color: var(--text-secondary); }
 .dd-row[data-status="saved"] { border-color: color-mix(in oklab, var(--ochre) 40%, var(--border-hairline)); }
 .dd-row__media {
-  position: relative; flex: none; align-self: stretch;
-  width: clamp(96px, 28%, 232px); min-height: 132px;
+  position: relative; flex: none; align-self: flex-start;
+  width: clamp(76px, 22%, 132px); aspect-ratio: 1 / 1; min-height: 0;
   border: none; padding: 0; cursor: pointer; overflow: hidden;
   border-radius: var(--radius-md); background: var(--surface-sunken);
 }
@@ -286,7 +286,7 @@
 /* very narrow phones: shrink the scan thumbnail a touch */
 @media (max-width: 419px) {
   .dd-row { gap: var(--space-3); padding: var(--space-3); }
-  .dd-row__media { width: 86px; min-height: 110px; }
+  .dd-row__media { width: 72px; }
 }
 
 /* ====================================================================
@@ -325,7 +325,7 @@
   /* full-width scan cards — give them room to breathe on wide screens */
   .dd-feed { max-width: 1000px; }
   .dd-feature { min-height: 380px; }
-  .dd-row__media { width: clamp(180px, 26%, 264px); }
+  .dd-row__media { width: clamp(104px, 16%, 148px); }
   .dd-row { padding: var(--space-5); gap: var(--space-5); }
 
   .dd-reader__hero { height: 300px; }
@@ -345,7 +345,8 @@
    media region entirely), so there is never any blank space. */
 .dd-img { display: block; width: 100%; height: 100%; object-fit: cover; }
 .dd-img--feature { position: absolute; inset: 0; z-index: 0; }
-.dd-img--thumb { position: absolute; inset: 0; }
+/* Whole image shown (no crop), letterboxed inside the square media box. */
+.dd-img--thumb { position: absolute; inset: 0; object-fit: contain; }
 .dd-img--hero { position: absolute; inset: 0; z-index: 0; }
 
 /* Feature with no image -> calm text feature on card surface (dark ink). */
@@ -477,3 +478,13 @@
 .dd-chrow__name { display: inline-flex; align-items: center; gap: var(--space-2); font-family: var(--font-sans); font-size: var(--text-sm); font-weight: 600; color: var(--text-primary); min-width: 0; overflow: hidden; text-overflow: ellipsis; }
 .dd-chrow__rm { background: none; border: none; cursor: pointer; color: var(--text-muted); padding: 5px; border-radius: 6px; flex: none; }
 .dd-chrow__rm:hover { background: var(--surface-hover); color: #c0392b; }
+
+/* ---------------- Card polish (tasks 4 / 7) ---------------- */
+/* Solid kind badge (reading view): force white label text so it isn't the same
+   colour as its own background. !important beats the DS bundle's runtime-injected
+   style, which is appended after this sheet. */
+.dd-badge--solid { color: #fff !important; }
+/* Never let long titles / urls / meta overflow the card. */
+.dd-row__titlebtn, .dd-row__meta, .dd-why, .dd-reader__title { overflow-wrap: anywhere; word-break: break-word; }
+.dd-row__meta { min-width: 0; }
+.dd-row__meta > span { min-width: 0; overflow: hidden; text-overflow: ellipsis; }

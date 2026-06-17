@@ -10,6 +10,10 @@ const KINDS = [
   { value: 'opportunity', label: 'Opportunities', icon: 'briefcase' },
 ];
 
+// Today's digest shows items published within this many days; older items still
+// appear in Weekly highlights.
+const TODAY_DAYS = 2;
+
 function useTheme() {
   const [night, setNight] = useState(() => localStorage.getItem('dd-theme') === 'night');
   useEffect(() => {
@@ -66,7 +70,13 @@ function App() {
     return () => window.removeEventListener('keydown', onKey);
   }, [reading]);
 
-  const feed = useMemo(() => withStatus((data && data.items) || []), [data, tick]);
+  // Today's feed = only fresh items (older ranked items live in Weekly highlights).
+  // Filtering here keeps the sidebar/kind counts consistent with what's shown.
+  const feed = useMemo(() => {
+    const floor = Date.now() / 1000 - TODAY_DAYS * 86400;
+    return withStatus((data && data.items) || [])
+      .filter((i) => !i.published_ts || i.published_ts >= floor);
+  }, [data, tick]);
   const savedList = useMemo(() => withStatus(window.DDStore.savedItems()), [tick]);
   const weekList = useMemo(() => withStatus(week || []), [week, tick]);
   const todo = (data && data.todo) || '';
@@ -122,8 +132,6 @@ function App() {
   if (data.error) return <ErrorScreen night={night} setNight={setNight} />;
 
   const showTodo = todo && (view === 'all' || view === 'unread') && kind === 'all' && !query.trim();
-  const featured = visible[0];
-  const rest = visible.slice(1);
 
   return (
     <div className="dd-app dd-paper" data-nav={navOpen ? 'open' : 'closed'}>
@@ -144,10 +152,7 @@ function App() {
             ? <Feed.Empty view={view} />
             : (
               <div className="dd-feed">
-                {featured && (
-                  <FeatureCard item={featured} onOpen={openReading} onRead={onRead} onSave={onSave} />
-                )}
-                {rest.map((item) => (
+                {visible.map((item) => (
                   <RowCard key={item.id} item={item} nowReading={readingLive && readingLive.id === item.id}
                     onOpen={openReading} onRead={onRead} onSave={onSave} onOpenSource={onOpenSource} />
                 ))}

@@ -4,7 +4,7 @@
    always win when the reader is online; the cache is only a fallback for offline
    reading. Everything successfully fetched is cached so a later offline open of
    the app shell + last digest still works. */
-const CACHE = 'dd-cache-v6';
+const CACHE = 'dd-cache-v9';
 const SHELL = [
   './', 'index.html', 'app.css', 'styles.css', 'ds-base.js', '_ds_bundle.js',
   'share.js', 'saved.js', 'tts.js', 'data.js',

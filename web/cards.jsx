@@ -130,7 +130,7 @@ function FeatureCard({ item, onOpen, onRead, onSave }) {
 /* Full-width scan card: image left (only when present), content right. */
 function RowCard({ item, onOpen, onRead, onSave, onOpenSource, nowReading }) {
   const DS = window.DailyDigestDesignSystem_c5ce8c;
-  const { Badge, Tag, ScoreSignal, IconButton } = DS;
+  const { Badge, IconButton } = DS;
   const read = item.status === 'read';
   const saved = item.status === 'saved';
   const [imgOk, setImgOk] = useCardState(!!item.image);
@@ -146,9 +146,6 @@ function RowCard({ item, onOpen, onRead, onSave, onOpenSource, nowReading }) {
       <div className="dd-row__body">
         <div className="dd-row__top">
           <Badge kind={item.kind} />
-          {item.domain && <Tag domain={item.domain}>{item.domain}</Tag>}
-          <span className="dd-spacer" />
-          <ScoreSignal score={item.score} max={12} />
         </div>
         <h3 className="dd-row__title">
           <button className="dd-row__titlebtn" onClick={() => onOpen(item)}>{item.title}</button>
@@ -160,12 +157,8 @@ function RowCard({ item, onOpen, onRead, onSave, onOpenSource, nowReading }) {
           <span className="dd-dot" /><span>{readMins(item.summary || item.raw_text)} min</span>
           {item.extra && item.extra.deadline && (<><span className="dd-dot" /><span>due {item.extra.deadline}</span></>)}
         </div>
-        {(item.summary || item.raw_text) && <p className="dd-row__excerpt">{item.summary || item.raw_text}</p>}
         <WhyLine text={item.why} />
         <div className="dd-row__foot">
-          <div className="dd-row__tags">
-            {(item.tags || []).slice(0, 3).map((t) => <Tag key={t} keyword>{t}</Tag>)}
-          </div>
           <span className="dd-spacer" />
           <ShareButton item={item} />
           <IconButton icon={read ? 'check-circle' : 'check'} label={read ? 'Read' : 'Mark read'}
