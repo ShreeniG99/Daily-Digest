@@ -37,10 +37,17 @@ python -m http.server 8733 --directory web # then open http://127.0.0.1:8733
 GitHub Actions does the heavy daily build (ingest → Gemini summaries → edge-tts audio)
 and deploys the result to Vercel; Vercel also hosts the `/api/channels` function.
 
-1. **Create the Vercel project** — import the repo at vercel.com (framework preset
-   "Other"; `vercel.json` already sets the static root to `web/`). Then grab the project
-   + org ids: run `npx vercel link` locally, or copy them from Vercel → Project →
-   Settings → General.
+1. **Create the Vercel project** — import the repo at vercel.com. Set **Framework
+   Preset → "Other"** (the repo also forces this via `vercel.json` `framework: null`, so
+   Vercel serves `web/` statically and never tries a Python/FastAPI build). Then get the
+   org + project ids:
+   ```bash
+   npm i -g vercel
+   vercel link            # log in + pick the project you just created
+   cat .vercel/project.json   # copy "orgId" and "projectId"
+   ```
+   Vercel's own git auto-deploy is disabled in `vercel.json` (`git.deploymentEnabled`),
+   so the GitHub Action is the only deployer — no empty deploys on push.
 2. **GitHub → Settings → Secrets and variables → Actions** — add:
    - `GEMINI_API_KEY` — teaching summaries + daily to-do (free tier is plenty).
    - `YOUTUBE_API_KEY` — videos adapter.

@@ -37,7 +37,12 @@ function App() {
   const [reading, setReading] = useState(null);
   const [channelsOpen, setChannelsOpen] = useState(false);
 
-  useEffect(() => { window.DDStore.purge(); window.DD_READY.then((d) => setData(d)); }, []);
+  useEffect(() => {
+    try { window.DDStore.purge(); } catch (e) { /* never block the first render */ }
+    Promise.resolve(window.DD_READY)
+      .then((d) => setData(d || { error: 'no data', items: [], todo: '' }))
+      .catch((e) => setData({ error: String(e), items: [], todo: '' }));
+  }, []);
   useEffect(() => {
     if (view === 'week' && week === null) window.DD_LOAD_WEEK().then((items) => setWeek(items));
   }, [view, week]);
