@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-16T11:55:59Z",
+  "generated_at": "2026-06-17T06:24:24Z",
   "count": 80,
   "items": [
     {
@@ -42,7 +42,7 @@
       "author": "jackjayd",
       "published_ts": 1781600775.0,
       "raw_text": "I built Opencom, an open-source alternative to Intercom for customer support chat, with knowledge-base and AI support, and mobile apps for push notifications etc.It includes a web widget, agent inbox, customer/company profiles, conversations, realtime messaging, AI support and a live demo. The aim is to provide a simple, self-hostable foundation for teams that want Intercom support without being locked into a large SaaS platform.Salesforce has just announced its acquisition of Fin, formerly Intercom, for around $3.6bn. Customer communication is important infrastructure, and I think there shoul",
-      "score": 16.98,
+      "score": 16.88,
       "status": "new",
       "domain": "ai",
       "tags": [],
@@ -61,7 +61,7 @@
       "author": "Anzhe Xie, Weihang Su, Yujia Zhou, Yiqun Liu, Qingyao Ai",
       "published_ts": 1781546201.0,
       "raw_text": "Meta-analysis is a demanding form of evidence synthesis that combines literature retrieval, PI/ECO-guided study selection, and statistical aggregation. Its structured, verifiable workflow makes it an ideal substrate for evaluating systematic scientific reasoning, yet existing benchmarks lack ground truth across the full retrieval-screening-synthesis pipeline. We introduce MetaSyn, a dataset of 442 expert-curated meta-analyses from Nature Portfolio journals. Each entry pairs a research question with PI/ECO criteria, a retrieval corpus of 140k PubMed articles, verified positive studies, hard neg",
-      "score": 16.9,
+      "score": 16.8,
       "status": "new",
       "domain": "ai",
       "tags": [],
@@ -79,7 +79,7 @@
       "author": "NirDiamant",
       "published_ts": 1781214947.0,
       "raw_text": "50+ tutorials and implementations for Generative AI Agent techniques, from basic conversational bots to complex multi-agent systems. agentic-ai agents ai ai-agents autonomous-agents genai generative-ai langchain langgraph llm llms machine-learning mcp multi-agent multi-agent-systems openai python rag tutorials",
-      "score": 16.52,
+      "score": 16.47,
       "status": "new",
       "domain": "ai",
       "tags": [
@@ -119,7 +119,7 @@
       "author": "",
       "published_ts": 1781384537.0,
       "raw_text": "Add a Google Gemini / Vertex AI provider adapter for auto-instrumentation — open-source issue in nimonkaranurag/agentpolicylayer. Labels: enhancement, help wanted. ## Problem\n\n`auto_instrument` patches the SDKs you have installed, but the `PROVIDER_REGISTRY` (`apl/instrumentation/providers/__init__.py`) only covers OpenAI, Anthropic, LiteLLM, LangChain, and watsonx. There's no adapter for Google's Gemini SDK (`google-genai`) or Vertex AI, so apps calling Gemini directly bypass policies entirely — no input/output enforcement, no streaming redaction.\n\n## Proposed solution\n\nNew `apl/instrumentati",
-      "score": 15.69,
+      "score": 15.62,
       "status": "new",
       "domain": "tech",
       "tags": [
@@ -143,7 +143,7 @@
       "author": "StackLessons",
       "published_ts": 1781609241.0,
       "raw_text": "Master document extraction for RAG pipelines — learn which Python loader to use for each file format and avoid the silent failures ...",
-      "score": 15.0,
+      "score": 14.89,
       "status": "new",
       "domain": "ai",
       "tags": [],
@@ -158,7 +158,7 @@
       "author": "microsoft",
       "published_ts": 1781575327.0,
       "raw_text": "A modular graph-based Retrieval-Augmented Generation (RAG) system gpt gpt-4 gpt4 graphrag llm llms rag",
-      "score": 14.94,
+      "score": 14.84,
       "status": "new",
       "domain": "ai",
       "tags": [
@@ -186,7 +186,7 @@
       "author": "",
       "published_ts": 1781306084.0,
       "raw_text": "[RFC]: Support NVIDIA Alpamayo 1.5 (Reasoning VLA for Autonomous Driving) in vLLM-Omni — open-source issue in vllm-project/vllm-omni. Labels: help wanted, world model. \n## Motivation\n\n[Alpamayo 1.5](https://github.com/NVlabs/alpamayo1.5) is a 10B-parameter\n**Vision-Language-Action (VLA)** driving-reasoning model released by NVIDIA in\n2026 (weights: [`nvidia/Alpamayo-1.5-10B`](https://huggingface.co/nvidia/Alpamayo-1.5-10B)).\nIts core properties make it a natural fit for vLLM-Omni:\n\n1. **VLM backbone + Action Expert Mixture-of-Transformers (MoT)** — structurally\n   very close to the already-sup",
-      "score": 14.6,
+      "score": 14.54,
       "status": "new",
       "domain": "tech",
       "tags": [
@@ -210,7 +210,7 @@
       "author": "chopratejas",
       "published_ts": 1781584322.0,
       "raw_text": "Compress tool outputs, logs, files, and RAG chunks before they reach the LLM. 60-95% fewer tokens, same answers. Library, proxy, MCP server. agent ai anthropic claude-code compression context-engineering context-window cursor fastapi langchain llm mcp openai prompt-engineering proxy python rag token-optimization tokens typescript",
-      "score": 13.96,
+      "score": 13.86,
       "status": "new",
       "domain": "ai",
       "tags": [
@@ -251,7 +251,7 @@
       "author": "langchain-ai",
       "published_ts": 1781582029.0,
       "raw_text": "Build resilient agents. agents ai ai-agents chatgpt deepagents enterprise framework gemini generative-ai langchain langgraph llm multiagent open-source openai pydantic python rag",
-      "score": 13.95,
+      "score": 13.85,
       "status": "new",
       "domain": "ai",
       "tags": [
@@ -290,7 +290,7 @@
       "author": "langchain-ai",
       "published_ts": 1781568767.0,
       "raw_text": "The agent engineering platform. agents ai ai-agents anthropic chatgpt deepagents enterprise framework gemini generative-ai langchain langgraph llm multiagent open-source openai pydantic python rag typescript",
-      "score": 13.93,
+      "score": 13.84,
       "status": "new",
       "domain": "ai",
       "tags": [
@@ -331,7 +331,7 @@
       "author": "IBM",
       "published_ts": 1781562528.0,
       "raw_text": "An AI Gateway, registry, and proxy that sits in front of any MCP, A2A, or REST/gRPC APIs, exposing a unified endpoint with centralized discovery, guardrails and management. Optimizes Agent & Tool calling, and supports plugins. agents ai api-gateway asyncio authentication-middleware devops docker fastapi federation gateway generative-ai jwt kubernetes llm-agents mcp model-context-protocol observability prompt-engineering python tools",
-      "score": 13.92,
+      "score": 13.83,
       "status": "new",
       "domain": "ai",
       "tags": [
@@ -372,7 +372,7 @@
       "author": "plastic-labs",
       "published_ts": 1781559852.0,
       "raw_text": "Memory library for building stateful agents agent-memory ai ai-agents ai-memory anthropic context-engineering continual-learning embeddings fastapi langchain llm long-term-memory memory openai personalization python rag state-management typescript vector-database",
-      "score": 13.92,
+      "score": 13.82,
       "status": "new",
       "domain": "ai",
       "tags": [
@@ -413,7 +413,7 @@
       "author": "MODSetter",
       "published_ts": 1781484648.0,
       "raw_text": "An open source, privacy focused alternative to NotebookLM for teams with no data limits. Join our Discord: https://discord.gg/ejRNvftDp9 agent agents ai chrome-extension extension fastapi langchain langgraph nextjs notebooklm ollama perplexity python rag typescript",
-      "score": 13.81,
+      "score": 13.73,
       "status": "new",
       "domain": "ai",
       "tags": [
@@ -449,7 +449,7 @@
       "author": "pathwaycom",
       "published_ts": 1781095796.0,
       "raw_text": "Ready-to-run cloud templates for RAG, AI pipelines, and enterprise search with live data. 🐳Docker-friendly.⚡Always in sync with Sharepoint, Google Drive, S3, Kafka, PostgreSQL, real-time data APIs, and more. chatbot hugging-face llm llm-local llm-prompting llm-security llmops machine-learning open-ai pathway rag real-time retrieval-augmented-generation vector-database vector-index",
-      "score": 13.43,
+      "score": 13.38,
       "status": "new",
       "domain": "ai",
       "tags": [
@@ -485,7 +485,7 @@
       "author": "matt_d",
       "published_ts": 1779587987.0,
       "raw_text": "",
-      "score": 13.04,
+      "score": 13.03,
       "status": "new",
       "domain": "ai",
       "tags": [],
@@ -504,7 +504,7 @@
       "author": "CodinCloud",
       "published_ts": 1781587804.0,
       "raw_text": "Struggling with the Databricks Generative AI Engineer Associate certification? In this video, we break down Question 59 from our ...",
-      "score": 12.96,
+      "score": 12.86,
       "status": "new",
       "domain": "ai",
       "tags": [],
@@ -519,7 +519,7 @@
       "author": "fastapi",
       "published_ts": 1781578255.0,
       "raw_text": "Full stack, modern web application template. Using FastAPI, React, SQLModel, PostgreSQL, Docker, GitHub Actions, automatic HTTPS and more. backend chakra-ui docker fastapi frontend json json-schema jwt letsencrypt openapi postgresql python react sqlmodel swagger tanstack-query tanstack-router traefik typescript",
-      "score": 12.95,
+      "score": 12.85,
       "status": "new",
       "domain": "ai",
       "tags": [
@@ -559,7 +559,7 @@
       "author": "",
       "published_ts": 1781552772.0,
       "raw_text": "[Contributor] RAG-powered Document Q&A Agent using uAgents + Langchain + Gemini — open-source issue in fetchai/innovation-lab-examples. Labels: good first issue, help wanted, gssoc26, level3. ### Task description\n\n## Agent Proposal\n\n**Proposed folder:** `contributors/rag-document-qa-agent/`\n**Category:** `RAG`, `LLM`, `Integration`\n**Difficulty:** Intermediate\n\n---\n\n## What this agent does\n\nA Retrieval-Augmented Generation (RAG) agent that:\n- Accepts a PDF or plain-text document as input\n- Chunks and embeds it using HuggingFace sentence-transformers\n- Stores vectors in ChromaDB\n- Answers natur",
-      "score": 12.91,
+      "score": 12.81,
       "status": "new",
       "domain": "tech",
       "tags": [
@@ -585,7 +585,7 @@
       "author": "xerrors",
       "published_ts": 1781499837.0,
       "raw_text": "结合知识库、知识图谱管理的 多租户 Agent Harness 平台。 An agent harness that integrates a LightRAG knowledge base and knowledge graphs. Build with LangChain + Vue + FastAPI, support DeepAgents、MinerU PDF、Neo4j 、MCP. docker fastapi harness kbqa kgqa llms neo4j rag vue",
-      "score": 12.83,
+      "score": 12.75,
       "status": "new",
       "domain": "ai",
       "tags": [
@@ -615,7 +615,7 @@
       "author": "",
       "published_ts": 1781497813.0,
       "raw_text": "The batch method from ChatModels and all the Runnables does not really support the OpenAI batch API. — open-source issue in langchain-ai/langchain. Labels: help wanted, openai, external. ### Checked other resources\r\n\r\n- [X] I added a very descriptive title to this issue.\r\n- [X] I searched the LangChain documentation with the integrated search.\r\n- [X] I used the GitHub search to find a similar question and didn't find it.\r\n- [X] I am sure that this is a bug in LangChain rather than my code.\r\n- [X] The bug is not resolved by updating to the latest stable version of LangChain (or the specific int",
-      "score": 12.83,
+      "score": 12.74,
       "status": "new",
       "domain": "tech",
       "tags": [
@@ -640,7 +640,7 @@
       "author": "",
       "published_ts": 1781497811.0,
       "raw_text": "openai: `bind_tools` not callable after `with_structured_output` — open-source issue in langchain-ai/langchain. Labels: help wanted, investigate, openai, external. ### Checked other resources\r\n\r\n- [X] I added a very descriptive title to this issue.\r\n- [X] I searched the LangChain documentation with the integrated search.\r\n- [X] I used the GitHub search to find a similar question and didn't find it.\r\n- [X] I am sure that this is a bug in LangChain rather than my code.\r\n- [X] The bug is not resolved by updating to the latest stable version of LangChain (or the specific integration package).\r\n\r\n#",
-      "score": 12.83,
+      "score": 12.74,
       "status": "new",
       "domain": "tech",
       "tags": [
@@ -673,6 +673,77 @@
       "extra": {}
     },
     {
+      "id": "9c02b03931f40d60",
+      "kind": "opportunity",
+      "source": "GitHub Issues",
+      "title": "feat: language parity for require_approval approval chains (TypeScript, .NET, Rust, Go) (microsoft/agent-governance-toolkit)",
+      "url": "https://github.com/microsoft/agent-governance-toolkit/issues/3083",
+      "author": "",
+      "published_ts": 1781651039.0,
+      "raw_text": "feat: language parity for require_approval approval chains (TypeScript, .NET, Rust, Go) — open-source issue in microsoft/agent-governance-toolkit. Labels: enhancement, help wanted, needs-review:MEDIUM. ## Summary\n\n#2478 adds a `require_approval` verdict plus the approval-chain execution layer (human, LLM judge, and webhook approvers, action binding per ADR-0030, configurable timeouts, and audit linkage) to the **Python** PolicyEvaluator and `govern()`. This issue tracks bringing the same approval-chain execution to the other AGT language SDKs, so governance behavior stays consistent across the",
+      "score": 11.96,
+      "status": "new",
+      "domain": "tech",
+      "tags": [
+        "enhancement",
+        "help wanted",
+        "needs-review:MEDIUM"
+      ],
+      "extra": {
+        "deadline": "",
+        "company": "microsoft/agent-governance-toolkit",
+        "role": "open-source",
+        "apply_url": "https://github.com/microsoft/agent-governance-toolkit/issues/3083",
+        "eligible": true
+      }
+    },
+    {
+      "id": "9f14024fd5f7e310",
+      "kind": "youtube",
+      "source": "Kreator's Classroom ",
+      "title": "Fine-Tuning LLMs | Theory + Practical in Google Colab | DistilGPT2, Hugging Face &amp; Transformers",
+      "url": "https://www.youtube.com/watch?v=onEIHetNRj4",
+      "author": "Kreator's Classroom ",
+      "published_ts": 1781634632.0,
+      "raw_text": "FREE Google Colab Notebook: https://github.com/kkokay07/LLM_adaptation/blob/main/Finetuning.ipynb Want to customize Large ...",
+      "score": 11.93,
+      "status": "new",
+      "domain": "ai",
+      "tags": [],
+      "extra": {}
+    },
+    {
+      "id": "968b35e68efb5617",
+      "kind": "opportunity",
+      "source": "GSoC",
+      "title": "DeepChem",
+      "url": "https://summerofcode.withgoogle.com/programs/2026/organizations/deepchem",
+      "author": "",
+      "published_ts": 1781586862.0995328,
+      "raw_text": "DeepChem. Democratize AI for drug discovery.. We democratize access to AI tools for drug discovery and other scientific applications of deep learning more broadly. We also maintain a collection of scientific datasets for benchmarking and building new deep learning architectures along with an extensive open source collection of scientific machine learning tutorials. DeepChem has a strong educational component and partners with a broad range of academic and governmental institutions. Tech: python, numpy, pytorch, HuggingFace, artificial intelligence, chemistry, biology, materials science, Drug D",
+      "score": 11.86,
+      "status": "new",
+      "domain": "tech",
+      "tags": [
+        "python",
+        "numpy",
+        "pytorch",
+        "HuggingFace",
+        "artificial intelligence",
+        "chemistry",
+        "biology",
+        "materials science",
+        "Drug Discovery"
+      ],
+      "extra": {
+        "deadline": "",
+        "company": "DeepChem",
+        "role": "open-source",
+        "apply_url": "https://summerofcode.withgoogle.com/programs/2026/organizations/deepchem",
+        "eligible": true
+      }
+    },
+    {
       "id": "9a589f3bdb961024",
       "kind": "repo",
       "source": "GitHub",
@@ -681,7 +752,7 @@
       "author": "huggingface",
       "published_ts": 1781584256.0,
       "raw_text": "🤗 Transformers: the model-definition framework for state-of-the-art machine learning models in text, vision, audio, and multimodal models, for both inference and training.  audio deep-learning deepseek gemma glm hacktoberfest llm machine-learning model-hub natural-language-processing nlp pretrained-models python pytorch pytorch-transformers qwen speech-recognition transformer vlm",
-      "score": 11.96,
+      "score": 11.86,
       "status": "new",
       "domain": "ai",
       "tags": [
@@ -721,7 +792,7 @@
       "author": "functionmouse",
       "published_ts": 1781524791.0,
       "raw_text": "tl;dr FOSS is the biggest threat to the largest new economic sector, so everything that economic sector does should be viewed through the lens of trying to kill it.I occasionally see articles and sentiments along the lines of, Anthropic is or is not, \"scare mongering to boost the perceived cultural impact of their AI/ML tools; a sort of underhanded advertisement\".If your job is to defend Anthropic online, it's a good angle to fight from. It's a viral subject with no practical outcomes; the sort of thing that can cognitively DDoS your detractors for days.Personally, I think Anthropic is scare m",
-      "score": 11.87,
+      "score": 11.78,
       "status": "new",
       "domain": "ai",
       "tags": [],
@@ -740,7 +811,7 @@
       "author": "NirDiamant",
       "published_ts": 1781214950.0,
       "raw_text": "This repository showcases various advanced techniques for Retrieval-Augmented Generation (RAG) systems. Each technique has a detailed notebook tutorial. agentic-rag ai embeddings generative-ai gpt langchain llama-index llm llms machine-learning nlp openai python rag retrieval-augmented-generation semantic-search tutorials vector-database",
-      "score": 11.52,
+      "score": 11.47,
       "status": "new",
       "domain": "ai",
       "tags": [
@@ -779,7 +850,7 @@
       "author": "",
       "published_ts": 1780916545.0,
       "raw_text": "LLM Integration — open-source issue in microsoft/markitdown. Labels: enhancement, good first issue. As a feature suggestion, I would love if this could allow you to plug in an LLM (such as GPT-4o) where images that are included in the content could be sent to the LLM for further understanding. For example, if it was say a bar chart or graph, it would be sent to convert that to a Markdown table and be integrated in the final Markdown output.",
-      "score": 11.32,
+      "score": 11.28,
       "status": "new",
       "domain": "tech",
       "tags": [
@@ -803,7 +874,7 @@
       "author": "acd",
       "published_ts": 1780348646.0,
       "raw_text": "I have with the help of AI create an open source method of E8 LLM code book quantization library called glq. I was interested in creating Glq\nas a PC gamer and devops, interested in both LLMs and AI. The current high RAM prices and LLM resource usage also inspired me to write glq. A question arises could you try and squeeze more out a gaming GPU with limited VRAM size by using alternative LLM compression methods?Glq is effective compared to other LLM quantization algorithms at between 2-bits per weight up to 4 bits per weight. The effectiveness of glq at low bits per words is due to the proper",
-      "score": 11.12,
+      "score": 11.11,
       "status": "new",
       "domain": "ai",
       "tags": [],
@@ -842,6 +913,26 @@
       }
     },
     {
+      "id": "312426b5f2b41fa8",
+      "kind": "repo",
+      "source": "GitHub",
+      "title": "INCF/knowledge-space-agent",
+      "url": "https://github.com/INCF/knowledge-space-agent",
+      "author": "INCF",
+      "published_ts": 1774786901.0,
+      "raw_text": "GenAI Chat agent for Knowledge Space",
+      "score": 11.0,
+      "status": "new",
+      "domain": "ai",
+      "tags": [],
+      "extra": {
+        "stars": 21,
+        "language": "Python",
+        "forks": 41,
+        "matched_topic": "org:INCF"
+      }
+    },
+    {
       "id": "ec8098a63ac51f97",
       "kind": "opportunity",
       "source": "Devpost",
@@ -867,6 +958,119 @@
       }
     },
     {
+      "id": "e9d0a2e0ef881028",
+      "kind": "news",
+      "source": "Hacker News",
+      "title": "How agentic AI is rewiring Amazon's teams and upending its traditions",
+      "url": "https://www.geekwire.com/2026/how-agentic-ai-is-rewiring-amazons-teams-and-upending-its-traditions/",
+      "author": "Gaishan",
+      "published_ts": 1781667913.0,
+      "raw_text": "",
+      "score": 10.98,
+      "status": "new",
+      "domain": "ai",
+      "tags": [],
+      "extra": {
+        "points": 2,
+        "num_comments": 1,
+        "hn_query": "AI"
+      }
+    },
+    {
+      "id": "66f9a7b27085a18a",
+      "kind": "news",
+      "source": "Hacker News",
+      "title": "Lutnick's Letter to Anthropic Warned of Curbs on Top AI Models",
+      "url": "https://www.bloomberg.com/news/articles/2026-06-16/lutnick-s-letter-to-anthropic-warned-of-curbs-on-top-ai-models",
+      "author": "airstrike",
+      "published_ts": 1781637475.0,
+      "raw_text": "",
+      "score": 10.94,
+      "status": "new",
+      "domain": "ai",
+      "tags": [],
+      "extra": {
+        "points": 4,
+        "num_comments": 1,
+        "hn_query": "Anthropic"
+      }
+    },
+    {
+      "id": "f0411ddcf833b974",
+      "kind": "news",
+      "source": "Hacker News",
+      "title": "Leviathan Waking – On Anthropic/USG, and a new era in AI governance",
+      "url": "https://www.hyperdimensional.co/p/leviathan-waking",
+      "author": "speckx",
+      "published_ts": 1781636515.0,
+      "raw_text": "",
+      "score": 10.93,
+      "status": "new",
+      "domain": "ai",
+      "tags": [],
+      "extra": {
+        "points": 6,
+        "num_comments": 1,
+        "hn_query": "Anthropic"
+      }
+    },
+    {
+      "id": "4feafd0dc487e5c9",
+      "kind": "news",
+      "source": "Hacker News",
+      "title": "The Anthropic Fable saga proves: we have opened the AI Pandora's box. What now?",
+      "url": "https://www.theguardian.com/commentisfree/2026/jun/16/anthropic-fable-ai",
+      "author": "kuerbel",
+      "published_ts": 1781635514.0,
+      "raw_text": "",
+      "score": 10.93,
+      "status": "new",
+      "domain": "ai",
+      "tags": [],
+      "extra": {
+        "points": 3,
+        "num_comments": 0,
+        "hn_query": "Anthropic"
+      }
+    },
+    {
+      "id": "51cb54255f19e23d",
+      "kind": "paper",
+      "source": "arXiv",
+      "title": "A Red-Team Study of Anthropic Fable 5 & Opus 4.8 Models",
+      "url": "https://arxiv.org/abs/2606.18193v1",
+      "author": "Nicola Franco",
+      "published_ts": 1781630638.0,
+      "raw_text": "We evaluate the adversarial robustness of two frontier large language models (LLMs) developed by Anthropic, Fable 5 and Opus 4.8, against four families of automated jailbreak attack across 7 826 harmful intents spanning a ten-category harm taxonomy. Using the HackAgent red-teaming framework, hundreds of thousands of adversarial attempts were generated and every apparent success was independently re-adjudicated by a panel of three judge models (majority vote). Both models resist the majority of attacks, but the residual surface is larger than aggregate framing suggests: it is dominated by adapt",
+      "score": 10.93,
+      "status": "new",
+      "domain": "nlp",
+      "tags": [],
+      "extra": {
+        "venue": "arXiv",
+        "doi": ""
+      }
+    },
+    {
+      "id": "2bee986e2edb0958",
+      "kind": "news",
+      "source": "Hacker News",
+      "title": "Anthropic Faces Lawsuit over Allegedly Misleading Claude AI Pricing",
+      "url": "https://decrypt.co/371201/anthropic-lawsuit-allegedly-misleading-claude-ai-pricing",
+      "author": "dstala",
+      "published_ts": 1781611942.0,
+      "raw_text": "",
+      "score": 10.9,
+      "status": "new",
+      "domain": "ai",
+      "tags": [],
+      "extra": {
+        "points": 8,
+        "num_comments": 0,
+        "hn_query": "Anthropic"
+      }
+    },
+    {
       "id": "96e6e17a1115d5a1",
       "kind": "news",
       "source": "Hacker News",
@@ -875,7 +1079,7 @@
       "author": "SilverElfin",
       "published_ts": 1781593783.0,
       "raw_text": "",
-      "score": 10.97,
+      "score": 10.87,
       "status": "new",
       "domain": "ai",
       "tags": [],
@@ -894,7 +1098,7 @@
       "author": "komlan",
       "published_ts": 1781591127.0,
       "raw_text": "Hi HN!Collecting form responses is one thing, but once you try to use them, a lot of them turn out to be unusable. Some are missing critical information or answering the wrong question (think but report with no steps to reproduce, support queries suffering from the XY problem [1], etc.). Classic required fields and regex validation help with syntax, but they can't tell you whether the answer actually makes sense for what you need to do with them.I built a Google Forms add-on that lets you describe what a good answer looks like in plain text (\"should say what they were doing when the issue happ",
-      "score": 10.97,
+      "score": 10.87,
       "status": "new",
       "domain": "ai",
       "tags": [],
@@ -913,7 +1117,7 @@
       "author": "TMWNN",
       "published_ts": 1781590183.0,
       "raw_text": "",
-      "score": 10.97,
+      "score": 10.87,
       "status": "new",
       "domain": "ai",
       "tags": [],
@@ -932,7 +1136,7 @@
       "author": "StarTrail-org",
       "published_ts": 1781583965.0,
       "raw_text": "[MLsys2026]: RAG on Everything with LEANN. Enjoy 97% storage savings while running a fast, accurate, and 100% private RAG application on your personal device. ai faiss gpt-oss langchain llama-index llm localstorage offline-first ollama privacy python rag retrieval-augmented-generation vector-database vector-search vectors",
-      "score": 10.96,
+      "score": 10.86,
       "status": "new",
       "domain": "ai",
       "tags": [
@@ -969,7 +1173,7 @@
       "author": "ilreb",
       "published_ts": 1781578077.0,
       "raw_text": "",
-      "score": 10.95,
+      "score": 10.85,
       "status": "new",
       "domain": "ai",
       "tags": [],
@@ -988,7 +1192,7 @@
       "author": "babelfish",
       "published_ts": 1781565885.0,
       "raw_text": "",
-      "score": 10.93,
+      "score": 10.83,
       "status": "new",
       "domain": "ai",
       "tags": [],
@@ -1007,7 +1211,7 @@
       "author": "cdrnsf",
       "published_ts": 1781561718.0,
       "raw_text": "",
-      "score": 10.92,
+      "score": 10.83,
       "status": "new",
       "domain": "ai",
       "tags": [],
@@ -1026,7 +1230,7 @@
       "author": "AnodicElegy",
       "published_ts": 1781548596.0,
       "raw_text": "",
-      "score": 10.9,
+      "score": 10.81,
       "status": "new",
       "domain": "ai",
       "tags": [],
@@ -1045,7 +1249,7 @@
       "author": "JumpCrisscross",
       "published_ts": 1781536899.0,
       "raw_text": "",
-      "score": 10.88,
+      "score": 10.79,
       "status": "new",
       "domain": "ai",
       "tags": [],
@@ -1064,7 +1268,7 @@
       "author": "mem0ai",
       "published_ts": 1781524726.0,
       "raw_text": "Universal memory layer for AI Agents agents ai ai-agents application chatbots chatgpt genai llm long-term-memory memory memory-management python rag state-management",
-      "score": 10.87,
+      "score": 10.78,
       "status": "new",
       "domain": "ai",
       "tags": [
@@ -1099,7 +1303,7 @@
       "author": "bytedance",
       "published_ts": 1781523462.0,
       "raw_text": "An open-source long-horizon SuperAgent harness that researches, codes, and creates. With the help of sandboxes, memories, tools, skill, subagents and message gateway, it handles different levels of tasks that could take minutes to hours. agent agentic agentic-framework agentic-workflow ai ai-agents deep-research harness langchain langgraph langmanus llm multi-agent nodejs podcast python superagent typescript",
-      "score": 10.87,
+      "score": 10.78,
       "status": "new",
       "domain": "ai",
       "tags": [
@@ -1138,7 +1342,7 @@
       "author": "1Panel-dev",
       "published_ts": 1781513295.0,
       "raw_text": "🔥 MaxKB is an open-source platform for building enterprise-grade agents.  强大易用的开源企业级智能体平台。 agent agentic-ai chatbot deepseek-r1 knowledgebase langchain llama3 llm maxkb mcp-server ollama pgvector qwen3 rag",
-      "score": 10.85,
+      "score": 10.76,
       "status": "new",
       "domain": "ai",
       "tags": [
@@ -1173,7 +1377,7 @@
       "author": "thm",
       "published_ts": 1781512809.0,
       "raw_text": "",
-      "score": 10.85,
+      "score": 10.76,
       "status": "new",
       "domain": "ai",
       "tags": [],
@@ -1192,7 +1396,7 @@
       "author": "root-parent",
       "published_ts": 1781476773.0,
       "raw_text": "",
-      "score": 10.8,
+      "score": 10.72,
       "status": "new",
       "domain": "ai",
       "tags": [],
@@ -1211,7 +1415,7 @@
       "author": "01-_-",
       "published_ts": 1781444330.0,
       "raw_text": "",
-      "score": 10.76,
+      "score": 10.68,
       "status": "new",
       "domain": "ai",
       "tags": [],
@@ -1230,7 +1434,7 @@
       "author": "joozio",
       "published_ts": 1781420685.0,
       "raw_text": "",
-      "score": 10.73,
+      "score": 10.65,
       "status": "new",
       "domain": "ai",
       "tags": [],
@@ -1249,7 +1453,7 @@
       "author": "NirDiamant",
       "published_ts": 1781214948.0,
       "raw_text": "22 prompt engineering techniques with hands-on Jupyter Notebook tutorials, from fundamental concepts to advanced strategies for leveraging LLMs. ai chain-of-thought chatgpt claude few-shot-learning genai generative-ai gpt in-context-learning langchain llm llms machine-learning openai prompt-engineering prompting python tutorials",
-      "score": 10.52,
+      "score": 10.47,
       "status": "new",
       "domain": "ai",
       "tags": [
@@ -1288,7 +1492,7 @@
       "author": "microsoft",
       "published_ts": 1781140017.0,
       "raw_text": "12 Weeks, 24 Lessons, AI for All! ai artificial-intelligence cnn computer-vision deep-learning gan machine-learning microsoft-for-beginners nlp rnn",
-      "score": 10.46,
+      "score": 10.41,
       "status": "new",
       "domain": "ai",
       "tags": [
@@ -1319,7 +1523,7 @@
       "author": "datawhalechina",
       "published_ts": 1780648166.0,
       "raw_text": "🔍大模型应用开发实战一：RAG 技术全栈指南，在线阅读地址：https://datawhalechina.github.io/all-in-rag/ ai deepseek embedding kimi-k2 langchain llama-index llm milvus multimodal neo4j python rag",
-      "score": 10.2,
+      "score": 10.18,
       "status": "new",
       "domain": "ai",
       "tags": [
@@ -1380,6 +1584,391 @@
       }
     },
     {
+      "id": "59c6001802b6afe5",
+      "kind": "news",
+      "source": "Hacker News",
+      "title": "Anthropic Is Still at Odds with the White House over Claude Fable 5",
+      "url": "https://www.wired.com/story/anthropic-is-still-at-odds-with-the-white-house-over-claude-fable-5/",
+      "author": "dstala",
+      "published_ts": 1781673390.0,
+      "raw_text": "",
+      "score": 9.99,
+      "status": "new",
+      "domain": "ai",
+      "tags": [],
+      "extra": {
+        "points": 2,
+        "num_comments": 0,
+        "hn_query": "Anthropic"
+      }
+    },
+    {
+      "id": "41f92c6727c0644b",
+      "kind": "news",
+      "source": "Hacker News",
+      "title": "A Red-Team Study of Anthropic Fable 5 and Opus 4.8 Models",
+      "url": "https://arxiv.org/abs/2606.18193",
+      "author": "ilreb",
+      "published_ts": 1781672162.0,
+      "raw_text": "",
+      "score": 9.99,
+      "status": "new",
+      "domain": "ai",
+      "tags": [],
+      "extra": {
+        "points": 1,
+        "num_comments": 0,
+        "hn_query": "Anthropic"
+      }
+    },
+    {
+      "id": "cca449a629bd1986",
+      "kind": "news",
+      "source": "Hacker News",
+      "title": "Chrome Extension That Disguises Claude as a Google Doc",
+      "url": "https://twitter.com/om_patel5/status/2066011171967127643",
+      "author": "vantareed",
+      "published_ts": 1781667046.0,
+      "raw_text": "",
+      "score": 9.98,
+      "status": "new",
+      "domain": "ai",
+      "tags": [],
+      "extra": {
+        "points": 3,
+        "num_comments": 0,
+        "hn_query": "Claude"
+      }
+    },
+    {
+      "id": "179fbfb0f611d003",
+      "kind": "news",
+      "source": "Hacker News",
+      "title": "Agentic Grocery Shopping on Uber Eats",
+      "url": "https://www.uber.com/us/en/blog/uber-cart-assistant/",
+      "author": "samrohn",
+      "published_ts": 1781665808.0,
+      "raw_text": "",
+      "score": 9.98,
+      "status": "new",
+      "domain": "ai",
+      "tags": [],
+      "extra": {
+        "points": 2,
+        "num_comments": 1,
+        "hn_query": "GSoC"
+      }
+    },
+    {
+      "id": "44920e6d110343a9",
+      "kind": "repo",
+      "source": "GitHub",
+      "title": "dipy/dipy",
+      "url": "https://github.com/dipy/dipy",
+      "author": "dipy",
+      "published_ts": 1781665003.0,
+      "raw_text": "DIPY is the paragon 3D/4D+ medical imaging library in Python. Contains generic methods for spatial normalization, signal processing, machine learning, statistical analysis and visualization of medical images. Additionally, it contains specialized methods for computational anatomy including diffusion, perfusion and structural imaging. bundles contextual-enhancement denoising diffusion-mri dki dti machine-learning medical-imaging microstructure neuroanatomy neuroimaging patch2self python registration segmentation self-supervised-learning spherical-harmonics tracking tractography tractometry",
+      "score": 9.98,
+      "status": "new",
+      "domain": "ai",
+      "tags": [
+        "bundles",
+        "contextual-enhancement",
+        "denoising",
+        "diffusion-mri",
+        "dki",
+        "dti",
+        "machine-learning",
+        "medical-imaging",
+        "microstructure",
+        "neuroanatomy",
+        "neuroimaging",
+        "patch2self",
+        "python",
+        "registration",
+        "segmentation",
+        "self-supervised-learning",
+        "spherical-harmonics",
+        "tracking",
+        "tractography",
+        "tractometry"
+      ],
+      "extra": {
+        "stars": 822,
+        "language": "Python",
+        "forks": 505,
+        "matched_topic": "org:dipy"
+      }
+    },
+    {
+      "id": "7ec0bda42b027445",
+      "kind": "news",
+      "source": "Hacker News",
+      "title": "Anthropic's latest feud with the admin may help it, sales data suggests",
+      "url": "https://techcrunch.com/2026/06/16/anthropics-latest-feud-with-the-trump-admin-may-actually-help-it-sales-data-suggests/",
+      "author": "pseudolus",
+      "published_ts": 1781657023.0,
+      "raw_text": "",
+      "score": 9.97,
+      "status": "new",
+      "domain": "ai",
+      "tags": [],
+      "extra": {
+        "points": 4,
+        "num_comments": 0,
+        "hn_query": "Anthropic"
+      }
+    },
+    {
+      "id": "5b3cd6a4d97a3d30",
+      "kind": "repo",
+      "source": "GitHub",
+      "title": "nilearn/nilearn",
+      "url": "https://github.com/nilearn/nilearn",
+      "author": "nilearn",
+      "published_ts": 1781647002.0,
+      "raw_text": "Machine learning for NeuroImaging in Python brain-connectivity brain-imaging brain-mri decoding fmri machine-learning mvpa neuroimaging python",
+      "score": 9.95,
+      "status": "new",
+      "domain": "ai",
+      "tags": [
+        "brain-connectivity",
+        "brain-imaging",
+        "brain-mri",
+        "decoding",
+        "fmri",
+        "machine-learning",
+        "mvpa",
+        "neuroimaging",
+        "python"
+      ],
+      "extra": {
+        "stars": 1407,
+        "language": "Python",
+        "forks": 665,
+        "matched_topic": "org:nilearn"
+      }
+    },
+    {
+      "id": "5bcf3ce514d2b0ea",
+      "kind": "news",
+      "source": "Hacker News",
+      "title": "The Battle with Anthropic Is the Start of a New Kind of Conflict",
+      "url": "https://www.nytimes.com/2026/06/16/opinion/anthropic-fable-ai-trump-administration.html",
+      "author": "furcyd",
+      "published_ts": 1781644883.0,
+      "raw_text": "",
+      "score": 9.95,
+      "status": "new",
+      "domain": "ai",
+      "tags": [],
+      "extra": {
+        "points": 1,
+        "num_comments": 1,
+        "hn_query": "AI"
+      }
+    },
+    {
+      "id": "c083ae04e2df095d",
+      "kind": "news",
+      "source": "Hacker News",
+      "title": "Read the Lutnick Letter That Led Anthropic to Disable Mythos",
+      "url": "https://www.bloomberg.com/news/articles/2026-06-16/read-the-lutnick-letter-that-led-anthropic-to-disable-mythos",
+      "author": "lesbarclays",
+      "published_ts": 1781638051.0,
+      "raw_text": "",
+      "score": 9.94,
+      "status": "new",
+      "domain": "ai",
+      "tags": [],
+      "extra": {
+        "points": 6,
+        "num_comments": 0,
+        "hn_query": "Anthropic"
+      }
+    },
+    {
+      "id": "dfa9c6c373cbf61f",
+      "kind": "news",
+      "source": "Hacker News",
+      "title": "Pentagon reduces reliance on Anthropic, switches to competitors after clash",
+      "url": "https://cryptobriefing.com/pentagon-reduces-anthropic-reliance-competitors/",
+      "author": "devonnull",
+      "published_ts": 1781637503.0,
+      "raw_text": "",
+      "score": 9.94,
+      "status": "new",
+      "domain": "ai",
+      "tags": [],
+      "extra": {
+        "points": 4,
+        "num_comments": 0,
+        "hn_query": "Anthropic"
+      }
+    },
+    {
+      "id": "246b3c51d63411dc",
+      "kind": "news",
+      "source": "Hacker News",
+      "title": "Apparently the Real Reason Anthropic's Models Are Offline: A Six-Year-Old Grudge",
+      "url": "https://www.techdirt.com/2026/06/16/apparently-the-real-reason-anthropics-models-are-offline-a-six-year-old-trump-grudge/",
+      "author": "cdrnsf",
+      "published_ts": 1781636727.0,
+      "raw_text": "",
+      "score": 9.94,
+      "status": "new",
+      "domain": "ai",
+      "tags": [],
+      "extra": {
+        "points": 15,
+        "num_comments": 1,
+        "hn_query": "Anthropic"
+      }
+    },
+    {
+      "id": "813e9792d5715e32",
+      "kind": "news",
+      "source": "Hacker News",
+      "title": "Why Anthropic candidates fail culture after clearing coding and system design",
+      "url": "https://www.hack2hire.com/blog/what-anthropic-actually-tests-and-what-gets-candidates-rejected-2026",
+      "author": "hack2hire",
+      "published_ts": 1781634559.0,
+      "raw_text": "",
+      "score": 9.93,
+      "status": "new",
+      "domain": "ai",
+      "tags": [],
+      "extra": {
+        "points": 4,
+        "num_comments": 3,
+        "hn_query": "Anthropic"
+      }
+    },
+    {
+      "id": "2fe8d0fd6df11f38",
+      "kind": "repo",
+      "source": "GitHub",
+      "title": "mlpack/mlpack",
+      "url": "https://github.com/mlpack/mlpack",
+      "author": "mlpack",
+      "published_ts": 1781633226.0,
+      "raw_text": "mlpack: a fast, header-only C++ machine learning library c-plus-plus deep-learning hacktoberfest machine-learning machine-learning-library nearest-neighbor-search regression scientific-computing",
+      "score": 9.93,
+      "status": "new",
+      "domain": "ai",
+      "tags": [
+        "c-plus-plus",
+        "deep-learning",
+        "hacktoberfest",
+        "machine-learning",
+        "machine-learning-library",
+        "nearest-neighbor-search",
+        "regression",
+        "scientific-computing"
+      ],
+      "extra": {
+        "stars": 5663,
+        "language": "C++",
+        "forks": 1712,
+        "matched_topic": "org:mlpack"
+      }
+    },
+    {
+      "id": "5305cbdd2d5fa7d0",
+      "kind": "news",
+      "source": "Hacker News",
+      "title": "Anthropic CEO's Response on Iranian Girl School Strike [video]",
+      "url": "https://www.youtube.com/watch?v=SIUrshGwgDI",
+      "author": "Bender",
+      "published_ts": 1781632871.0,
+      "raw_text": "",
+      "score": 9.93,
+      "status": "new",
+      "domain": "ai",
+      "tags": [],
+      "extra": {
+        "points": 2,
+        "num_comments": 1,
+        "hn_query": "Anthropic"
+      }
+    },
+    {
+      "id": "8ddc05a2f58dcc3d",
+      "kind": "news",
+      "source": "Hacker News",
+      "title": "Tell HN: Anthropic walks back on Agent SDK credit changes",
+      "url": "https://news.ycombinator.com/item?id=48557371",
+      "author": "lostmsu",
+      "published_ts": 1781625773.0,
+      "raw_text": "Just received:In May, we sent you an email announcing that starting today, the Claude Agent SDK, claude -p, and third-party apps built on the Agent SDK would stop drawing from subscription rate limits and move to a dedicated monthly credit. We're writing to let you know that we’re not making this change today. We’re working to update the plan to better support how users build with Claude subscriptions.What this means for you\nNothing changes for now. Agent SDK, claude -p, and third-party app usage continues to work with your subscription exactly as it did before today, and there's no credit to ",
+      "score": 9.92,
+      "status": "new",
+      "domain": "ai",
+      "tags": [],
+      "extra": {
+        "points": 5,
+        "num_comments": 0,
+        "hn_query": "LLM"
+      }
+    },
+    {
+      "id": "979f8f10ef4ab05f",
+      "kind": "news",
+      "source": "Hacker News",
+      "title": "SpaceX Purchases Cursor, a Claude Code and OpenAI Codex Competitor",
+      "url": "https://9to5mac.com/2026/06/16/spacex-lands-deal-to-likely-purchase-claude-code-and-openai-codex-competitor/",
+      "author": "mistersquid",
+      "published_ts": 1781624719.0,
+      "raw_text": "",
+      "score": 9.92,
+      "status": "new",
+      "domain": "ai",
+      "tags": [],
+      "extra": {
+        "points": 3,
+        "num_comments": 1,
+        "hn_query": "Claude"
+      }
+    },
+    {
+      "id": "273e8d5ef06d1235",
+      "kind": "news",
+      "source": "Hacker News",
+      "title": "Ask HN: What are some good/fast coding models for Apple Silicon?",
+      "url": "https://news.ycombinator.com/item?id=48556552",
+      "author": "LoganDark",
+      "published_ts": 1781622859.0,
+      "raw_text": "I have an M4 Max with 128 GB of unified memory, and I thought it would be easy to reach decent inference speeds with it. After a few failed attempts to exceed about 150 t/s with completely custom Metal inference engines tailor-built by Claude, I'm stumped.I'm not really sure how to make this hardware usable -- I can only really afford DeepSeek levels of pricing right now, but DeepSeek is slow and I'm really itching for something faster. Up until now, I've had a $200 per month Claude subscription, and Claude has been great, but the recent revocation of Fable 5 suddenly has me worried about losi",
+      "score": 9.91,
+      "status": "new",
+      "domain": "ai",
+      "tags": [],
+      "extra": {
+        "points": 2,
+        "num_comments": 1,
+        "hn_query": "LLM"
+      }
+    },
+    {
+      "id": "4b90d89c5819412f",
+      "kind": "news",
+      "source": "Hacker News",
+      "title": "Most Amazon brands don't use the analytics they pay for",
+      "url": "https://clarisix.com/blog/why-clarisix-and-why-now",
+      "author": "claudiuclement",
+      "published_ts": 1781613710.0,
+      "raw_text": "",
+      "score": 9.9,
+      "status": "new",
+      "domain": "ai",
+      "tags": [],
+      "extra": {
+        "points": 4,
+        "num_comments": 0,
+        "hn_query": "Claude"
+      }
+    },
+    {
       "id": "e762ec44dbda1f57",
       "kind": "news",
       "source": "Hacker News",
@@ -1388,638 +1977,14 @@
       "author": "dhavd",
       "published_ts": 1781608696.0,
       "raw_text": "",
-      "score": 10.0,
-      "status": "new",
-      "domain": "ai",
-      "tags": [],
-      "extra": {
-        "points": 2,
-        "num_comments": 0,
-        "hn_query": "AI"
-      }
-    },
-    {
-      "id": "d4df9e8fa9019894",
-      "kind": "news",
-      "source": "Hacker News",
-      "title": "Adobe's record year couldn't save its stock",
-      "url": "https://www.artificialstudio.ai/blog/adobe-record-year-couldnt-save-its-stock",
-      "author": "artificialstudi",
-      "published_ts": 1781593074.0,
-      "raw_text": "",
-      "score": 9.97,
-      "status": "new",
-      "domain": "ai",
-      "tags": [],
-      "extra": {
-        "points": 1,
-        "num_comments": 0,
-        "hn_query": "AI"
-      }
-    },
-    {
-      "id": "989cdb1a0573d86b",
-      "kind": "news",
-      "source": "Hacker News",
-      "title": "Amazon CEO's Talks with U.S. Officials Triggered Crackdown on Anthropic Models",
-      "url": "https://www.wsj.com/tech/ai/amazon-ceos-talks-with-u-s-officials-triggered-crackdown-on-anthropic-models-dcc90578",
-      "author": "Khaine",
-      "published_ts": 1781590080.0,
-      "raw_text": "",
-      "score": 9.97,
-      "status": "new",
-      "domain": "ai",
-      "tags": [],
-      "extra": {
-        "points": 3,
-        "num_comments": 0,
-        "hn_query": "AI"
-      }
-    },
-    {
-      "id": "c054383e1829ef4b",
-      "kind": "news",
-      "source": "Hacker News",
-      "title": "Can open-source beat OpenAI?",
-      "url": "https://restofworld.org/2026/tiezhen-wang-china-us-open-source-ai/",
-      "author": "devonnull",
-      "published_ts": 1781588469.0,
-      "raw_text": "",
-      "score": 9.96,
-      "status": "new",
-      "domain": "ai",
-      "tags": [],
-      "extra": {
-        "points": 5,
-        "num_comments": 0,
-        "hn_query": "AI"
-      }
-    },
-    {
-      "id": "3641b557795a44b8",
-      "kind": "opportunity",
-      "source": "Amazon Jobs",
-      "title": "Data Engineer I",
-      "url": "https://www.amazon.jobs/en/jobs/10446769/data-engineer-i",
-      "author": "",
-      "published_ts": 1781586864.4715424,
-      "raw_text": "Data Engineer I at Amazon. Bengaluru, Karnataka, IND. FBA is seeking a Data Engineer to help build AI-native data infrastructure that embeds intelligence as a foundational feature. If you enjoy innovating and want to contribute to an industry-changing business - 1+ years of data engineering experience<br/>- Experience with data modeling, warehousing and building ETL pipelines<br/>- Experience with one or more query language (e.g., SQL, PL/SQL, DDL, MDX, HiveQL, SparkSQL, Scala)<br/>- Experience with one or more scripting language (e.g., Python, KornShell)",
-      "score": 9.96,
-      "status": "new",
-      "domain": "tech",
-      "tags": [],
-      "extra": {
-        "deadline": "",
-        "company": "Amazon",
-        "role": "SWE",
-        "apply_url": "https://www.amazon.jobs/en/jobs/10446769/data-engineer-i",
-        "eligible": true
-      }
-    },
-    {
-      "id": "38f92c9aff68cb3f",
-      "kind": "news",
-      "source": "Hacker News",
-      "title": "GitLab and Anthropic building Git compatible engine to scale for agentic usage",
-      "url": "https://about.gitlab.com/blog/gitlab-transcend-announcements/",
-      "author": "tachyons",
-      "published_ts": 1781583773.0,
-      "raw_text": "",
-      "score": 9.96,
-      "status": "new",
-      "domain": "ai",
-      "tags": [],
-      "extra": {
-        "points": 3,
-        "num_comments": 0,
-        "hn_query": "Anthropic"
-      }
-    },
-    {
-      "id": "f4e3f00e9d8f842b",
-      "kind": "news",
-      "source": "Hacker News",
-      "title": "I built a notes app powered by the model that powers Apple Intelligence",
-      "url": "https://apps.apple.com/us/app/fog-on-device-ai-notes/id6760272134",
-      "author": "akshatsaladi",
-      "published_ts": 1781580060.0,
-      "raw_text": "",
-      "score": 9.95,
-      "status": "new",
-      "domain": "ai",
-      "tags": [],
-      "extra": {
-        "points": 2,
-        "num_comments": 1,
-        "hn_query": "AI"
-      }
-    },
-    {
-      "id": "0c0a54eec4ef08a6",
-      "kind": "news",
-      "source": "Hacker News",
-      "title": "Anthropic Sued over Alleged False Advertising on Claude Max Subscription Limits",
-      "url": "https://www.cnet.com/tech/services-and-software/anthropic-sued-alleged-false-advertising-claude-max-subscription-usage-limits/",
-      "author": "SilverElfin",
-      "published_ts": 1781578053.0,
-      "raw_text": "",
-      "score": 9.95,
-      "status": "new",
-      "domain": "ai",
-      "tags": [],
-      "extra": {
-        "points": 6,
-        "num_comments": 0,
-        "hn_query": "LLM"
-      }
-    },
-    {
-      "id": "f82404f372f95a5b",
-      "kind": "news",
-      "source": "Hacker News",
-      "title": "US Government warned Anthropic Fable was jailbroken, but firm 'refused' to fix",
-      "url": "https://www.tomshardware.com/tech-industry/artificial-intelligence/trump-adviser-david-sacks-says-anthropic-refused-to-fix-fable-5-jailbreak-before-us-export-controls",
-      "author": "frankacter",
-      "published_ts": 1781576953.0,
-      "raw_text": "",
-      "score": 9.95,
-      "status": "new",
-      "domain": "ai",
-      "tags": [],
-      "extra": {
-        "points": 4,
-        "num_comments": 1,
-        "hn_query": "Anthropic"
-      }
-    },
-    {
-      "id": "77695449cddd6c35",
-      "kind": "news",
-      "source": "Hacker News",
-      "title": "Anthropic pauses Claude Agent SDK policy",
-      "url": "https://news.ycombinator.com/item?id=48549646",
-      "author": "rbitar",
-      "published_ts": 1781575352.0,
-      "raw_text": "In May, we sent you an email announcing that starting today, the Claude Agent SDK, claude -p, and third-party apps built on the Agent SDK would stop drawing from subscription rate limits and move to a dedicated monthly credit. We're writing to let you know that we’re not making this change today. We’re working to update the plan to better support how users build with Claude subscriptions.What this means for you\nNothing changes for now. Agent SDK, claude -p, and third-party app usage continues to work with your subscription exactly as it did before today, and there's no credit to claim. Your su",
-      "score": 9.94,
-      "status": "new",
-      "domain": "ai",
-      "tags": [],
-      "extra": {
-        "points": 4,
-        "num_comments": 0,
-        "hn_query": "LLM"
-      }
-    },
-    {
-      "id": "6120c4895499fd0d",
-      "kind": "repo",
-      "source": "GitHub",
-      "title": "google-research/google-research",
-      "url": "https://github.com/google-research/google-research",
-      "author": "google-research",
-      "published_ts": 1781573839.0,
-      "raw_text": "Google Research ai machine-learning research",
-      "score": 9.94,
-      "status": "new",
-      "domain": "ai",
-      "tags": [
-        "ai",
-        "machine-learning",
-        "research"
-      ],
-      "extra": {
-        "stars": 38139,
-        "language": "Jupyter Notebook",
-        "forks": 8429,
-        "matched_topic": "machine-learning"
-      }
-    },
-    {
-      "id": "1841464f096fc7e2",
-      "kind": "news",
-      "source": "Hacker News",
-      "title": "The Anthropic Fable Farce by Ben Goertzel",
-      "url": "https://bengoertzel.substack.com/p/the-anthropic-fable-farce",
-      "author": "Prof_Sigmund",
-      "published_ts": 1781572232.0,
-      "raw_text": "",
-      "score": 9.94,
-      "status": "new",
-      "domain": "ai",
-      "tags": [],
-      "extra": {
-        "points": 4,
-        "num_comments": 0,
-        "hn_query": "Anthropic"
-      }
-    },
-    {
-      "id": "3f7c3cbd0644bbd2",
-      "kind": "news",
-      "source": "Hacker News",
-      "title": "The White House Is Ratcheting Up Its War Against Anthropic",
-      "url": "https://www.theatlantic.com/technology/2026/06/trump-anthropic-export-control-ai-race/687555/",
-      "author": "Filligree",
-      "published_ts": 1781570739.0,
-      "raw_text": "",
-      "score": 9.94,
-      "status": "new",
-      "domain": "ai",
-      "tags": [],
-      "extra": {
-        "points": 8,
-        "num_comments": 2,
-        "hn_query": "AI"
-      }
-    },
-    {
-      "id": "6b3996128088ed23",
-      "kind": "repo",
-      "source": "GitHub",
-      "title": "google-ai-edge/mediapipe",
-      "url": "https://github.com/google-ai-edge/mediapipe",
-      "author": "google-ai-edge",
-      "published_ts": 1781562712.0,
-      "raw_text": "Cross-platform, customizable ML solutions for live and streaming media. android audio-processing c-plus-plus calculator computer-vision deep-learning framework graph-based graph-framework inference machine-learning mediapipe mobile-development perception pipeline-framework stream-processing video-processing",
-      "score": 9.92,
-      "status": "new",
-      "domain": "ai",
-      "tags": [
-        "android",
-        "audio-processing",
-        "c-plus-plus",
-        "calculator",
-        "computer-vision",
-        "deep-learning",
-        "framework",
-        "graph-based",
-        "graph-framework",
-        "inference",
-        "machine-learning",
-        "mediapipe",
-        "mobile-development",
-        "perception",
-        "pipeline-framework",
-        "stream-processing",
-        "video-processing"
-      ],
-      "extra": {
-        "stars": 35652,
-        "language": "C++",
-        "forks": 6015,
-        "matched_topic": "machine-learning"
-      }
-    },
-    {
-      "id": "bf86defa7860caf7",
-      "kind": "news",
-      "source": "Hacker News",
-      "title": "EC Ruled Months Ago That Google's Integration of Gemini in Android Violates DMA",
-      "url": "https://daringfireball.net/linked/2026/06/15/ec-google-gemini-ai-dma",
-      "author": "danaris",
-      "published_ts": 1781559476.0,
-      "raw_text": "",
-      "score": 9.92,
-      "status": "new",
-      "domain": "ai",
-      "tags": [],
-      "extra": {
-        "points": 3,
-        "num_comments": 1,
-        "hn_query": "AI"
-      }
-    },
-    {
-      "id": "a6e1dcff9543bcfd",
-      "kind": "news",
-      "source": "Hacker News",
-      "title": "Anthropic pauses credit change for Claude Code",
-      "url": "https://news.ycombinator.com/item?id=48546618",
-      "author": "fabianlindfors",
-      "published_ts": 1781555319.0,
-      "raw_text": "Quoting from an email they sent:Hi Fabian,\nIn May, we sent you an email announcing that starting today, the Claude Agent SDK, claude -p, and third-party apps built on the Agent SDK would stop drawing from subscription rate limits and move to a dedicated monthly credit. We're writing to let you know that we’re not making this change today. We’re working to update the plan to better support how users build with Claude subscriptions.\nWhat this means for you\nNothing changes for now. Agent SDK, claude -p, and third-party app usage continues to work with your subscription exactly as it did before to",
-      "score": 9.91,
-      "status": "new",
-      "domain": "ai",
-      "tags": [],
-      "extra": {
-        "points": 17,
-        "num_comments": 4,
-        "hn_query": "LLM"
-      }
-    },
-    {
-      "id": "c0b61191129a3289",
-      "kind": "news",
-      "source": "Hacker News",
-      "title": "We're pausing the Agent SDK credit change (Anthropic)",
-      "url": "https://news.ycombinator.com/item?id=48545980",
-      "author": "TIPSIO",
-      "published_ts": 1781552122.0,
-      "raw_text": "Email just went out with the following body:> In May, we sent you an email announcing that starting today, the Claude Agent SDK, claude -p, and third-party apps built on the Agent SDK would stop drawing from subscription rate limits and move to a dedicated monthly credit. We're writing to let you know that we’re not making this change today. We’re working to update the plan to better support how users build with Claude subscriptions.> What this means for you> Nothing changes for now. Agent SDK, claude -p, and third-party app usage continues to work with your subscription exactly as it did befo",
-      "score": 9.91,
-      "status": "new",
-      "domain": "ai",
-      "tags": [],
-      "extra": {
-        "points": 12,
-        "num_comments": 3,
-        "hn_query": "LLM"
-      }
-    },
-    {
-      "id": "8713a2fa12a1b379",
-      "kind": "repo",
-      "source": "GitHub",
-      "title": "comet-ml/opik",
-      "url": "https://github.com/comet-ml/opik",
-      "author": "comet-ml",
-      "published_ts": 1781551905.0,
-      "raw_text": "Debug, evaluate, and monitor your LLM applications, RAG systems, and agentic workflows with comprehensive tracing, automated evaluations, and production-ready dashboards. evaluation hacktoberfest hacktoberfest2025 langchain llama-index llm llm-evaluation llm-observability llmops open-source openai playground prompt-engineering",
-      "score": 9.91,
-      "status": "new",
-      "domain": "ai",
-      "tags": [
-        "evaluation",
-        "hacktoberfest",
-        "hacktoberfest2025",
-        "langchain",
-        "llama-index",
-        "llm",
-        "llm-evaluation",
-        "llm-observability",
-        "llmops",
-        "open-source",
-        "openai",
-        "playground",
-        "prompt-engineering"
-      ],
-      "extra": {
-        "stars": 19665,
-        "language": "Python",
-        "forks": 1524,
-        "matched_topic": "langchain"
-      }
-    },
-    {
-      "id": "e2bf47a4c4ce8151",
-      "kind": "repo",
-      "source": "GitHub",
-      "title": "polarsource/polar",
-      "url": "https://github.com/polarsource/polar",
-      "author": "polarsource",
-      "published_ts": 1781550923.0,
-      "raw_text": "Turn your software into a business. digital-products fastapi merchant-of-record nextjs payments polar python react saas subscriptions turborepo typescript",
-      "score": 9.91,
-      "status": "new",
-      "domain": "ai",
-      "tags": [
-        "digital-products",
-        "fastapi",
-        "merchant-of-record",
-        "nextjs",
-        "payments",
-        "polar",
-        "python",
-        "react",
-        "saas",
-        "subscriptions",
-        "turborepo",
-        "typescript"
-      ],
-      "extra": {
-        "stars": 9944,
-        "language": "Python",
-        "forks": 728,
-        "matched_topic": "fastapi"
-      }
-    },
-    {
-      "id": "dc168929d8e123a1",
-      "kind": "opportunity",
-      "source": "GitHub Issues",
-      "title": "examples/simple-chatbot: minimal PydanticAI Agent without RAG (Mr-DooSun/fastapi-agent-blueprint)",
-      "url": "https://github.com/Mr-DooSun/fastapi-agent-blueprint/issues/97",
-      "author": "",
-      "published_ts": 1781549162.0,
-      "raw_text": "examples/simple-chatbot: minimal PydanticAI Agent without RAG — open-source issue in Mr-DooSun/fastapi-agent-blueprint. Labels: enhancement, good first issue. Part of #85. Fifth of 5 seed examples.\n\n## What to build\n\nA `chat` domain that wraps a PydanticAI `Agent` with a structured\noutput type. Demonstrates the LLM path **without vector storage** —\nintentional contrast point for the full RAG domain landing in #80.\n\nUse an inline `SYSTEM_PROMPT` module constant (no prompt domain dependency,\nper ADR 046 §5):\n\n```python\nSYSTEM_PROMPT = \"You are a helpful assistant.\"\n```\n\nPass `SYSTEM_PROMPT` to t",
-      "score": 9.9,
-      "status": "new",
-      "domain": "tech",
-      "tags": [
-        "enhancement",
-        "good first issue"
-      ],
-      "extra": {
-        "deadline": "",
-        "company": "Mr-DooSun/fastapi-agent-blueprint",
-        "role": "open-source",
-        "apply_url": "https://github.com/Mr-DooSun/fastapi-agent-blueprint/issues/97",
-        "eligible": true
-      }
-    },
-    {
-      "id": "541567cf1bf60d74",
-      "kind": "news",
-      "source": "Hacker News",
-      "title": "Google vs. Oracle (2021)",
-      "url": "https://en.wikipedia.org/wiki/Google_LLC_v._Oracle_America,_Inc.",
-      "author": "tosh",
-      "published_ts": 1781546090.0,
-      "raw_text": "",
-      "score": 9.9,
-      "status": "new",
-      "domain": "ai",
-      "tags": [],
-      "extra": {
-        "points": 2,
-        "num_comments": 0,
-        "hn_query": "LLM"
-      }
-    },
-    {
-      "id": "3aff4cb5d24d53f8",
-      "kind": "news",
-      "source": "Hacker News",
-      "title": "Anthropic shuts down Fable, Mythos models",
-      "url": "https://arstechnica.com/ai/2026/06/anthropic-shuts-down-fable-mythos-models-following-trump-admin-directive/",
-      "author": "Hypathia",
-      "published_ts": 1781543267.0,
-      "raw_text": "",
-      "score": 9.89,
-      "status": "new",
-      "domain": "ai",
-      "tags": [],
-      "extra": {
-        "points": 4,
-        "num_comments": 0,
-        "hn_query": "Anthropic"
-      }
-    },
-    {
-      "id": "99e5ad09f71b5c77",
-      "kind": "news",
-      "source": "Hacker News",
-      "title": "How Anthropic trained Fable 5 => by analysing its reasoning traces",
-      "url": "https://ankitmaloo.com/fable/",
-      "author": "ankit219",
-      "published_ts": 1781542853.0,
-      "raw_text": "",
-      "score": 9.89,
-      "status": "new",
-      "domain": "ai",
-      "tags": [],
-      "extra": {
-        "points": 6,
-        "num_comments": 0,
-        "hn_query": "Anthropic"
-      }
-    },
-    {
-      "id": "b72b789b1ca3a05d",
-      "kind": "news",
-      "source": "Hacker News",
-      "title": "Ask HN: Isn't Anthropic currently doing \"security through obscurity\" for Mythos?",
-      "url": "https://news.ycombinator.com/item?id=48543975",
-      "author": "king_zee",
-      "published_ts": 1781542338.0,
-      "raw_text": "What's the worst that could happen if they were to allow unrestricted access to Mythos/Fable? A bunch of things vulnerabilities get exposed? And? A bunch of companies already had months of Mythos beforehand, and they probably fixed some issues it may have found on their codebase.But ultimately why not allow people to use it to find vulnerabilities and then fix them? If mythos is so good and the average Joe can just hack NASA in 2 prompts, wouldn't you rather he did, and then fix the vulnerability? What good does it do any of us to just shush everyone instead?",
       "score": 9.89,
       "status": "new",
       "domain": "ai",
       "tags": [],
       "extra": {
         "points": 2,
-        "num_comments": 2,
-        "hn_query": "Anthropic"
-      }
-    },
-    {
-      "id": "06d5c6fb7d0b869c",
-      "kind": "news",
-      "source": "Hacker News",
-      "title": "\"They screwed us\": Personality clashes sent Anthropic's models offline",
-      "url": "https://simonwillison.net/2026/Jun/15/axios-clashes-anthropics/",
-      "author": "lumpa",
-      "published_ts": 1781539513.0,
-      "raw_text": "",
-      "score": 9.89,
-      "status": "new",
-      "domain": "ai",
-      "tags": [],
-      "extra": {
-        "points": 4,
         "num_comments": 0,
-        "hn_query": "LLM"
-      }
-    },
-    {
-      "id": "af4828720fa82294",
-      "kind": "repo",
-      "source": "GitHub",
-      "title": "langchain4j/langchain4j",
-      "url": "https://github.com/langchain4j/langchain4j",
-      "author": "langchain4j",
-      "published_ts": 1781539241.0,
-      "raw_text": "LangChain4j is an idiomatic, open-source Java library for building LLM-powered applications on the JVM. It offers a unified API over popular LLM providers and vector stores, and makes implementing tool calling (including MCP support), agents and RAG easy. It integrates seamlessly with enterprise Java frameworks like Quarkus and Spring Boot. anthropic chatgpt chroma embeddings gemini gpt huggingface java langchain llama llm llms milvus ollama onnx openai openai-api pgvector pinecone vector-database",
-      "score": 9.89,
-      "status": "new",
-      "domain": "ai",
-      "tags": [
-        "anthropic",
-        "chatgpt",
-        "chroma",
-        "embeddings",
-        "gemini",
-        "gpt",
-        "huggingface",
-        "java",
-        "langchain",
-        "llama",
-        "llm",
-        "llms",
-        "milvus",
-        "ollama",
-        "onnx",
-        "openai",
-        "openai-api",
-        "pgvector",
-        "pinecone",
-        "vector-database"
-      ],
-      "extra": {
-        "stars": 12338,
-        "language": "Java",
-        "forks": 2306,
-        "matched_topic": "langchain"
-      }
-    },
-    {
-      "id": "2057dc2160222c37",
-      "kind": "paper",
-      "source": "arXiv",
-      "title": "Data-Driven Decoding of Russell's Circumplex Model of Affect",
-      "url": "https://arxiv.org/abs/2606.16843v1",
-      "author": "Amdjed Belaref, Samir Sadok, Zineb Noumir, Renaud Seguier",
-      "published_ts": 1781536950.0,
-      "raw_text": "Affective computing increasingly relies on deep learning to represent emotions, yet latent spaces often remain opaque, high-dimensional black boxes. This paper investigates whether Transformers' embeddings recover the geometric regularities of Russell's circumplex model. We unify two complementary experiments testing the hypothesis that, after training models on text and speech, their resulting latent spaces encode a topology consistent with valence-arousal and reproduce human-like neighborhood relations. Specifically, we evaluate deep representations extracted from Transformer-based text (RoB",
-      "score": 9.88,
-      "status": "new",
-      "domain": "nlp",
-      "tags": [],
-      "extra": {
-        "venue": "arXiv",
-        "doi": ""
-      }
-    },
-    {
-      "id": "ca7e4a430103fd92",
-      "kind": "repo",
-      "source": "GitHub",
-      "title": "HKUDS/LightRAG",
-      "url": "https://github.com/HKUDS/LightRAG",
-      "author": "HKUDS",
-      "published_ts": 1781536123.0,
-      "raw_text": "[EMNLP2025] \"LightRAG: Simple and Fast Retrieval-Augmented Generation\" genai gpt gpt-4 graphrag knowledge-graph large-language-models llm rag retrieval-augmented-generation",
-      "score": 9.88,
-      "status": "new",
-      "domain": "ai",
-      "tags": [
-        "genai",
-        "gpt",
-        "gpt-4",
-        "graphrag",
-        "knowledge-graph",
-        "large-language-models",
-        "llm",
-        "rag",
-        "retrieval-augmented-generation"
-      ],
-      "extra": {
-        "stars": 36622,
-        "language": "Python",
-        "forks": 5172,
-        "matched_topic": "rag"
-      }
-    },
-    {
-      "id": "2793d7ec0accc971",
-      "kind": "news",
-      "source": "Hacker News",
-      "title": "Anthropic to meet with Trump administration over Mythos dispute",
-      "url": "https://www.cnbc.com/2026/06/15/anthropic-mythos-trump-ai.html",
-      "author": "cebert",
-      "published_ts": 1781535656.0,
-      "raw_text": "",
-      "score": 9.88,
-      "status": "new",
-      "domain": "ai",
-      "tags": [],
-      "extra": {
-        "points": 5,
-        "num_comments": 1,
-        "hn_query": "Anthropic"
+        "hn_query": "AI"
       }
     }
   ]
