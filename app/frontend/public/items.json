@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-18T06:04:53Z",
+  "generated_at": "2026-06-18T06:23:11Z",
   "count": 80,
   "items": [
     {
@@ -42,7 +42,7 @@
       "author": "jackjayd",
       "published_ts": 1781600775.0,
       "raw_text": "I built Opencom, an open-source alternative to Intercom for customer support chat, with knowledge-base and AI support, and mobile apps for push notifications etc.It includes a web widget, agent inbox, customer/company profiles, conversations, realtime messaging, AI support and a live demo. The aim is to provide a simple, self-hostable foundation for teams that want Intercom support without being locked into a large SaaS platform.Salesforce has just announced its acquisition of Fin, formerly Intercom, for around $3.6bn. Customer communication is important infrastructure, and I think there shoul",
-      "score": 16.77,
+      "score": 16.76,
       "status": "new",
       "domain": "ai",
       "tags": [],
@@ -119,7 +119,7 @@
       "author": "",
       "published_ts": 1781384537.0,
       "raw_text": "Add a Google Gemini / Vertex AI provider adapter for auto-instrumentation — open-source issue in nimonkaranurag/agentpolicylayer. Labels: enhancement, help wanted. ## Problem\n\n`auto_instrument` patches the SDKs you have installed, but the `PROVIDER_REGISTRY` (`apl/instrumentation/providers/__init__.py`) only covers OpenAI, Anthropic, LiteLLM, LangChain, and watsonx. There's no adapter for Google's Gemini SDK (`google-genai`) or Vertex AI, so apps calling Gemini directly bypass policies entirely — no input/output enforcement, no streaming redaction.\n\n## Proposed solution\n\nNew `apl/instrumentati",
-      "score": 15.54,
+      "score": 15.53,
       "status": "new",
       "domain": "tech",
       "tags": [
@@ -143,7 +143,7 @@
       "author": "StackLessons",
       "published_ts": 1781609241.0,
       "raw_text": "Master document extraction for RAG pipelines — learn which Python loader to use for each file format and avoid the silent failures ...",
-      "score": 14.78,
+      "score": 14.77,
       "status": "new",
       "domain": "ai",
       "tags": [],
@@ -290,7 +290,7 @@
       "author": "langchain-ai",
       "published_ts": 1781568767.0,
       "raw_text": "The agent engineering platform. agents ai ai-agents anthropic chatgpt deepagents enterprise framework gemini generative-ai langchain langgraph llm multiagent open-source openai pydantic python rag typescript",
-      "score": 13.73,
+      "score": 13.72,
       "status": "new",
       "domain": "ai",
       "tags": [
@@ -372,7 +372,7 @@
       "author": "plastic-labs",
       "published_ts": 1781559852.0,
       "raw_text": "Memory library for building stateful agents agent-memory ai ai-agents ai-memory anthropic context-engineering continual-learning embeddings fastapi langchain llm long-term-memory memory openai personalization python rag state-management typescript vector-database",
-      "score": 13.72,
+      "score": 13.71,
       "status": "new",
       "domain": "ai",
       "tags": [
@@ -496,6 +496,25 @@
       }
     },
     {
+      "id": "b387731f4f83720d",
+      "kind": "news",
+      "source": "Hacker News",
+      "title": "Catching bad LLM behavior: OpenAI's new Deployment Simulation",
+      "url": "https://openai.com/index/deployment-simulation/",
+      "author": "Raj_Sidwadkar",
+      "published_ts": 1781763574.0,
+      "raw_text": "",
+      "score": 13.0,
+      "status": "new",
+      "domain": "ai",
+      "tags": [],
+      "extra": {
+        "points": 1,
+        "num_comments": 0,
+        "hn_query": "LLM"
+      }
+    },
+    {
       "id": "bc3fa415e80b4353",
       "kind": "youtube",
       "source": "CodinCloud",
@@ -615,7 +634,7 @@
       "author": "",
       "published_ts": 1781497813.0,
       "raw_text": "The batch method from ChatModels and all the Runnables does not really support the OpenAI batch API. — open-source issue in langchain-ai/langchain. Labels: help wanted, openai, external. ### Checked other resources\r\n\r\n- [X] I added a very descriptive title to this issue.\r\n- [X] I searched the LangChain documentation with the integrated search.\r\n- [X] I used the GitHub search to find a similar question and didn't find it.\r\n- [X] I am sure that this is a bug in LangChain rather than my code.\r\n- [X] The bug is not resolved by updating to the latest stable version of LangChain (or the specific int",
-      "score": 12.65,
+      "score": 12.64,
       "status": "new",
       "domain": "tech",
       "tags": [
@@ -640,7 +659,7 @@
       "author": "",
       "published_ts": 1781497811.0,
       "raw_text": "openai: `bind_tools` not callable after `with_structured_output` — open-source issue in langchain-ai/langchain. Labels: help wanted, investigate, openai, external. ### Checked other resources\r\n\r\n- [X] I added a very descriptive title to this issue.\r\n- [X] I searched the LangChain documentation with the integrated search.\r\n- [X] I used the GitHub search to find a similar question and didn't find it.\r\n- [X] I am sure that this is a bug in LangChain rather than my code.\r\n- [X] The bug is not resolved by updating to the latest stable version of LangChain (or the specific integration package).\r\n\r\n#",
-      "score": 12.65,
+      "score": 12.64,
       "status": "new",
       "domain": "tech",
       "tags": [
@@ -705,7 +724,7 @@
       "author": "Saurav Prateek",
       "published_ts": 1781695863.0,
       "raw_text": "In this video, we are building a custom 270M-parameter version of Google's FunctionGemma model. We dive deep into the ...",
-      "score": 11.9,
+      "score": 11.89,
       "status": "new",
       "domain": "ai",
       "tags": [],
@@ -831,7 +850,7 @@
       "author": "functionmouse",
       "published_ts": 1781524791.0,
       "raw_text": "tl;dr FOSS is the biggest threat to the largest new economic sector, so everything that economic sector does should be viewed through the lens of trying to kill it.I occasionally see articles and sentiments along the lines of, Anthropic is or is not, \"scare mongering to boost the perceived cultural impact of their AI/ML tools; a sort of underhanded advertisement\".If your job is to defend Anthropic online, it's a good angle to fight from. It's a viral subject with no practical outcomes; the sort of thing that can cognitively DDoS your detractors for days.Personally, I think Anthropic is scare m",
-      "score": 11.68,
+      "score": 11.67,
       "status": "new",
       "domain": "ai",
       "tags": [],
@@ -1043,7 +1062,7 @@
       "author": "itstransfigure",
       "published_ts": 1781741844.0,
       "raw_text": "",
-      "score": 10.97,
+      "score": 10.96,
       "status": "new",
       "domain": "ai",
       "tags": [],
@@ -1081,7 +1100,7 @@
       "author": "thm",
       "published_ts": 1781722155.0,
       "raw_text": "",
-      "score": 10.94,
+      "score": 10.93,
       "status": "new",
       "domain": "ai",
       "tags": [],
@@ -1178,7 +1197,7 @@
       "author": "nu11P01nt3r",
       "published_ts": 1781688640.0,
       "raw_text": "",
-      "score": 10.89,
+      "score": 10.88,
       "status": "new",
       "domain": "ai",
       "tags": [],
@@ -1216,7 +1235,7 @@
       "author": "Gaishan",
       "published_ts": 1781667913.0,
       "raw_text": "",
-      "score": 10.86,
+      "score": 10.85,
       "status": "new",
       "domain": "ai",
       "tags": [],
@@ -1904,7 +1923,7 @@
       "author": "champagnepapi",
       "published_ts": 1781741702.0,
       "raw_text": "",
-      "score": 9.97,
+      "score": 9.96,
       "status": "new",
       "domain": "ai",
       "tags": [],
@@ -1931,25 +1950,6 @@
         "points": 12,
         "num_comments": 1,
         "hn_query": "Claude"
-      }
-    },
-    {
-      "id": "08b2d75759fb5844",
-      "kind": "news",
-      "source": "Hacker News",
-      "title": "The White House Wants Anthropic to Block All Jailbreaks. It May Not Be Possible",
-      "url": "https://www.wired.com/story/the-white-house-wants-anthropic-to-block-all-jailbreaks-that-may-not-be-possible/",
-      "author": "victormustar",
-      "published_ts": 1781724431.0,
-      "raw_text": "",
-      "score": 9.94,
-      "status": "new",
-      "domain": "ai",
-      "tags": [],
-      "extra": {
-        "points": 7,
-        "num_comments": 2,
-        "hn_query": "Anthropic"
       }
     }
   ]
