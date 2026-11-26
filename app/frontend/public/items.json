@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-14T06:10:46Z",
+  "generated_at": "2026-11-26T09:29:39Z",
   "count": 80,
   "items": [
     {
@@ -552,7 +552,7 @@
       "author": "harjjotsinghh",
       "published_ts": 1791892930.0,
       "raw_text": "Hi Hacker News, I'm Harjot. I've been using Meta's Muse Code CLI daily for a few weeks now. One thing that I found difficult to handle was managing or controlling multiple sessions across multiple projects, while using the terminal for the muse CLI. Initially, I used cmux to create workspaces/groups for my different projects to group them, and then created 4 split terminals in each of those projects, that ran muse code sessions in each of them. It worked, but it was ugly. I didn't like using that. It could be because I'm not really a terminal person and would much rather prefer a proper dedica",
-      "score": 13.9,
+      "score": 13.0,
       "status": "new",
       "domain": "ai",
       "tags": [],
@@ -1043,6 +1043,44 @@
       }
     },
     {
+      "id": "bbbc0d8d6708efb3",
+      "kind": "news",
+      "source": "Hacker News",
+      "title": "Show HN: Open Academy – Math Academy-style courses for any subject",
+      "url": "https://github.com/Jonathanvwersch/open-academy",
+      "author": "Jonathanvw",
+      "published_ts": 1794848565.0,
+      "raw_text": "Open Academy is an open-source app inspired by Math Academy (https://mathacademy.com/). You use it to create courses on any subject, taught in a similar way.If you're unfamiliar with Math Academy, it's a maths learning site with short lessons, lots of practice questions, and reviews that bring old topics back before you forget them. I really enjoyed using it to study maths, but I couldn't find anything similar for other subjects. At the same time, I was using AI a lot to learn new topics but my lessons had no structure. So I built Open Academy to bridge that gap.You create courses with your AI",
+      "score": 12.25,
+      "status": "new",
+      "domain": "ai",
+      "tags": [],
+      "extra": {
+        "points": 1,
+        "num_comments": 0,
+        "hn_query": "transformers"
+      }
+    },
+    {
+      "id": "ea9f98ddcc2c5c47",
+      "kind": "news",
+      "source": "Hacker News",
+      "title": "Google Summer of Code 2026 results",
+      "url": "https://blog.rust-lang.org/2026/11/11/gsoc-2026-results/",
+      "author": "speckx",
+      "published_ts": 1794418621.0,
+      "raw_text": "",
+      "score": 12.12,
+      "status": "new",
+      "domain": "ai",
+      "tags": [],
+      "extra": {
+        "points": 2,
+        "num_comments": 0,
+        "hn_query": "Google Summer of Code"
+      }
+    },
+    {
       "id": "6ffbc5b2f22885f7",
       "kind": "news",
       "source": "Hacker News",
@@ -1051,7 +1089,7 @@
       "author": "theanonymousone",
       "published_ts": 1791286719.0,
       "raw_text": "",
-      "score": 12.33,
+      "score": 12.0,
       "status": "new",
       "domain": "ai",
       "tags": [],
@@ -1656,44 +1694,6 @@
       "domain": "ai",
       "tags": [],
       "extra": {}
-    },
-    {
-      "id": "b9e69a20b4e75b79",
-      "kind": "news",
-      "source": "Hacker News",
-      "title": "In-House LLM Serving at Netflix",
-      "url": "https://netflixtechblog.medium.com/in-house-llm-serving-at-netflix-a5a8e799ea2c",
-      "author": "sbulaev",
-      "published_ts": 1784311626.0,
-      "raw_text": "",
-      "score": 12.0,
-      "status": "new",
-      "domain": "ai",
-      "tags": [],
-      "extra": {
-        "points": 3,
-        "num_comments": 0,
-        "hn_query": "LLM"
-      }
-    },
-    {
-      "id": "f50027d6a4f76ee1",
-      "kind": "news",
-      "source": "Hacker News",
-      "title": "Ask HN: How useful is Gemini for Google Apps?",
-      "url": "https://news.ycombinator.com/item?id=48913970",
-      "author": "cobbzilla",
-      "published_ts": 1784069713.0,
-      "raw_text": "I recently wrote a Google doc to describe a presentation. I used a Heading 1 style for each \"Slide N: Description\" section, and it was otherwise cleanly formatted.Then I hit the magic Gemini button and asked (more or less) \"Make me a Google Slides presentation based on this document\"Gemini (paraphrasing): \"Oh, sorry, I can't create new documents in Google Drive\".OK, I create a new blank Google Slides document. I press the magic Gemini button. After some preamble prompt BS, I paste my \"Slides\" document content, and ask it to create me some slides.Gemini (paraphrasing): \"Oh, sorry, I can only wo",
-      "score": 12.0,
-      "status": "new",
-      "domain": "ai",
-      "tags": [],
-      "extra": {
-        "points": 3,
-        "num_comments": 3,
-        "hn_query": "LLM"
-      }
     }
   ]
 }
